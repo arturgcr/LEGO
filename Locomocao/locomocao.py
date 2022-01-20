@@ -17,14 +17,12 @@ ev3 = EV3Brick()
 
 
 #   STATUS, PROBLEMAS e DUVIDAS:
-# - Todos os tres def requisitados no diagrama digitalizados
-# - nao pediu def arcolateral e nem freio - eh pra aplicar?
 # - nao ta conseguindo ler os imports - ler o manual acima pra ver como ativar
-# - nao ta lendo variaveis - CONSERTEI.
+# - Falta aplicar inverter
 
 class Locomocao():
       
-    def __init__(self, arrMotorDireita, arrMotorEsquerdo, invertido = 'DEFAULT'):
+    def __init__(self, strMotorDireita, strMotorEsquerdo, invertido = 'DEFAULT'):
         # comecei definindo variaveis e pegando motores e respectivas portas (caso venham 2 ou mais motores)
         # ao inves de string, definir como array pois motores ja vem separados: [a, b, c, d]
         # caso nao possa, mudar modo com o qual a função define os motores (acredito que pode e eh mais eficiente)
@@ -32,9 +30,9 @@ class Locomocao():
         self.motores_esquerda = []
         self.invertido = invertido
 
-        for porta in arrMotorDireita: 
+        for porta in strMotorDireita: 
             self.motores_direita.append(Motor.Port(porta))
-        for porta in arrMotorEsquerdo:
+        for porta in strMotorEsquerdo:
             self.motores_esquerda.append(Motor.Port(porta))
 
     # ver se motor esta invertido ou nao
@@ -70,6 +68,12 @@ class Locomocao():
         self.AplicarRodaEsquerda( -pwm )
         self.AplicarRodaDireita ( pwm )
 
+    # Pára o motor usando fricção e a tensão que este gira na inércia, atua como um freio fraco.
+    def Frear ():
+        for motor in AplicarRodaEsquerda :
+            motor.brake( )
+        for motor in AplicarRodaDireita :
+            motor.brake( )
 
 # Write your program here.
 ev3.speaker.beep()
