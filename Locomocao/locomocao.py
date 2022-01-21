@@ -14,13 +14,6 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 # Create your objects here.
 ev3 = EV3Brick()
 
-
-
-#   STATUS, PROBLEMAS e DUVIDAS:
-# - nao ta conseguindo ler os imports - ler o manual acima pra ver como ativar
-# - Falta aplicar inverter
-
-
 class Locomocao():
       
     def __init__(self, strMotorDireita, strMotorEsquerdo, invertido = 'DEFAULT'):
@@ -77,7 +70,7 @@ class Locomocao():
         self.AplicarRodaDireita ( pwm )
 
     # Pára o motor usando fricção e a tensão que este gira na inércia, atua como um freio fraco.
-    def Frear ():
+    def Frear (self):
         for motor in self.motores_direita :
             motor.brake()
         for motor in self.motores_esquerda :
