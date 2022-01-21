@@ -1,6 +1,3 @@
-implementar as laistas de sensores na classe sensoriamento
-mudar o nome da classe sensor(o nome sensor ja é usado no micropython)
-rever/refazer a lógica do filtro
 rever a saida da função verificalado (ERRO)
 rever implementação do PID
 talvez criar metodo verificaperto em sensoriamento
