@@ -20,6 +20,7 @@ ev3 = EV3Brick()
 # - nao ta conseguindo ler os imports - ler o manual acima pra ver como ativar
 # - Falta aplicar inverter
 
+
 class Locomocao():
       
     def __init__(self, strMotorDireita, strMotorEsquerdo, invertido = 'DEFAULT'):
@@ -35,27 +36,34 @@ class Locomocao():
         for porta in strMotorEsquerdo:
             self.motores_esquerda.append(Motor.Port(porta))
 
-    # ver se motor esta invertido ou nao
-    def controle_sentido(self):
-        if self.invertido == 'DEFAULT':
-            return 1
-        else:
-            return -1
-
+    # Função que inverte o pwm caso os motores de certo lado estejam invertidos.
+    # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
+    # "RIGHT/LEFT" - motores da direita ou da esquerda estão invertidos, respectivamente.
+    def controle_sentido_direita(self):
+        sentido = 1
+        if self.invertido == "ALL" or "RIGHT":
+            sentido = -1
+            return sentido
+    def controle_sentido_esquerda(self):
+        sentido = 1
+        if self.invertido == "ALL" or "LEFT":
+            sentido = -1
+            return sentido
+    
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
-    def AplicarRodaEsquerda ( self, pwm ):
+    def AplicarRodaEsquerda ( self, pwm):
         for motor in self.motores_esquerda :
-            motor.dc( -pwm )
+            motor.dc( -pwm * self.controle_sentido_esquerda())
 
     # Aplica o valor de pwm [-100, 100] nas rodas do lado direito.
-    def AplicarRodaDireita ( self, pwm ):
+    def AplicarRodaDireita ( self, pwm):
         for motor in self.motores_direita :
-            motor.dc( -pwm )
+            motor.dc( -pwm * self.controle_sentido_direita())
 
     # usando as funcs acima para ir pra frente com a mesma potencia
     def reta( self, pwm = 100 ):
-        self.AplicarRodaEsquerda( pwm )
-        self.AplicarRodaDireita ( pwm )
+        self.AplicarRodaEsquerda( -pwm )
+        self.AplicarRodaDireita ( -pwm )
 
     # 
     def arco (self, velocidadeLinear = 100, velocidadeAngular=15): # [Vang: que é metade da diferença de potencia entre os motores]
@@ -70,10 +78,10 @@ class Locomocao():
 
     # Pára o motor usando fricção e a tensão que este gira na inércia, atua como um freio fraco.
     def Frear ():
-        for motor in AplicarRodaEsquerda :
-            motor.brake( )
-        for motor in AplicarRodaDireita :
-            motor.brake( )
+        for motor in self.motores_direita :
+            motor.brake()
+        for motor in self.motores_esquerda :
+            motor.brake()
 
 # Write your program here.
 ev3.speaker.beep()
