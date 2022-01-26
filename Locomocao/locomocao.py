@@ -29,29 +29,28 @@ class Locomocao():
         for porta in strMotorEsquerdo:
             self.motores_esquerda.append(Motor.Port(porta))
 
-    # Função que inverte o pwm caso os motores de certo lado estejam invertidos.
-    # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
-    # "RIGHT/LEFT" - motores da direita ou da esquerda estão invertidos, respectivamente.
-    def controle_sentido_direita(self):
-        sentido = 1
+        # Controle de inversão dos motores
+        # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
+        # "RIGHT/LEFT" - motores da direita ou da esquerda estão invertidos, respectivamente.
+        
+        self.sentido_direita = 1
         if self.invertido == "ALL" or "RIGHT":
-            sentido = -1
-            return sentido
-    def controle_sentido_esquerda(self):
-        sentido = 1
+            self.sentido_direita = -1
+            
+        
+        self.sentido_esquerda = 1
         if self.invertido == "ALL" or "LEFT":
-            sentido = -1
-            return sentido
-    
+            sentido_esquerda = -1
+            
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
     def AplicarRodaEsquerda ( self, pwm):
         for motor in self.motores_esquerda :
-            motor.dc( -pwm * self.controle_sentido_esquerda())
+            motor.dc( -pwm * self.sentido_esquerda)
 
     # Aplica o valor de pwm [-100, 100] nas rodas do lado direito.
     def AplicarRodaDireita ( self, pwm):
         for motor in self.motores_direita :
-            motor.dc( -pwm * self.controle_sentido_direita())
+            motor.dc( -pwm * self.sentido_direita)
 
     # usando as funcs acima para ir pra frente com a mesma potencia
     def reta( self, pwm = 100 ):
