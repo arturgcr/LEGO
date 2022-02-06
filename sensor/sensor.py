@@ -92,13 +92,13 @@ class Sensoriamento():
         x=0
         y=0
         for i in self.sensoresDireita: #sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
-            if i.enxergando(tem que indentificar o limiar)==True:
+            if i.enxergando==True: # tem que indentificar o limiar
                 x+=1
                 y=1
         for i in self.sensoresEsquerda:                             #é importante notar, q da forma como eu optei por montar o filtro aqui haveria uma defasagem de
-            if i.enxergando(tem que indentificar o limiar)==True:   #tempo entre as medições, dependendo do tamanho do filtro. pra evitar isto bastria implementar
+            if i.enxergando==True:   # tempo entre as medições, dependendo do tamanho do filtro. pra evitar isto bastria implementar
                 x-=1                                                #o filtro no resultado dafunção verifica lado, ao ives de no final da função enxergando, isso é facil de mudar
-                x=1
+                y=1
         
         if x>0:
             return "direita"    #nessa altura, o código ja sabe onde o adversario está.
@@ -113,7 +113,7 @@ class Sensoriamento():
         y=0
 
         #Essa parte nã foi definida
-        #inclusive talvez seja melhor repensar, ao invez de retornar o erro talvez ela cria um atributo erro? não sei...
+        #inclusive talvez seja melhor repensar, ao inves de retornar o erro talvez ela cria um atributo erro? não sei...
 
     def verificaPerto(self): #funcao com limiar menor p garantir o full pa frente, ainda não implementei e não tem no diagrama de classes
 
