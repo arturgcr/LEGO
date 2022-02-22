@@ -77,6 +77,8 @@ class Sensoriamento():
                 self.sensoresEsquerda.append(i) #adiciona i à lista da esquerda
             if i.lado == self.direita:
                 self.sensoresDireita.append(i) #adiciona i à lista da direita
+            if i.lado == self.meio:
+                self.sensoresMeio.append(i)
         
         self.kp=kp
         self.kd=kd
@@ -116,6 +118,7 @@ class Sensoriamento():
         #inclusive talvez seja melhor repensar, ao inves de retornar o erro talvez ela cria um atributo erro? não sei...
 
     def verificaPerto(self): #funcao com limiar menor p garantir o full pa frente, ainda não implementei e não tem no diagrama de classes
+        
 
     def PID(self, erro, erroAnterior):
         return self.kp * erro + self.kd * (erro- erroAnterior)
