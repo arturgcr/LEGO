@@ -11,7 +11,7 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 ev3 = EV3Brick()
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------
-
+# Ver como se comporta o sleep
 
 
 # Objetivo: Classe que ajusta robo antes dos segundos iniciais da luta - definindo direcao inicial e estrategia atraves do pressionamento de botoes
@@ -30,13 +30,13 @@ class Setup():
         while (pressionado == 0):
             if Button.RIGHT in buttons.pressed(): #duvida: buttons.pressed() ou brick.buttons.pressed()
                 pressionado = 1
-                self.estrategia = 1 # arcoInicial
+                self.estrategia = 'arcoInicial' 
             elif Button.LEFT in buttons.pressed():
                 pressionado = 1
-                self.estrategia = 0 # manobraInicial
+                self.estrategia = 'manobraInicial' 
             elif Button.CENTER in buttons.pressed():
                 pressionado = 1
-                self.estrategia = -1 # armadilhaInicial
+                self.estrategia = 'armadilhaInicial' 
 
         time.sleep(1) # espera por 1 segundo
         pressionado = 0
@@ -52,30 +52,24 @@ class Setup():
 
     # chama as respectivas acoes selecionadas
     def executaEstrategia(self):
-        if self.estrategia == 1:
+        if self.estrategia == 'arcoInicial':
             self.arcoInicial(self,tempo)
-        elif self.estrategia == 0:
+        elif self.estrategia == 'manobraInicial':
             self.manobraInicial(self,tempo)
-        elif self.estrategia == -1:
+        elif self.estrategia == 'armadilhaInicial':
             self.armadilhaInicial(self,tempo)
 
 
-    # def arcoInicial(self,tempo):
-    #     if self.direcao == 1: #direita
-    #     #infos oq motores fazem
-    #     elif self.direcao == -1: #esquerda
-   
-   
-    # def manobraInicial(self,tempo):
-    #     if self.direcao == 1: #direita
-    #     #infos oq motores fazem
-    #     elif self.direcao == -1: #esquerda
-   
+    def arcoInicial(self,tempo):
+        motores.arco(Vlin, VAng*self.direcao) #Vlin e VAng alteráveis pelo usuário
+
+    def manobraInicial(self,tempo):
+        motores.giro(-pwm*self.direcao)
+        time.sleep(0.5) #Arbitrário 
+        motores.arco(Vlin, VAng*self.direcao)
   
-    # def armadilhaInicial(self,tempo):
-    #     if self.direcao == 1: #direita
-    #     #infos oq motores fazem
-    #     elif self.direcao == -1: #esquerda
+    def armadilhaInicial(self,tempo):
+        motores.arco(-Vlin, -VAng*self.direcao) #Vlin e VAng alteráveis pelo usuário
     
 
 
