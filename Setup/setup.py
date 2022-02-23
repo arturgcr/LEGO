@@ -16,6 +16,8 @@ ev3 = EV3Brick()
 
 # Objetivo: Classe que ajusta robo antes dos segundos iniciais da luta - definindo direcao inicial e estrategia atraves do pressionamento de botoes
 import time
+import estrategia
+import sensor
 class Setup():
     
     def __init__(self, motores):
@@ -58,17 +60,22 @@ class Setup():
             self.armadilhaInicial(self,tempo)
 
 
-    def arcoInicial(self,tempo):
-        if self.direcao = 1 #direita
-        #infos oq motores fazem
-        elif self.direcao = -1 #esquerda
+    # def arcoInicial(self,tempo):
+    #     if self.direcao == 1: #direita
+    #     #infos oq motores fazem
+    #     elif self.direcao == -1: #esquerda
    
    
-    def manobraInicial(self,tempo):
-
+    # def manobraInicial(self,tempo):
+    #     if self.direcao == 1: #direita
+    #     #infos oq motores fazem
+    #     elif self.direcao == -1: #esquerda
+   
   
-    def armadilhaInicial(self,tempo):
-
+    # def armadilhaInicial(self,tempo):
+    #     if self.direcao == 1: #direita
+    #     #infos oq motores fazem
+    #     elif self.direcao == -1: #esquerda
     
 
 

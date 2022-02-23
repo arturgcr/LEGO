@@ -57,7 +57,7 @@ class Locomocao():
         self.AplicarRodaEsquerda( -pwm )
         self.AplicarRodaDireita ( -pwm )
 
-    # 
+    # talvez arco nao esteja rodando pras duas direcoes, e sim, so pra direita (se sim, criar um if e inverter sinais)
     def arco (self, velocidadeLinear = 100, velocidadeAngular=15): # [Vang: que é metade da diferença de potencia entre os motores]
         self.AplicarRodaEsquerda ( velocidadeLinear + velocidadeAngular )
         self.AplicarRodaDireita ( velocidadeLinear - velocidadeAngular )
@@ -67,7 +67,7 @@ class Locomocao():
     def giro(self, pwm = 100):
         self.AplicarRodaEsquerda( -pwm )
         self.AplicarRodaDireita ( pwm )
-
+ 
     # Pára o motor usando fricção e a tensão que este gira na inércia, atua como um freio fraco.
     def Frear (self):
         for motor in self.motores_direita :
