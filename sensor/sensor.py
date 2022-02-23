@@ -67,7 +67,7 @@ class SensorLEGO():
     # em sensoriamento: se filtro aprovado, entrar em def enxergando;
 
 class Sensoriamento():
-    def __init__(self, listadesensores, kp, kd, ki=0, limiar=40):
+    def __init__(self, listadesensores, kp, kd, ki=0, vistoUltimo, limiar=40):
     #lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor  
         self.sensoresDireita=[]
         self.sensoresEsquerda=[]
@@ -89,36 +89,49 @@ class Sensoriamento():
         self.limiar = limiar   #não vem como argumento da init, então pode entrar direto na classe. no diagram de classes está dizendo q pe default....
                                    #um possível problema para essa abordagem é o fato de q o infravermelho não vem em cm, e o nxt med em cm, não mm
                                    #converter os dados do infravermelho é algo q não implementei em geral
+        self.vistoUltimo = vistoUltimo 
 
-    def verificalado(self):
+    def verificalado(self, vistoUltimo):
         x=0
         y=0
-        for i in self.sensoresDireita: #sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
-            if i.enxergando==True: # tem que indentificar o limiar
+        for i in self.sensoresDireita:#sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
+            
+            if i.enxergando == True: # tem que indentificar o limiar
                 x+=1
                 y=1
-        for i in self.sensoresEsquerda:                             #é importante notar, q da forma como eu optei por montar o filtro aqui haveria uma defasagem de
-            if i.enxergando==True:   # tempo entre as medições, dependendo do tamanho do filtro. pra evitar isto bastria implementar
+            if i.filtro == False:
+                y == 0 
+
+        for i in self.sensoresEsquerda:   #é importante notar, q da forma como eu optei por montar o filtro aqui haveria uma defasagem de
+                                 
+            if i.enxergando == True:   # tempo entre as medições, dependendo do tamanho do filtro. pra evitar isto bastria implementar
                 x-=1                                                #o filtro no resultado dafunção verifica lado, ao ives de no final da função enxergando, isso é facil de mudar
                 y=1
+
+            if i.filtro == False:
+                y == 0 
         
-        if x>0:
-            return "direita"    #nessa altura, o código ja sabe onde o adversario está.
-        if x<0:
-            return "esquerda"
-        if x=0 and y=1:
-            return "frente"
-        if y=0:
-            return "atrás"
-        
-        x=0
-        y=0
+        if y == 0:
+            return self.vistoUltimo
+        else:
+            self.vistoUltimo =  x
+            return x
+
+       # if x>0:
+       #     return x "direita"    #nessa altura, o código ja sabe onde o adversario está.
+        #if x<0:
+         #   return x "esquerda"
+       # if x=0 and y=1:
+        #    return "frente"
+        #if y=0:
+         #   return "atrás"
 
         #Essa parte nã foi definida
         #inclusive talvez seja melhor repensar, ao inves de retornar o erro talvez ela cria um atributo erro? não sei...
 
-    def verificaPerto(self): #funcao com limiar menor p garantir o full pa frente, ainda não implementei e não tem no diagrama de classes
-        
+    ## def verificaPerto(self): #funcao com limiar menor p garantir o full pa frente, ainda não implementei e não tem no diagrama de classes
+    
+    def Erro(self)
 
     def PID(self, erro, erroAnterior):
         return self.kp * erro + self.kd * (erro- erroAnterior)
