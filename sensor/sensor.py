@@ -71,6 +71,8 @@ class Sensoriamento():
     #lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor  
         self.sensoresDireita=[]
         self.sensoresEsquerda=[]
+        self.erro = 0
+        self.erroPassado = 0 
 
         for i in listadesensores:
             if i.lado == self.esquerda:
@@ -92,8 +94,8 @@ class Sensoriamento():
         self.vistoUltimo = vistoUltimo 
 
     def verificalado(self, vistoUltimo):
-        x=0
-        y=0
+        x = 0
+        y = 0
         for i in self.sensoresDireita:#sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
             
             if i.enxergando == True: # tem que indentificar o limiar
@@ -129,12 +131,22 @@ class Sensoriamento():
         #Essa parte nã foi definida
         #inclusive talvez seja melhor repensar, ao inves de retornar o erro talvez ela cria um atributo erro? não sei...
 
-    ## def verificaPerto(self): #funcao com limiar menor p garantir o full pa frente, ainda não implementei e não tem no diagrama de classes
     
-    def Erro(self)
+    def Erro(self): # o erro é dado pela diferença entre a medição dos sensores 
+        for i in self.sensoresDireita and for i in self.sensoresEsquerda: 
+            self.erro = abs((self.sensoresDireita(i).distance() - self.sensoresEsquerda(i).distance())/100) # está em cm 
+        return self.erro 
 
+    # junção entree PID e verificaPerto 
     def PID(self, erro, erroAnterior):
-        return self.kp * erro + self.kd * (erro- erroAnterior)
+        if self.erro < 5:
+            self.erro = 0
+        else: 
+            PID = self.kp * self.erro + self.kd * (self.erro - self.erroAnterior)
+            self.erroAnterior = self.erro 
+        return PID 
+    
+    
 
 # Write your program here.
 ev3.speaker.beep()    
