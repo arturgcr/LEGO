@@ -24,7 +24,7 @@ import time
 import locomocao
 class Setup():
     
-    def __init__(self, motores,tempoArco = 1, tempoManobra = 1, tempoArmadilha = 1): # descobrir tempo pra cada robo
+    def __init__(self, motores,tempoArco = 1, tempoManobra = 1, tempoArmadilha = 1): # # Alterar tempos correspondentes ao robo
         self.motores = motores  # Motores: objeto vindo de Locomoção
         self.pressionado = 0    # variavel para encerrar loop / se 0, botao nao pressionado, se 1, botao pressionado
         self.tempoArco = tempoArco
@@ -67,17 +67,17 @@ class Setup():
 
 
     def arcoInicial(self):             
-        locomocao.arco(Vlin, VAng*self.direcao)  # Vlin e VAng alteráveis pelo usuário
+        locomocao.arco(Vlin, VAng*self.direcao)   # Alterar Vlin e Vang correspondentes ao robo
         time.sleep(self.tempoArco)
 
     def manobraInicial(self):
-        locomocao.giro(-pwm*self.direcao)
+        locomocao.giro(-pwm*self.direcao)         # Alterar pwm correspondente ao robo
         time.sleep(0.5) #Arbitrário 
-        locomocao.arco(Vlin, VAng*self.direcao)
+        locomocao.arco(Vlin, VAng*self.direcao)   # Alterar Vlin e Vang correspondentes ao robo
         time.sleep(self.tempoManobra)
 
     def armadilhaInicial(self):
-        locomocao.arco(-Vlin, -VAng*self.direcao)
+        locomocao.arco(-Vlin, -VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
         time.sleep(self.tempoArmadilha)
 
 
