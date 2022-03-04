@@ -68,11 +68,11 @@ class Sensoriamento():
         self.erroPassado = 0 
 
         for i in listadesensores:
-            if i.lado == self.esquerda:
+            if i.lado == 'esquerda':
                 self.sensoresEsquerda.append(i) #adiciona i à lista da esquerda
-            if i.lado == self.direita:
+            if i.lado == 'direita':
                 self.sensoresDireita.append(i) #adiciona i à lista da direita
-            if i.lado == self.meio:
+            if i.lado == 'meio':
                 self.sensoresMeio.append(i)
         
         self.kp = kp

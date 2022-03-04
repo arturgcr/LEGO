@@ -40,7 +40,7 @@ class Locomocao():
         
         self.sentido_esquerda = 1
         if self.invertido == "ALL" or "LEFT":
-            sentido_esquerda = -1
+            self.sentido_esquerda = -1
             
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
     def AplicarRodaEsquerda ( self, pwm):
@@ -62,11 +62,11 @@ class Locomocao():
         self.AplicarRodaEsquerda ( velocidadeLinear + velocidadeAngular )
         self.AplicarRodaDireita ( velocidadeLinear - velocidadeAngular )
 
-    # se gira em torno do proprio eixo para direita, motor esq vai pra trás (-1) na potencia pwm, e
+    #  se gira em torno do proprio eixo para direita, motor esq vai pra trás (-1) na potencia pwm, e
     #  motor dir vai pra frente na potencia pwm, o inverso eh valido, ficando:
     def giro(self, pwm = 100):
-        self.AplicarRodaEsquerda( -pwm )
-        self.AplicarRodaDireita ( pwm )
+        self.AplicarRodaEsquerda( pwm )
+        self.AplicarRodaDireita ( -pwm )
  
     # Pára o motor usando fricção e a tensão que este gira na inércia, atua como um freio fraco.
     def Frear (self):

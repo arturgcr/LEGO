@@ -1,6 +1,11 @@
 # CONFIGURAÇÕES INICIAIS - NÃO ESQUECER ---------------
 # -> Aqui colocar os valores a serem alterados e separar por cada robo (ex: tempoManobra - treta: 5) 
-# ->
+# -> Treta - Codigo antigo - TESTAR A PARTIR DE:
+#    erroBase = 15
+#    kp = 2
+#    ki = 0
+#    kd = 1.2
+
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,12 +29,10 @@ import time
 import locomocao
 class Setup():
     
-    def __init__(self, motores,tempoArco = 1, tempoManobra = 1, tempoArmadilha = 1): # # Alterar tempos correspondentes ao robo
+    def __init__(self, motores): # # Alterar tempos correspondentes ao robo
         self.motores = motores  # Motores: objeto vindo de Locomoção
         self.pressionado = 0    # variavel para encerrar loop / se 0, botao nao pressionado, se 1, botao pressionado
-        self.tempoArco = tempoArco
-        self.tempoManobra = tempoManobra
-        self.tempoArmadilha = tempoArmadilha
+    
 
     # descobrir botao direcao e estrategia
     def selecionarEstrategia(self): 
@@ -47,10 +50,11 @@ class Setup():
         time.sleep(1) # espera por 1 segundo
         pressionado = 0
 
+    def selecionarDirecao(self):
         while (pressionado == 0):
             if Button.UP in ev3.buttons.pressed():
                 pressionado = 1
-                self.direcao = 1 # direita
+                self.direcao = 1  # direita
             if Button.DOWM in ev3.buttons.pressed():
                 pressionado = 1
                 self.direcao = -1 # esquerda
@@ -68,17 +72,25 @@ class Setup():
 
     def arcoInicial(self):             
         locomocao.arco(Vlin, VAng*self.direcao)   # Alterar Vlin e Vang correspondentes ao robo
-        time.sleep(self.tempoArco)
+        time.sleep(tempo)                         # alterar tempo
+        locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        time.sleep(tempo)                         # Alterar tempo     
 
     def manobraInicial(self):
         locomocao.giro(-pwm*self.direcao)         # Alterar pwm correspondente ao robo
-        time.sleep(0.5) #Arbitrário 
+        time.sleep(tempo)                         # Alterar tempo (geralmente 0.28) 
         locomocao.arco(Vlin, VAng*self.direcao)   # Alterar Vlin e Vang correspondentes ao robo
-        time.sleep(self.tempoManobra)
-
+        time.sleep(tempo)                         # alterar tempo
+        locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        time.sleep(tempo)                         # Alterar tempo 
+        
+    # descobrir se precisa ou nao da func giro em armadilhaInicial
     def armadilhaInicial(self):
         locomocao.arco(-Vlin, -VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
-        time.sleep(self.tempoArmadilha)
+        time.sleep(tempo)                         # alterar tempo
+        locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        time.sleep(tempo)                         # Alterar tempo
+        
 
 
 # Write your program here.
