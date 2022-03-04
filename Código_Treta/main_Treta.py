@@ -61,9 +61,10 @@ def main ():
 
 main()
 
-#--------------------------------------
+# -----------------------------------------
 #  Nomes de variaveis - classe sensoriamento: erro passado e erro anterior sao IGUAIS
 #  Sentido de giro e arco estavam trocados (se neg, girava pra esq em um e pra dir em outro) - padronizar horario com +
 #  Invertido era +pwm (inverter isso)
 #  Mudar na locomocao, em setup e na main
 #  Mudar nomes
+#  Testar coisas armadilhas
