@@ -74,7 +74,3 @@ class Locomocao():
             motor.brake()
         for motor in self.motores_esquerda :
             motor.brake()
-
-# Write your program here.
-ev3.speaker.beep()
-

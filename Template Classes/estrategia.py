@@ -45,7 +45,3 @@ class Estrategia():
             self.motores.arco(vLin,erro)
         if erro == 0:
             self.motores.reta(100)
-
-
-# Write your program here.
-ev3.speaker.beep()
