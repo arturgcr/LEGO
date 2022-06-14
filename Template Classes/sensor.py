@@ -133,8 +133,3 @@ class Sensoriamento():
             PID = self.kp * self.erro + self.kd * (self.erro - self.erroAnterior)
             self.erroAnterior = self.erro 
         return PID 
-    
-    
-
-# Write your program here.
-ev3.speaker.beep()    

@@ -90,8 +90,3 @@ class Setup():
         time.sleep(tempo)                         # alterar tempo
         locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         time.sleep(tempo)                         # Alterar tempo
-        
-
-
-# Write your program here.
-ev3.speaker.beep()    
