@@ -17,6 +17,8 @@ class TestLocomocao:
     def invertido(self):
         return 'ALL'
 
-    def test_instanciando_motores_sem_retornar_erro(self, motores_direita, motores_esquerda, invertido):
-        with not pytest.raises(Exception):
+    def test_instanciando_Locomocao_sem_estourar_erro(self, motores_direita, motores_esquerda, invertido):
+        try:
             _motores = Locomocao(motores_direita, motores_esquerda, invertido)
+        except Exception:
+            pytest.fail('Erro inesperado ao tentar instanciar a class Locomocao()')
