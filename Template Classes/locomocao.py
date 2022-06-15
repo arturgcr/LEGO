@@ -15,7 +15,13 @@ from typing import List, Type
 ev3 = EV3Brick()
 
 class Locomocao():
-      
+    '''
+    Módulo de Locomoção
+    -------------------
+    Responsável por instanciar motores e controlar seus movimentos. Recebe como construtor uma lista de strings 
+    com as portas dos motores da direita, outra lista com os motores da esquerda e o padrão de inversão
+    desses motores (DEFAULT, ALL, RIGHT ou LEFT).
+    '''
     def __init__(self, motores_direita: List[str], motores_esquerda: List[str], invertido: str = 'DEFAULT') -> None:
         # comecei definindo variaveis e pegando motores e respectivas portas (caso venham 2 ou mais motores)
         # ao inves de string, definir como array pois motores ja vem separados: [a, b, c, d]
@@ -45,7 +51,7 @@ class Locomocao():
             
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
     def aplicar_roda_esquerda(self, pwm: int) -> None:
-        for motor in self.motores_esquerda :
+        for motor in self.motores_esquerda:
             motor.dc(-pwm * self.sentido_esquerda)
 
     # Aplica o valor de pwm [-100, 100] nas rodas do lado direito.
