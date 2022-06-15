@@ -32,6 +32,7 @@ class Locomocao():
         # Controle de inversão dos motores
         # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
         # "RIGHT/LEFT" - motores da direita ou da esquerda estão invertidos, respectivamente.
+        # Possivelmente, esse bloco pode ser removido (junto dos locais onde é chamado) e podemos manter o sentido definido pelo valor do pwm.
         
         self.sentido_direita: int = 1
         if self.invertido == "ALL" or "RIGHT":
@@ -59,7 +60,7 @@ class Locomocao():
 
     # talvez arco nao esteja rodando pras duas direcoes, e sim, so pra direita (se sim, criar um if e inverter sinais)
     def arco (self, velocidade_linear: int = 100, velocidade_angular: int = 15) -> None: # [Vang: que é metade da diferença de potencia entre os motores]
-        self.aplicar_roda_esquerda(velocidade_linear + velocidade_angular)
+        self.aplicar_roda_esquerda(velocidade_linear + velocidade_angular) # segundo a documentação do pyblocks, isso provavelmente vai quebrar, já que Motor.dc() recebe valores entre [-100,100]
         self.aplicar_roda_direita(velocidade_linear - velocidade_angular)
 
     #  se gira em torno do proprio eixo para direita, motor esq vai pra trás (-1) na potencia pwm, e
