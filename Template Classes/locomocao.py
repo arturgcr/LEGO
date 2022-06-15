@@ -16,7 +16,7 @@ ev3 = EV3Brick()
 
 class Locomocao():
       
-    def __init__(self, motores_direita: str, motores_esquerda: str, invertido: str = 'DEFAULT') -> None:
+    def __init__(self, motores_direita: List[str], motores_esquerda: List[str], invertido: str = 'DEFAULT') -> None:
         # comecei definindo variaveis e pegando motores e respectivas portas (caso venham 2 ou mais motores)
         # ao inves de string, definir como array pois motores ja vem separados: [a, b, c, d]
         # caso nao possa, mudar modo com o qual a função define os motores (acredito que pode e eh mais eficiente)
