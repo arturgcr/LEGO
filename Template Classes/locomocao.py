@@ -29,9 +29,9 @@ class Locomocao():
         self.invertido: str = invertido
 
         for porta in motores_direita: 
-            self.motores_direita.append(Motor.Port(porta))
+            self.motores_direita.append(Motor(porta))
         for porta in motores_esquerda:
-            self.motores_esquerda.append(Motor.Port(porta))
+            self.motores_esquerda.append(Motor(porta))
 
         # Controle de inversão dos motores
         # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
