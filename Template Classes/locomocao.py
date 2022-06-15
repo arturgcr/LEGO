@@ -6,7 +6,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
-from typing import List
+from typing import List, Type
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # Click "Open user guide" on the EV3 extension tab for more information
@@ -20,8 +20,8 @@ class Locomocao():
         # comecei definindo variaveis e pegando motores e respectivas portas (caso venham 2 ou mais motores)
         # ao inves de string, definir como array pois motores ja vem separados: [a, b, c, d]
         # caso nao possa, mudar modo com o qual a função define os motores (acredito que pode e eh mais eficiente)
-        self.motores_direita: List[str] = []
-        self.motores_esquerda: List[str] = []
+        self.motores_direita: List[Type[Motor]] = []
+        self.motores_esquerda: List[Type[Motor]] = []
         self.invertido: str = invertido
 
         for porta in motores_direita: 
