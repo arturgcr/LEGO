@@ -6,7 +6,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
-
+from typing import List, Type
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # Click "Open user guide" on the EV3 extension tab for more information
@@ -15,62 +15,68 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 ev3 = EV3Brick()
 
 class Locomocao():
-      
-    def __init__(self, strMotorDireita, strMotorEsquerdo, invertido = 'DEFAULT'):
+    '''
+    Módulo de Locomoção
+    -------------------
+    Responsável por instanciar motores e controlar seus movimentos. Recebe como construtor uma lista de strings com as portas dos motores da direita, outra lista com os motores da esquerda e uma string isolada com o padrão de inversão desses motores ('DEFAULT', 'ALL', 'RIGHT' ou 'LEFT'). Os demais métodos dessa classe são referentes aos tipos de movimentos que serão executados no módulo de Estrategia: reta(), arco(), giro() e frear().
+    '''
+    def __init__(self, motores_direita: List[str], motores_esquerda: List[str], invertido: str = 'DEFAULT') -> None:
         # comecei definindo variaveis e pegando motores e respectivas portas (caso venham 2 ou mais motores)
         # ao inves de string, definir como array pois motores ja vem separados: [a, b, c, d]
         # caso nao possa, mudar modo com o qual a função define os motores (acredito que pode e eh mais eficiente)
-        self.motores_direita = []
-        self.motores_esquerda = []
-        self.invertido = invertido
+        self.motores_direita: List[Type[Motor]] = []
+        self.motores_esquerda: List[Type[Motor]] = []
+        self.invertido: str = invertido
 
-        for porta in strMotorDireita: 
+        for porta in motores_direita: 
             self.motores_direita.append(Motor.Port(porta))
-        for porta in strMotorEsquerdo:
+        for porta in motores_esquerda:
             self.motores_esquerda.append(Motor.Port(porta))
 
         # Controle de inversão dos motores
         # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
         # "RIGHT/LEFT" - motores da direita ou da esquerda estão invertidos, respectivamente.
+        # Possivelmente, esse bloco pode ser removido (junto dos locais onde é chamado) e podemos manter o sentido definido pelo valor do pwm.
         
-        self.sentido_direita = 1
+        self.sentido_direita: int = 1
         if self.invertido == "ALL" or "RIGHT":
-            self.sentido_direita = -1
+            self.sentido_direita: int = -1
             
         
-        self.sentido_esquerda = 1
+        self.sentido_esquerda: int = 1
         if self.invertido == "ALL" or "LEFT":
-            self.sentido_esquerda = -1
+            self.sentido_esquerda: int = -1
             
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
-    def AplicarRodaEsquerda ( self, pwm):
-        for motor in self.motores_esquerda :
-            motor.dc( -pwm * self.sentido_esquerda)
+    def aplicar_roda_esquerda(self, pwm: int) -> None:
+        for motor in self.motores_esquerda:
+            motor.dc(-pwm * self.sentido_esquerda)
 
     # Aplica o valor de pwm [-100, 100] nas rodas do lado direito.
-    def AplicarRodaDireita ( self, pwm):
-        for motor in self.motores_direita :
-            motor.dc( -pwm * self.sentido_direita)
+    def aplicar_roda_direita(self, pwm: int) -> None:
+        for motor in self.motores_direita:
+            motor.dc(-pwm * self.sentido_direita)
 
     # usando as funcs acima para ir pra frente com a mesma potencia
-    def reta( self, pwm = 100 ):
-        self.AplicarRodaEsquerda( -pwm )
-        self.AplicarRodaDireita ( -pwm )
+    def reta(self, pwm: int = 100) -> None:
+        self.aplicar_roda_esquerda(-pwm)
+        self.aplicar_roda_direita(-pwm)
 
     # talvez arco nao esteja rodando pras duas direcoes, e sim, so pra direita (se sim, criar um if e inverter sinais)
-    def arco (self, velocidadeLinear = 100, velocidadeAngular=15): # [Vang: que é metade da diferença de potencia entre os motores]
-        self.AplicarRodaEsquerda ( velocidadeLinear + velocidadeAngular )
-        self.AplicarRodaDireita ( velocidadeLinear - velocidadeAngular )
+    def arco (self, velocidade_linear: int = 100, velocidade_angular: int = 15) -> None: # [Vang: que é metade da diferença de potencia entre os motores]
+        self.aplicar_roda_esquerda(velocidade_linear + velocidade_angular) # segundo a documentação do pyblocks, isso provavelmente vai quebrar, já que Motor.dc() recebe valores entre [-100,100]
+        self.aplicar_roda_direita(velocidade_linear - velocidade_angular)
 
     #  se gira em torno do proprio eixo para direita, motor esq vai pra trás (-1) na potencia pwm, e
     #  motor dir vai pra frente na potencia pwm, o inverso eh valido, ficando:
-    def giro(self, pwm = 100):
-        self.AplicarRodaEsquerda( pwm )
-        self.AplicarRodaDireita ( -pwm )
+    def giro(self, pwm: int = 100) -> None:
+        self.aplicar_roda_esquerda(pwm)
+        self.aplicar_roda_direita(-pwm)
  
     # Pára o motor usando fricção e a tensão que este gira na inércia, atua como um freio fraco.
-    def Frear (self):
-        for motor in self.motores_direita :
+    def frear(self) -> None:
+        for motor in self.motores_direita:
             motor.brake()
-        for motor in self.motores_esquerda :
+        for motor in self.motores_esquerda:
             motor.brake()
+
