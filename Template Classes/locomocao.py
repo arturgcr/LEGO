@@ -18,9 +18,7 @@ class Locomocao():
     '''
     Módulo de Locomoção
     -------------------
-    Responsável por instanciar motores e controlar seus movimentos. Recebe como construtor uma lista de strings 
-    com as portas dos motores da direita, outra lista com os motores da esquerda e o padrão de inversão
-    desses motores (DEFAULT, ALL, RIGHT ou LEFT).
+    Responsável por instanciar motores e controlar seus movimentos. Recebe como construtor uma lista de strings com as portas dos motores da direita, outra lista com os motores da esquerda e uma string isolada com o padrão de inversão desses motores ('DEFAULT', 'ALL', 'RIGHT' ou 'LEFT'). Os demais métodos dessa classe são referentes aos tipos de movimentos que serão executados no módulo de Estrategia: reta(), arco(), giro() e frear().
     '''
     def __init__(self, motores_direita: List[str], motores_esquerda: List[str], invertido: str = 'DEFAULT') -> None:
         # comecei definindo variaveis e pegando motores e respectivas portas (caso venham 2 ou mais motores)
