@@ -22,3 +22,10 @@ class TestLocomocao:
             _motores = Locomocao(motores_direita, motores_esquerda, invertido)
         except Exception:
             pytest.fail('Erro inesperado ao tentar instanciar a class Locomocao()')
+
+    def test_metodo_arco_com_valores_acima_de_100_apos_somar_vlin_e_vang(self, motores_direita, motores_esquerda, invertido):
+        try:
+            _motores = Locomocao(motores_direita, motores_esquerda, invertido)
+            _motores.arco()
+        except Exception:
+            pytest.fail('Ocorreu um erro durante a execução do método erro')
