@@ -28,9 +28,9 @@ class Locomocao():
         self.invertido = invertido
 
         for porta in motores_direita: 
-            self.motores_direita.append(Motor(porta))
+            self.motores_direita.append(Motor(self.seleciona_porta(porta)))
         for porta in motores_esquerda:
-            self.motores_esquerda.append(Motor(porta))
+            self.motores_esquerda.append(Motor(self.seleciona_porta(porta)))
 
         # Controle de inversão dos motores
         # "ALL" - todos invertidos, "DEFAULT" - Nenhum motor invertido.
@@ -46,6 +46,18 @@ class Locomocao():
         if self.invertido == "ALL" or "LEFT":
             self.sentido_esquerda = -1
             
+    # seleciona a porta para o motor
+
+    def seleciona_porta(self, porta):
+        if porta == 'A':
+            return Port.A
+        elif porta == 'B':
+            return Port.B
+        elif porta == 'C':
+            return Port.C
+        elif porta == 'D':
+            return Port.D
+    
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
     def aplicar_roda_esquerda(self, pwm):
         for motor in self.motores_esquerda:
