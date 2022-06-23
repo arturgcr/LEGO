@@ -128,7 +128,18 @@ class Sensoriamento():
         if self.erro < 5:
             self.erro = 0
         else:
-            PID = self.kp * self.erro + self.kd * \
-                (self.erro - self.erroAnterior)
+            self.erro = self.erro - self.erroAnterior        #Adcionado essa linha para inserir novo valor de erro conforme código em blocos
+            PID = self.kp * self.erro + self.kd * self.erro 
             self.erroAnterior = self.erro
         return PID
+
+
+
+#   def PID(self):
+#         if self.erro < 5:
+#             self.erro = 0
+#         else:
+#             PID = self.kp * self.erro + self.kd * \
+#                 (self.erro - self.erroAnterior)
+#             self.erroAnterior = self.erro
+#         return PID 
