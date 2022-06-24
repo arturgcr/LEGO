@@ -6,13 +6,15 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+
 ev3 = EV3Brick()
 
 
 class SensorLEGO():
 
-    def __init__(self, tipo, porta, lado, tamanhodofiltro=1):
+    def __init__(self, tipo, porta, posicao, tamanho_filtro=1):
 
+        # Instanciando classe Port de acordo com a porta recebida no construtor
         if porta == 1:
             porta = Port.S1
         elif porta == 2:
@@ -21,15 +23,15 @@ class SensorLEGO():
             porta = Port.S3
         elif porta == 4:
             porta = Port.S4
-
-        if tipo == 'ultrassom' or 'ultrasson':
+        # Instanciando a classe correspondente ao sensor, cedendo a Port selecionada como argumento
+        if tipo == 'ultrassonico' or 'ultrasonic':
             self.sensor = UltrasonicSensor(porta)
         if tipo == 'infravermelho' or 'infrared':
             self.sensor = InfraredSensor(porta)
 
-        self.lado = lado
-        self.tamanhoDoFiltro = tamanhodofiltro
-        self.listaFiltro = [0] * tamanhodofiltro
+        self.posicao = posicao
+        self.tamanho_filtro = tamanho_filtro
+        self.lista_filtro = [0] * tamanho_filtro
         self.index = 0
 
     # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
@@ -37,14 +39,14 @@ class SensorLEGO():
     def filtro(self):
 
         medicao = self.sensor.distance()
-        self.listaFiltro[self.index] = medicao
+        self.lista_filtro[self.index] = medicao
 
-        if self.index < self.tamanhodofiltro:
+        if self.index < self.tamanho_filtro:
             self.index += 1
         else:
             self.index = 0
 
-        for i in self.listaFiltro:
+        for i in self.lista_filtro:
             if i != medicao:
                 return False  # funcao retorna true caso o filtro "aprove" o resultado da medicao e false caso contrario
 
@@ -61,85 +63,47 @@ class SensorLEGO():
 
 
 class Sensoriamento():
-    def __init__(self, listadesensores, vistoUltimo, kp, kd, ki=0, limiar=40):
+    
+    def __init__(self, lista_sensores, visto_ultimo, limiar=40):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
-        self.sensoresDireita = []
-        self.sensoresEsquerda = []
-        self.erro = 0
-        self.erroPassado = 0
+        self.sensores_direita = []
+        self.sensores_esquerda = []
 
-        for i in listadesensores:
-            if i.lado == 'esquerda':
-                # adiciona i à lista da esquerda
-                self.sensoresEsquerda.append(i)
-            if i.lado == 'direita':
-                self.sensoresDireita.append(i)  # adiciona i à lista da direita
+        for sensor in lista_sensores:
+            if sensor.posicao == 'esquerda':
+                self.sensores_esquerda.append(sensor)
+            elif sensor.posicao == 'direita':
+                self.sensores_direita.append(sensor)
 
-        self.kp = kp
-        self.kd = kd
-        self.ki = ki
-
-        self.listadesensores = listadesensores
+        self.lista_sensores = lista_sensores
 
         # não vem como argumento da init, então pode entrar direto na classe. no diagram de classes está dizendo q pe default....
         self.limiar = limiar
         # um possível problema para essa abordagem é o fato de q o infravermelho não vem em cm, e o nxt med em cm, não mm
         # converter os dados do infravermelho é algo q não implementei em geral
-        self.vistoUltimo = vistoUltimo
+        self.visto_ultimo = visto_ultimo
 
-    def verificalado(self):
-        verInimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
-        verNada = 0     # Varíavel que determina se não vimos o robô inimigo
-        for i in self.sensoresDireita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
+    def verificado(self):
+        ver_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
+        ver_nada = 0     # Varíavel que determina se não vimos o robô inimigo
+        
+        for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
+            if sensor.enxergando(self.limiar) == True:   # tem que indentificar o limiar
+                ver_inimigo += 1
+                ver_nada = 1
 
-            if i.enxergando(self.limiar) == True:   # tem que indentificar o limiar
-                verInimigo += 1
-                verNada = 1
+        for sensor in self.sensores_esquerda:
+            if sensor.enxergando(self.limiar) == True:
+                ver_inimigo -= 1
 
-        for i in self.sensoresEsquerda:
+        for sensor in self.lista_sensores:  # Filtro para validar se realmente o robô viu algo na direção
+            if sensor.filtro == False:
+                ver_nada == 0
 
-            if i.enxergando(self.limiar) == True:
-                verInimigo -= 1
-
-        for i in self.listadesensores:  # Filtro para validar se realmente o robô viu algo na direção
-            if i.filtro == False:
-                verNada == 0
-
-        if verNada == 0:
-            return self.vistoUltimo
+        # Se nenhum dos sensores viu, então retorna a direção de visto por último
+        if ver_nada == 0:
+            return self.visto_ultimo
         else:
-            self.vistoUltimo = verInimigo
-            return verInimigo
+            self.visto_ultimo = ver_inimigo
+            return ver_inimigo
 
-    def Erro(self):  # o erro é dado pela diferença entre a medição dos sensores
-        for i in self.sensoresDireita:
-            somaDireita += i
-        mediaDireita = somaDireita/len(self.sensoresDireita)
-
-        for i in self.sensoresEsquerda:
-            somaEsquerda += i
-        mediaEsquerda = somaEsquerda/len(self.sensoresEsquerda)
-
-        self.erro = abs(mediaDireita - mediaEsquerda)/100  # está em cm
-        return self.erro
-
-    # junção entre PID e verificaPerto
-    def PID(self):
-        if self.erro < 5:
-            self.erro = 0
-        else:
-            self.erro = self.erro - self.erroAnterior        #Adcionado essa linha para inserir novo valor de erro conforme código em blocos
-            PID = self.kp * self.erro + self.kd * self.erro 
-            self.erroAnterior = self.erro
-        return PID
-
-
-
-#   def PID(self):
-#         if self.erro < 5:
-#             self.erro = 0
-#         else:
-#             PID = self.kp * self.erro + self.kd * \
-#                 (self.erro - self.erroAnterior)
-#             self.erroAnterior = self.erro
-#         return PID 
