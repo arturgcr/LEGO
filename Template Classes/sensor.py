@@ -84,8 +84,6 @@ class Sensoriamento():
             elif sensor.posicao == 'direita':
                 self.sensores_direita.append(sensor)
 
-        self.lista_sensores = lista_sensores
-
         # não vem como argumento da init, então pode entrar direto na classe. no diagram de classes está dizendo q pe default....
         self.limiar = limiar
         # um possível problema para essa abordagem é o fato de q o infravermelho não vem em cm, e o nxt med em cm, não mm
