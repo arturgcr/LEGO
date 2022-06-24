@@ -1,4 +1,4 @@
-class Pid:
+class PID:
     
     def __init__(self, kp, kd, ki, sensoriamento):
         

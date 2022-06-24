@@ -12,7 +12,7 @@ ev3 = EV3Brick()
 
 class SensorLEGO():
 
-    def __init__(self, tipo, porta, lado, tamanhodofiltro=1):
+    def __init__(self, tipo, porta, posicao, tamanho_filtro=1):
 
         # Instanciando classe Port de acordo com a porta recebida no construtor
         if porta == 1:
@@ -29,9 +29,9 @@ class SensorLEGO():
         if tipo == 'infravermelho' or 'infrared':
             self.sensor = InfraredSensor(porta)
 
-        self.lado = lado
-        self.tamanhoDoFiltro = tamanhodofiltro
-        self.listaFiltro = [0] * tamanhodofiltro
+        self.posicao = posicao
+        self.tamanho_filtro = tamanho_filtro
+        self.lista_filtro = [0] * tamanho_filtro
         self.index = 0
 
     # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
@@ -39,14 +39,14 @@ class SensorLEGO():
     def filtro(self):
 
         medicao = self.sensor.distance()
-        self.listaFiltro[self.index] = medicao
+        self.lista_filtro[self.index] = medicao
 
-        if self.index < self.tamanhodofiltro:
+        if self.index < self.tamanho_filtro:
             self.index += 1
         else:
             self.index = 0
 
-        for i in self.listaFiltro:
+        for i in self.lista_filtro:
             if i != medicao:
                 return False  # funcao retorna true caso o filtro "aprove" o resultado da medicao e false caso contrario
 
@@ -63,17 +63,17 @@ class SensorLEGO():
 
 
 class Sensoriamento():
+    
     def __init__(self, lista_sensores, visto_ultimo, limiar=40):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
         self.sensores_direita = []
         self.sensores_esquerda = []
 
         for sensor in lista_sensores:
-            if sensor.lado == 'esquerda':
-                # adiciona i à lista da esquerda
+            if sensor.posicao == 'esquerda':
                 self.sensores_esquerda.append(sensor)
-            if sensor.lado == 'direita':
-                self.sensores_direita.append(sensor)  # adiciona i à lista da direita
+            elif sensor.posicao == 'direita':
+                self.sensores_direita.append(sensor)
 
         self.lista_sensores = lista_sensores
 
@@ -86,19 +86,20 @@ class Sensoriamento():
     def verificado(self):
         ver_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
         ver_nada = 0     # Varíavel que determina se não vimos o robô inimigo
-        for i in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
+        
+        for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
 
-            if i.enxergando(self.limiar) == True:   # tem que indentificar o limiar
+            if sensor.enxergando(self.limiar) == True:   # tem que indentificar o limiar
                 ver_inimigo += 1
                 ver_nada = 1
 
-        for i in self.sensores_esquerda:
+        for sensor in self.sensores_esquerda:
 
-            if i.enxergando(self.limiar) == True:
+            if sensor.enxergando(self.limiar) == True:
                 ver_inimigo -= 1
 
-        for i in self.lista_sensores:  # Filtro para validar se realmente o robô viu algo na direção
-            if i.filtro == False:
+        for sensor in self.lista_sensores:  # Filtro para validar se realmente o robô viu algo na direção
+            if sensor.filtro == False:
                 ver_nada == 0
 
         if ver_nada == 0:
