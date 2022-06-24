@@ -60,10 +60,12 @@ class SensorLEGO():
     # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
     def enxergando(self, limiar):
         if self.sensor.distance() < limiar:
-            if self.filtrar():
-                return True
-            else:
-                return False
+            if self.filtro != None:
+                if self.filtrar():
+                    return True
+                else:
+                    return False
+            return True
         else:
             return False
 
