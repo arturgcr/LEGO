@@ -29,23 +29,23 @@ class Sensoriamento():
         self.visto_ultimo = visto_ultimo
 
     def busca_oponente(self):
-        ver_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
+        enxergando_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
         nao_viu_nada = True     # Varíavel que determina se não vimos o robô inimigo / booleano
         
         for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
             if sensor.enxergando(self.limiar):   # tem que indentificar o limiar
-                ver_inimigo += 1
+                enxergando_inimigo += 1
                 nao_viu_nada = False
 
         for sensor in self.sensores_esquerda:
             if sensor.enxergando(self.limiar):
-                ver_inimigo -= 1
+                enxergando_inimigo -= 1
                 nao_viu_nada = False
 
         # Se nenhum dos sensores viu, então retorna a direção de visto por último
         if nao_viu_nada:
             return self.visto_ultimo
         else:
-            self.visto_ultimo = ver_inimigo
-            return ver_inimigo
+            self.visto_ultimo = enxergando_inimigo
+            return enxergando_inimigo
 
