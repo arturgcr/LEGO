@@ -30,13 +30,15 @@ class SensorLEGO():
             self.sensor = InfraredSensor(porta)
 
         self.posicao = posicao
-        self.tamanho_filtro = tamanho_filtro
-        self.lista_filtro = [0] * tamanho_filtro
+        self.filtro = self.criando_filtro(tamanho_filtro)
         self.index = 0
 
+    def criando_filtro(self, tamanho_filtro):
+        filtro = [0] * tamanho_filtro
+        return filtro
     # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
-    def filtro(self):
+    def filtrar(self):
 
         medicao = self.sensor.distance()
         self.lista_filtro[self.index] = medicao
