@@ -28,7 +28,7 @@ class Sensoriamento():
         # converter os dados do infravermelho é algo q não implementei em geral
         self.visto_ultimo = visto_ultimo
 
-    def verificado(self):
+    def busca_oponente(self):
         ver_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
         nao_viu_nada = True     # Varíavel que determina se não vimos o robô inimigo / booleano
         
