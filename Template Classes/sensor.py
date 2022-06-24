@@ -63,11 +63,11 @@ class SensorLEGO():
         if self.sensor.distance() < limiar:
             if self.filtrar():
                 return True
+            else:
+                return False
         else:
             return False
 
-
-    # em sensoriamento: se filtro aprovado, entrar em def enxergando;
 
 
 class Sensoriamento():
