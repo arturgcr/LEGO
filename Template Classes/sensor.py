@@ -48,16 +48,16 @@ class SensorLEGO():
     # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
-        for leitura_filtro in range(self.lista_filtro):
+        for leitura_filtro in range(self.filtro):
             medicao = self.sensor.distance()
             if medicao == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
                 medicao = False
             elif medicao != 0:
                 medicao = True
-            self.lista_filtro[leitura_filtro] = medicao
-            if self.lista_filtro[leitura_filtro] != self.lista_filtro[0]:
+            self.filtro[leitura_filtro] = medicao
+            if self.filtro[leitura_filtro] != self.filtro[0]:
                 break
-        if False not in self.lista_filtro:
+        if False not in self.filtro:
             return True
         else:
             return False
