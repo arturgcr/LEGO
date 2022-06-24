@@ -23,8 +23,8 @@ class SensorLEGO():
             porta = Port.S3
         elif porta == 4:
             porta = Port.S4
-
-        if tipo == 'ultrassom' or 'ultrasson':
+        # Instanciando a classe correspondente ao sensor, cedendo a Port selecionada como argumento
+        if tipo == 'ultrassonico' or 'ultrasonic':
             self.sensor = UltrasonicSensor(porta)
         if tipo == 'infravermelho' or 'infrared':
             self.sensor = InfraredSensor(porta)
@@ -88,13 +88,11 @@ class Sensoriamento():
         ver_nada = 0     # Varíavel que determina se não vimos o robô inimigo
         
         for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
-
             if sensor.enxergando(self.limiar) == True:   # tem que indentificar o limiar
                 ver_inimigo += 1
                 ver_nada = 1
 
         for sensor in self.sensores_esquerda:
-
             if sensor.enxergando(self.limiar) == True:
                 ver_inimigo -= 1
 
@@ -102,6 +100,7 @@ class Sensoriamento():
             if sensor.filtro == False:
                 ver_nada == 0
 
+        # Se nenhum dos sensores viu, então retorna a direção de visto por último
         if ver_nada == 0:
             return self.visto_ultimo
         else:
