@@ -33,9 +33,13 @@ class SensorLEGO():
         self.filtro = self.criando_filtro(tamanho_filtro)
         self.index = 0
 
+    # Recebe o tamanho do filtro e cria uma lista de tamanho igual
     def criando_filtro(self, tamanho_filtro):
-        filtro = [0] * tamanho_filtro
-        return filtro
+        if tamanho_filtro != 0:
+            filtro = [0] * tamanho_filtro
+            return filtro
+        else:
+            return None
     # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
