@@ -92,23 +92,20 @@ class Sensoriamento():
 
     def verificado(self):
         ver_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
-        ver_nada = 0     # Varíavel que determina se não vimos o robô inimigo
+        nao_viu_nada = True     # Varíavel que determina se não vimos o robô inimigo / booleano
         
         for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
             if sensor.enxergando(self.limiar) == True:   # tem que indentificar o limiar
                 ver_inimigo += 1
-                ver_nada = 1
+                nao_viu_nada = False
 
         for sensor in self.sensores_esquerda:
             if sensor.enxergando(self.limiar) == True:
                 ver_inimigo -= 1
-
-        for sensor in self.lista_sensores:  # Filtro para validar se realmente o robô viu algo na direção
-            if sensor.filtro == False:
-                ver_nada == 0
+                nao_viu_nada = False
 
         # Se nenhum dos sensores viu, então retorna a direção de visto por último
-        if ver_nada == 0:
+        if nao_viu_nada:
             return self.visto_ultimo
         else:
             self.visto_ultimo = ver_inimigo
