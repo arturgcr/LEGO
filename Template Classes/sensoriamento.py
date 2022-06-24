@@ -11,7 +11,7 @@ ev3 = EV3Brick()
 
 class Sensoriamento():
     
-    def __init__(self, lista_sensores, limiar=40, visto_ultimo = None):
+    def __init__(self, lista_sensores, limiar = 40, visto_ultimo = None):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
         self.sensores_direita = []
         self.sensores_esquerda = []
