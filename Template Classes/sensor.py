@@ -14,6 +14,7 @@ class SensorLEGO():
 
     def __init__(self, tipo, porta, lado, tamanhodofiltro=1):
 
+        # Instanciando classe Port de acordo com a porta recebida no construtor
         if porta == 1:
             porta = Port.S1
         elif porta == 2:
