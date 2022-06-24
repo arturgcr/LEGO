@@ -23,6 +23,7 @@ class SensorLEGO():
             porta = Port.S3
         elif porta == 4:
             porta = Port.S4
+        
         # Instanciando a classe correspondente ao sensor, cedendo a Port selecionada como argumento
         if tipo == 'ultrassonico' or 'ultrasonic':
             self.sensor = UltrasonicSensor(porta)
