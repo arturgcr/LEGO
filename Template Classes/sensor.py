@@ -61,12 +61,10 @@ class SensorLEGO():
 
 
 class Sensoriamento():
-    def __init__(self, listadesensores, vistoUltimo, kp, kd, ki=0, limiar=40):
+    def __init__(self, listadesensores, vistoUltimo, limiar=40):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
         self.sensoresDireita = []
         self.sensoresEsquerda = []
-        self.erro = 0
-        self.erroPassado = 0
 
         for i in listadesensores:
             if i.lado == 'esquerda':
@@ -74,10 +72,6 @@ class Sensoriamento():
                 self.sensoresEsquerda.append(i)
             if i.lado == 'direita':
                 self.sensoresDireita.append(i)  # adiciona i à lista da direita
-
-        self.kp = kp
-        self.kd = kd
-        self.ki = ki
 
         self.listadesensores = listadesensores
 
@@ -87,7 +81,7 @@ class Sensoriamento():
         # converter os dados do infravermelho é algo q não implementei em geral
         self.vistoUltimo = vistoUltimo
 
-    def verificalado(self):
+    def verificado(self):
         verInimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
         verNada = 0     # Varíavel que determina se não vimos o robô inimigo
         for i in self.sensoresDireita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
@@ -110,30 +104,6 @@ class Sensoriamento():
         else:
             self.vistoUltimo = verInimigo
             return verInimigo
-
-    def Erro(self):  # o erro é dado pela diferença entre a medição dos sensores
-        for i in self.sensoresDireita:
-            somaDireita += i
-        mediaDireita = somaDireita/len(self.sensoresDireita)
-
-        for i in self.sensoresEsquerda:
-            somaEsquerda += i
-        mediaEsquerda = somaEsquerda/len(self.sensoresEsquerda)
-
-        self.erro = abs(mediaDireita - mediaEsquerda)/100  # está em cm
-        return self.erro
-
-    # junção entre PID e verificaPerto
-    def PID(self):
-        if self.erro < 5:
-            self.erro = 0
-        else:
-            self.erro = self.erro - self.erroAnterior        #Adcionado essa linha para inserir novo valor de erro conforme código em blocos
-            PID = self.kp * self.erro + self.kd * self.erro 
-            self.erroAnterior = self.erro
-        return PID
-
-
 
 #   def PID(self):
 #         if self.erro < 5:
