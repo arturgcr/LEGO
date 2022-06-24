@@ -62,7 +62,7 @@ class SensorLEGO():
 
 
 class Sensoriamento():
-    def __init__(self, lista_sensores, vistoUltimo, limiar=40):
+    def __init__(self, lista_sensores, visto_ultimo, limiar=40):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
         self.sensores_direita = []
         self.sensores_esquerda = []
@@ -74,43 +74,35 @@ class Sensoriamento():
             if sensor.lado == 'direita':
                 self.sensores_direita.append(sensor)  # adiciona i à lista da direita
 
-        self.listadesensores = lista_sensores
+        self.lista_sensores = lista_sensores
 
         # não vem como argumento da init, então pode entrar direto na classe. no diagram de classes está dizendo q pe default....
         self.limiar = limiar
         # um possível problema para essa abordagem é o fato de q o infravermelho não vem em cm, e o nxt med em cm, não mm
         # converter os dados do infravermelho é algo q não implementei em geral
-        self.vistoUltimo = vistoUltimo
+        self.visto_ultimo = visto_ultimo
 
     def verificado(self):
-        verInimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
-        verNada = 0     # Varíavel que determina se não vimos o robô inimigo
+        ver_inimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
+        ver_nada = 0     # Varíavel que determina se não vimos o robô inimigo
         for i in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
 
             if i.enxergando(self.limiar) == True:   # tem que indentificar o limiar
-                verInimigo += 1
-                verNada = 1
+                ver_inimigo += 1
+                ver_nada = 1
 
         for i in self.sensores_esquerda:
 
             if i.enxergando(self.limiar) == True:
-                verInimigo -= 1
+                ver_inimigo -= 1
 
-        for i in self.listadesensores:  # Filtro para validar se realmente o robô viu algo na direção
+        for i in self.lista_sensores:  # Filtro para validar se realmente o robô viu algo na direção
             if i.filtro == False:
-                verNada == 0
+                ver_nada == 0
 
-        if verNada == 0:
-            return self.vistoUltimo
+        if ver_nada == 0:
+            return self.visto_ultimo
         else:
-            self.vistoUltimo = verInimigo
-            return verInimigo
+            self.visto_ultimo = ver_inimigo
+            return ver_inimigo
 
-#   def PID(self):
-#         if self.erro < 5:
-#             self.erro = 0
-#         else:
-#             PID = self.kp * self.erro + self.kd * \
-#                 (self.erro - self.erroAnterior)
-#             self.erroAnterior = self.erro
-#         return PID 
