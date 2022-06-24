@@ -31,7 +31,6 @@ class SensorLEGO():
 
         self.posicao = posicao
         self.filtro = self.criando_filtro(tamanho_filtro)
-        self.index = 0
 
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
     def criando_filtro(self, tamanho_filtro):
