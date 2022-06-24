@@ -11,7 +11,7 @@ ev3 = EV3Brick()
 
 class Sensoriamento():
     
-    def __init__(self, lista_sensores, visto_ultimo, limiar=40):
+    def __init__(self, lista_sensores, limiar=40, visto_ultimo = None):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
         self.sensores_direita = []
         self.sensores_esquerda = []
@@ -44,7 +44,8 @@ class Sensoriamento():
 
         # Se nenhum dos sensores viu, então retorna a direção de visto por último
         if nao_viu_nada:
-            return self.visto_ultimo
+            if self.visto_ultimo != None:
+                return self.visto_ultimo
         else:
             self.visto_ultimo = enxergando_inimigo
             return enxergando_inimigo
