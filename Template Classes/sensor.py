@@ -40,30 +40,32 @@ class SensorLEGO():
             return filtro
         else:
             return None
+    
     # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
-
-        medicao = self.sensor.distance()
-        self.lista_filtro[self.index] = medicao
-
-        if self.index < self.tamanho_filtro:
-            self.index += 1
-        else:
-            self.index = 0
-
-        for i in self.lista_filtro:
-            if i != medicao:
-                return False  # funcao retorna true caso o filtro "aprove" o resultado da medicao e false caso contrario
-
-        return True
-
-    # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
-    def enxergando(self, limiar):
-        if self.sensor.distance() < limiar:
+        for leitura_filtro in range(self.lista_filtro):
+            medicao = self.sensor.distance()
+            if medicao == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
+                medicao = False
+            elif medicao != 0:
+                medicao = True
+            self.lista_filtro[leitura_filtro] = medicao
+            if self.lista_filtro[leitura_filtro] != self.lista_filtro[0]:
+                break
+        if False not in self.lista_filtro:
             return True
         else:
             return False
+    
+    # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
+    def enxergando(self, limiar):
+        if self.sensor.distance() < limiar:
+            if self.filtrar():
+                return True
+        else:
+            return False
+
 
     # em sensoriamento: se filtro aprovado, entrar em def enxergando;
 
