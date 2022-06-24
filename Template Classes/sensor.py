@@ -95,12 +95,12 @@ class Sensoriamento():
         nao_viu_nada = True     # Varíavel que determina se não vimos o robô inimigo / booleano
         
         for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
-            if sensor.enxergando(self.limiar) == True:   # tem que indentificar o limiar
+            if sensor.enxergando(self.limiar):   # tem que indentificar o limiar
                 ver_inimigo += 1
                 nao_viu_nada = False
 
         for sensor in self.sensores_esquerda:
-            if sensor.enxergando(self.limiar) == True:
+            if sensor.enxergando(self.limiar):
                 ver_inimigo -= 1
                 nao_viu_nada = False
 
