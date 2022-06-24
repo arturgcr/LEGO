@@ -11,7 +11,11 @@ ev3 = EV3Brick()
 
 
 class SensorLEGO():
-
+    '''
+    Módulo de SensorLEGO
+    --------------------
+    Responsável por instanciar um sensor, definindo: tipo (str: `ultrassonico` ou `infravermelho`), porta (int: `1`, `2`, `3` ou `4`), a posição (str: `esquerda` ou `direita`) e o tamanho do filtro (`int`, por padrão recebe `None`)do sensor.
+    '''
     def __init__(self, tipo, porta, posicao, tamanho_filtro=1):
 
         # Instanciando classe Port de acordo com a porta recebida no construtor
