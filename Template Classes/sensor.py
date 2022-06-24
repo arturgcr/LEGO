@@ -6,6 +6,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+
 ev3 = EV3Brick()
 
 
@@ -61,19 +62,19 @@ class SensorLEGO():
 
 
 class Sensoriamento():
-    def __init__(self, listadesensores, vistoUltimo, limiar=40):
+    def __init__(self, lista_sensores, vistoUltimo, limiar=40):
         # lembrando q esse sensordireita, sensoresquerda e sensormeio são OBJETOS herdados da classe sensor
-        self.sensoresDireita = []
-        self.sensoresEsquerda = []
+        self.sensores_direita = []
+        self.sensores_esquerda = []
 
-        for i in listadesensores:
-            if i.lado == 'esquerda':
+        for sensor in lista_sensores:
+            if sensor.lado == 'esquerda':
                 # adiciona i à lista da esquerda
-                self.sensoresEsquerda.append(i)
-            if i.lado == 'direita':
-                self.sensoresDireita.append(i)  # adiciona i à lista da direita
+                self.sensores_esquerda.append(sensor)
+            if sensor.lado == 'direita':
+                self.sensores_direita.append(sensor)  # adiciona i à lista da direita
 
-        self.listadesensores = listadesensores
+        self.listadesensores = lista_sensores
 
         # não vem como argumento da init, então pode entrar direto na classe. no diagram de classes está dizendo q pe default....
         self.limiar = limiar
@@ -84,13 +85,13 @@ class Sensoriamento():
     def verificado(self):
         verInimigo = 0  # Varíavel feita para definir de que lado o robô foi visto positivo direita e negativo esquerda
         verNada = 0     # Varíavel que determina se não vimos o robô inimigo
-        for i in self.sensoresDireita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
+        for i in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
 
             if i.enxergando(self.limiar) == True:   # tem que indentificar o limiar
                 verInimigo += 1
                 verNada = 1
 
-        for i in self.sensoresEsquerda:
+        for i in self.sensores_esquerda:
 
             if i.enxergando(self.limiar) == True:
                 verInimigo -= 1

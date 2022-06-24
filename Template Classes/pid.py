@@ -1,17 +1,19 @@
 class Pid:
     
-    def __init__(self, kp, kd, ki):
+    def __init__(self, kp, kd, ki, sensoriamento):
         
         self.kp = kp
         self.kd = kd
         self.ki = ki
 
         self.erro = 0
-        self.erroPassado = 0
+        self.erro_passado = 0
+
+        self.sensoriamento = sensoriamento
 
 
-    def erro(self):  # o erro é dado pela diferença entre a medição dos sensores
-        for i in self.sensoresDireita:
+    def calcula_erro(self):  # o erro é dado pela diferença entre a medição dos sensores
+        for sensor in self.sensoriamento.sensores_direita:
             somaDireita += i
         mediaDireita = somaDireita/len(self.sensoresDireita)
 
@@ -23,7 +25,7 @@ class Pid:
         return self.erro
 
     # junção entre PID e verificaPerto
-    def pid(self):
+    def calcula_pid(self):
         if self.erro < 5:
             self.erro = 0
         else:
