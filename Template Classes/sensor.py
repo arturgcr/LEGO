@@ -54,7 +54,7 @@ class SensorLEGO():
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
         for leitura_filtro in range(self.filtro):
-            medicao = self.sensor.distance()
+            medicao = self.medicao()
             if medicao == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
                 medicao = False
             elif medicao != 0:
@@ -69,7 +69,7 @@ class SensorLEGO():
     
     # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
     def enxergando(self, limiar):
-        if self.sensor.distance() < limiar:
+        if self.medicao() < limiar:
             if self.filtro != None:
                 if self.filtrar():
                     return True
