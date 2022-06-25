@@ -37,10 +37,6 @@ class SensorLEGO():
         self.posicao = posicao
         self.filtro = self.criando_filtro(tamanho_filtro)
 
-    # Função que vai decidir como vai ser a medição do sensor, tornando a classe modular
-    def medicao(self):
-        if isinstance(self.sensor, (UltrasonicSensor, InfraredSensor)):
-            return self.sensor.distance()
     
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
     def criando_filtro(self, tamanho_filtro):
@@ -49,6 +45,12 @@ class SensorLEGO():
             return filtro
         else:
             return None
+    
+    # Função que vai decidir como vai ser a medição do sensor, tornando a classe modular
+    def medicao(self):
+        if isinstance(self.sensor, (UltrasonicSensor, InfraredSensor)):
+            distancia = self.sensor.distance()
+            return distancia
     
     # funcão que verifica se o resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
