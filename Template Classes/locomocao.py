@@ -57,8 +57,10 @@ class Locomocao():
             return Port.C
         elif porta == 'D':
             return Port.D
-    
+            
+    #------------------------------ MOVIMENTOS PRÉ DETERMINADOS ----------------------------------------------------
     # Aplica o valor de pwm [-100, 100] nas rodas do lado esquerdo.
+
     def aplicar_roda_esquerda(self, pwm):
         for motor in self.motores_esquerda:
             motor.dc(-pwm * self.sentido_esquerda)
@@ -90,3 +92,46 @@ class Locomocao():
             motor.brake()
         for motor in self.motores_esquerda:
             motor.brake()
+
+    def regra_de_tres(self, valor_a_ser_convertido, minimo_da_entrada, maximo_da_entrada, minimo_da_saida,  maximo_da_saida):
+        """
+        Função com a função map lá do Arduino em sua verdadeira forma, em Python.
+
+        self@Locomocao, int ou float, int ou float, int ou float, int ou float, int ou float -> float
+        """
+        diferenca_das_entradas = maximo_da_entrada - minimo_da_entrada
+        diferenca_das_saidas = maximo_da_saida - minimo_da_saida
+        diferenca_do_valor_a_ser_convertido_com_o_minimo_da_entrada = valor_a_ser_convertido - minimo_da_entrada
+        return (diferenca_do_valor_a_ser_convertido_com_o_minimo_da_entrada * diferenca_das_saidas) / diferenca_das_entradas + minimo_da_saida
+
+    def mixagem(self, velocidade_linear, velocidade_angular):
+        """
+        Função que realiza os cálculos da mixagem.
+
+        OBS.: Os parâmetros velocidade linear e angular variam no intervalo [-100, 100].
+
+        self@Locomocao, int, int -> tuple[int, int]
+        """
+        # Realiza os cálculos da mixagem
+        pwm_roda_esquerda = velocidade_linear + velocidade_angular
+        pwm_roda_direita  = velocidade_linear - velocidade_angular
+
+        # Converte de volta para o intervalo [-100, 100]
+        pwm_roda_esquerda = int(self.regra_de_tres(pwm_roda_esquerda, -200, 200, -100, 100))
+        pwm_roda_direita  = int(self.regra_de_tres(pwm_roda_direita, -200, 200, -100, 100))
+
+        # Retorna uma tupla com a primeira posição o valor de PWM do motor esquerdo e a segunda posição com o valor do motor direito
+        return pwm_roda_esquerda, pwm_roda_direita
+
+    def locomover(self, velocidade_linear, velocidade_angular):
+        """
+        Função que move o robô de acordo com as velocidades linear e angular passadas.
+
+        self@Locomocao, int, int -> None
+        """
+        # Obtém o valor da potência dos motores a partir do cálculo da mixagem
+        mixagem = self.mixagem(velocidade_linear, velocidade_angular)
+
+        # Aplica o resultado do cálculo da mixagem nos motores
+        self.aplicar_roda_esquerda(mixagem[0])
+        self.aplicar_roda_direita(mixagem[1])

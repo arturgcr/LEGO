@@ -45,7 +45,7 @@ class SensorLEGO():
         else:
             return None
     
-    # func que verefica se resultado eh vdd ou falso (sensores naturalmente tem um acumulo
+    # funcão que verifica se o resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
         for leitura_filtro in range(self.filtro):
