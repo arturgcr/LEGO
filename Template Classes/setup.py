@@ -46,7 +46,7 @@ class Setup():
 
 
     def selecionarCorrecao(self):
-        
+        ev3.light(Color.PURPLE)  
         while (self.pressionado == 0):
             if self.botao_direita in ev3.buttons.pressed(): #Faz uma correção rotacionando 90º sobre o próprio eixo para a direita
                 self.pressionado = 1
