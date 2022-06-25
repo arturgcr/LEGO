@@ -47,6 +47,7 @@ class Setup():
 
     def selecionarCorrecao(self):
         ev3.light(Color.PURPLE)  
+        
         while (self.pressionado == 0):
             if self.botao_direita in ev3.buttons.pressed(): #Faz uma correção rotacionando 90º sobre o próprio eixo para a direita
                 self.pressionado = 1
@@ -65,7 +66,10 @@ class Setup():
                 
                 
     # descobrir botao direcao e estrategia
-    def selecionarEstrategia(self): 
+    def selecionarEstrategia(self):
+         
+        ev3.light(Color.RED)
+        
         while (self.pressionado == 0 and self.tipo_estrategia == 'padrao'):
             if self.botao_direita in ev3.buttons.pressed(): #duvida: buttons.pressed() ou brick.buttons.pressed()
                 self.pressionado = 1
