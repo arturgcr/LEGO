@@ -38,7 +38,7 @@ class SensorLEGO():
         self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
         
         # guarda o valor numérico da última medição autorizada pelos filtros
-        self.ultima_medicao = 0 # essencial para organizar o cálculo do erro
+        self.ultima_medicao_autorizada = 0 # essencial para organizar o cálculo do erro
 
     
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
@@ -79,7 +79,7 @@ class SensorLEGO():
         if medicao < limiar:
             if self.filtro != None:
                 if self.filtrar():
-                    self.ultima_medicao = medicao
+                    self.ultima_medicao_autorizada = medicao
                     return True
                 else:
                     return False
