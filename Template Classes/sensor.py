@@ -34,11 +34,15 @@ class SensorLEGO():
         if tipo == 'infravermelho' or 'infrared':
             self.sensor = InfraredSensor(porta)
 
-        self.posicao = posicao
-        self.filtro = self.criando_filtro(tamanho_filtro)
+        self.posicao = posicao # posição do sensor na estrutura do robô: 'esquerda' ou 'direita'
+        self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
+        
+        # guarda o valor numérico da última medição autorizada pelos filtros
+        self.ultima_medicao = 0 # essencial para organizar o cálculo do erro
 
     
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
+    # Caso receba 0, não cria o filtro
     def criando_filtro(self, tamanho_filtro):
         if tamanho_filtro != 0:
             filtro = [0] * tamanho_filtro
@@ -71,9 +75,11 @@ class SensorLEGO():
     
     # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
     def enxergando(self, limiar):
-        if self.medicao() < limiar:
+        medicao = self.medicao()
+        if medicao < limiar:
             if self.filtro != None:
                 if self.filtrar():
+                    self.ultima_medicao = medicao
                     return True
                 else:
                     return False
