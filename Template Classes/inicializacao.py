@@ -50,10 +50,7 @@ class Inicializacao():
 
     def selecionar_correcao_ou_desempate(self):
         '''
-        Metodo com a primeira selecao que define o angulo da correcao ou
-        se o modo das estrategias e de desempate.
-        
-        Self@Inicializacao -> None
+        Define se existe alguma correção a ser feita na posição inicial do robô (ângulo de correção igual a -90 ou 90) ou não (ângulo de correção = 0), ou ainda se é um round de `desempate`.
         '''
         # Na selecao da correcao, o brick ira acender uma luz na cor roxa
         ev3.light(Color.PURPLE)
@@ -81,11 +78,8 @@ class Inicializacao():
     # descobrir botao direcao e estrategia
     def selecionar_estrategia_inicial(self): # Segunda selecao 
         """
-        Metodo com a segunda selecao que define a estretegia.
-
-        Self@Inicializacao -> None
+        Seleciona a estratégia inicial do robô. No caso de, na etapa anterior, ter sido selecionado que se trata de um round de desempate, muda as opções de estratégia e a cor do led do Brick.
         """
-
         # Verifica se o modo de estrategia eh padrao
         if self.estrategia_inicial_selecionada == 'padrao':
             # Na selecao das estrategias padroes, o brick ira acender uma luz na cor ciano
@@ -122,10 +116,9 @@ class Inicializacao():
         wait(1)
 
     def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
-        """"
-        Metodo com a terceira selecao que escolhe a direcao da 
-        movimentacao do robo.
-        """ 
+        '''
+        Seleciona a direção para onde a estratégia inicial será executada: (-1) `esquerda` ou (1) `direita`.
+        ''' 
         while True:
             if self.botao_direito in ev3.buttons.pressed(): 
                 self.direcao_estrategia_inicial = 1  # direita
@@ -146,8 +139,7 @@ class Inicializacao():
     
     def selecionar_direcao_sensoriamento(self):
         '''
-        Metodo com a quarta e utima selecao que escolhe 
-        qual lado o robo vai comecar a sensoriar.
+        Seleciona a direção para onde o sensoriamento irá iniciar quando entrar no loop de perseguição do adversário. Essa direção só será utilizada até a primeira detecção do adversário. Essa é a última etapa da seleção de estratégia.
         '''
         while True:
             if self.botao_esquerdo in ev3.buttons.pressed():
