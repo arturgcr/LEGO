@@ -24,18 +24,17 @@ def main ():
     ki = 0
     kd = 1.2
     
-    # -> Instanciando Sensores (SensorLEGO):
+    # -> Instanciando e listando Sensores (SensorLEGO):
     _sensor1 = SensorLEGO('ultrassom', 1, 'esquerda')
     _sensor2 = SensorLEGO('ultrassom', 2, 'direita')
     lista_de_sensores = [_sensor1, _sensor2]
     limiar = 40
 
     # -> Instanciando Motores (Locomocao):
-    motores_esquerda = ['A', 'B']
-    motores_direita = ['C', 'D']
-    servo_motores = [] # Apenas para o caso da Violeta
-
-    _motores = Locomocao(motores_direita, motores_esquerda, 'ALL')
+    motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
+    motores_direita = ['C', 'D'] # lista com portas dos motores da direita
+    servo_motores = [] # lista com portas dos servo-motores - Apenas para o caso da Violeta
+    _motores = Locomocao(motores_direita, motores_esquerda, 'ALL') # precisa comportar servo-motores
     
     # Instanciando Setup:
     _inicio = Setup(_motores)
@@ -67,10 +66,11 @@ def main ():
 
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
-        _sensoriamento.busca_oponente()
-        erro = _sensoriamento.erro
+        direcao_oponente = _sensoriamento.busca_oponente() # retorna a direção em que o oponente foi detectado
+        erro = _sensoriamento.erro # precisa ser corrigida para ser o retorno de uma função
         pid = _pid.calcula_pid(erro)
-        _estrategia.radarPID(pid)  # Joga info de PID nos motores
+        _estrategia.radarPID(pid)  # Joga info de PID nos motores, mas precisa ser corrigida
+        # precisa ser corrigida para receber também a informação da direcao de detecção
     # -------------------------------------------------------------------------------
 main()
 
