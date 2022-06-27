@@ -11,22 +11,34 @@ ev3 = EV3Brick()
 
 class PID:
     
-    def __init__(self, kp, kd, ki, erro):
-        
-        self.kp = kp
-        self.kd = kd
-        self.ki = ki
+    def __init__(self, kp, kd, ki):
+        # Definindo as constantes
+        self.kp = kp # constante proporcional
+        self.ki = ki # constante integral
+        self.kd = kd # constante derivativa
 
-        self.erro = erro
-        self.erro_anterior = 0
+        # variáveis pra o cálculo do PID
+        self.proporcional = 0
+        self.integral = 0
+        self.derivativa = 0
+        
+        self.erro_anterior = 0 # erro da iteração anterior
+        self.tempo_anterior = 0 # tempo para o cálculo da variação de tempo
 
     # junção entre PID e verificaPerto
-    def calcula_pid(self):
-        if self.erro < 5:
-            self.erro = 0
-        else:
-            self.erro = self.erro - self.erro_anterior        #Adicionado essa linha para inserir novo valor de erro conforme código em blocos
-            PID = self.kp * self.erro + self.kd * self.erro 
-            self.erro_anterior = self.erro
-        print(PID)
+    def calcula_pid(self, erro):
+        # Marca o tempo atual menos o tempo anterior para encontrar a variação de tempo entre iterações
+        diferenca_tempo = StopWatch.time() - self.tempo_anterior
+        
+        # Calcula novos valores para as variáveis com base no novo erro
+        self.proporcional = self.kp * erro
+        self.integral += self.ki * erro * diferenca_tempo
+        self.derivativa = (self.kd * (erro - self.erro_anterior)) / diferenca_tempo
+        PID = self.proporcional + self.integral + self.derivativa
+            
+        # Redefine erro e tempo anterior para o cálculo da próxima iteração
+        self.erro_anterior = self.erro
+        self.tempo_anterior = StopWatch.time()
+
+        # Retorna o valor de PID
         return PID
