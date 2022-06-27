@@ -34,10 +34,15 @@ class SensorLEGO():
         if tipo == 'infravermelho' or 'infrared':
             self.sensor = InfraredSensor(porta)
 
-        self.posicao = posicao
-        self.filtro = self.criando_filtro(tamanho_filtro)
+        self.posicao = posicao # posição do sensor na estrutura do robô: 'esquerda' ou 'direita'
+        self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
+        
+        # guarda o valor numérico da última medição autorizada pelos filtros
+        self.ultima_medicao_autorizada = 0 # essencial para organizar o cálculo do erro
 
+    
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
+    # Caso receba 0, não cria o filtro
     def criando_filtro(self, tamanho_filtro):
         if tamanho_filtro != 0:
             filtro = [0] * tamanho_filtro
@@ -45,11 +50,17 @@ class SensorLEGO():
         else:
             return None
     
+    # Função que vai decidir como vai ser a medição do sensor, tornando a classe modular
+    def medicao(self):
+        if isinstance(self.sensor, (UltrasonicSensor, InfraredSensor)):
+            distancia = self.sensor.distance()
+            return distancia
+    
     # funcão que verifica se o resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
         for leitura_filtro in range(self.filtro):
-            medicao = self.sensor.distance()
+            medicao = self.medicao()
             if medicao == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
                 medicao = False
             elif medicao != 0:
@@ -64,9 +75,11 @@ class SensorLEGO():
     
     # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
     def enxergando(self, limiar):
-        if self.sensor.distance() < limiar:
+        medicao = self.medicao()
+        if medicao < limiar:
             if self.filtro != None:
                 if self.filtrar():
+                    self.ultima_medicao_autorizada = medicao
                     return True
                 else:
                     return False
