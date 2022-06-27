@@ -49,20 +49,21 @@ def main ():
     _inicio.selecionar_direcao_movimento()
     _inicio.selecionar_direcao_sensoriamento()
 
-    angulo_de_correcao = _inicio.angulo_correcao
+    angulo_correcao = _inicio.angulo_correcao
     estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
-    direcao_da_estrategia_inicial = _inicio.direcao
-    direcao_do_sensoriamento = _inicio.direcao_sensoriamento
+    direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
+    direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     
     wait(5) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
-    _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_da_estrategia_inicial)
+    _estrategia.executa_correcao(angulo_correcao)
+    _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando Sensoriamento -------------------------------------------
-    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_do_sensoriamento) #listadesensores, vistoUltimo, kp, kd, ki = 0, limiar = 40
+    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial) #listadesensores, vistoUltimo, kp, kd, ki = 0, limiar = 40
     # ----------------------------------------------------------------------
 
     # Instanciando PID -----------------------------------------------------
@@ -74,7 +75,7 @@ def main ():
         direcao_oponente = _sensoriamento.busca_oponente() # retorna a direção em que o oponente foi detectado
         erro = _sensoriamento.erro # precisa ser corrigida para ser o retorno de uma função
         pid = _pid.calcula_pid(erro)
-        _estrategia.radarPID(pid)  # Joga info de PID nos motores, mas precisa ser corrigida
+        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid)  # Joga info de PID nos motores, mas precisa ser corrigida
         # precisa ser corrigida para receber também a informação da direcao de detecção
     # -------------------------------------------------------------------------------
 main()
