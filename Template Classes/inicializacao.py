@@ -76,7 +76,7 @@ class Inicializacao():
                 self.estrategia_selecionada = 'desempate'
                 break
         
-        time.sleep(1)
+        wait(1)
 
     # descobrir botao direcao e estrategia
     def selecionar_estrategia(self): # Segunda selecao 
@@ -121,7 +121,7 @@ class Inicializacao():
                     break
             
         # Espera por 1 segundo
-        time.sleep(1)
+        wait(1)
 
     def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
         """"
@@ -145,7 +145,7 @@ class Inicializacao():
                 self.estrategia_selecionada = 'full frente honesto'
                 break
         
-        time.sleep(1)      
+        wait(1)      
     
     def selecionar_direcao_sensoriamento(self):
         '''
