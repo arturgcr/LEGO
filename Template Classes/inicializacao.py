@@ -79,7 +79,7 @@ class Inicializacao():
         wait(1)
 
     # descobrir botao direcao e estrategia
-    def selecionar_estrategia(self): # Segunda selecao 
+    def selecionar_estrategia_inicial(self): # Segunda selecao 
         """
         Metodo com a segunda selecao que define a estretegia.
 

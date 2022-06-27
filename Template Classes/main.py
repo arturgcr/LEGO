@@ -45,7 +45,7 @@ def main ():
     
     # Escolhendo estratégias e direções iniciais através da class Setup ----
     _inicio.selecionar_correcao_ou_desempate()
-    _inicio.selecionar_estrategia()
+    _inicio.selecionar_estrategia_inicial()
     _inicio.selecionar_direcao_movimento()
     _inicio.selecionar_direcao_sensoriamento()
 
@@ -58,7 +58,7 @@ def main ():
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
-    _estrategia.executa_correcao(angulo_correcao)
+    _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
     _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
     # ----------------------------------------------------------------------
 
