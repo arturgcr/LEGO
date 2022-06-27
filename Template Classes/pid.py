@@ -11,37 +11,34 @@ ev3 = EV3Brick()
 
 class PID:
     
-    def __init__(self, kp, kd, ki, sensoriamento):
+    def __init__(self, kp, kd, ki):
+        # Definindo as constantes
+        self.kp = kp # constante proporcional
+        self.ki = ki # constante integral
+        self.kd = kd # constante derivativa
+
+        # variáveis pra o cálculo do PID
+        self.proporcional = 0
+        self.integral = 0
+        self.derivativa = 0
         
-        self.kp = kp
-        self.kd = kd
-        self.ki = ki
-
-        self.erro = 0
-        self.erro_passado = 0
-
-        self.sensoriamento = sensoriamento
-
-
-    def calcula_erro(self):  # o erro é dado pela diferença entre a medição dos sensores
-        for sensor in self.sensoriamento.sensores_direita:
-            somaDireita += sensor.distance()
-        mediaDireita = somaDireita/len(self.sensoresDireita)
-
-        for sensor in self.sensoriamento.sensoresEsquerda:
-            somaEsquerda += sensor.distance()
-        mediaEsquerda = somaEsquerda/len(self.sensoresEsquerda)
-
-        self.erro = abs(mediaDireita - mediaEsquerda)/100  # está em cm
-        return self.erro
+        self.erro_anterior = 0 # erro da iteração anterior
+        self.tempo_anterior = 0 # tempo para o cálculo da variação de tempo
 
     # junção entre PID e verificaPerto
-    def calcula_pid(self):
-        if self.erro < 5:
-            self.erro = 0
-        else:
-            self.erro = self.erro - self.erroAnterior        #Adicionado essa linha para inserir novo valor de erro conforme código em blocos
-            PID = self.kp * self.erro + self.kd * self.erro 
-            self.erroAnterior = self.erro
-        print(PID)
+    def calcula_pid(self, erro):
+        # Marca o tempo atual menos o tempo anterior para encontrar a variação de tempo entre iterações
+        diferenca_tempo = StopWatch.time() - self.tempo_anterior
+        
+        # Calcula novos valores para as variáveis com base no novo erro
+        self.proporcional = self.kp * erro
+        self.integral += self.ki * erro * diferenca_tempo
+        self.derivativa = (self.kd * (erro - self.erro_anterior)) / diferenca_tempo
+        PID = self.proporcional + self.integral + self.derivativa
+            
+        # Redefine erro e tempo anterior para o cálculo da próxima iteração
+        self.erro_anterior = erro # erro atual passa a ser o erro anterior
+        self.tempo_anterior = StopWatch.time() # marca um novo tempo para o tempo anterior
+
+        # Retorna o valor de PID
         return PID
