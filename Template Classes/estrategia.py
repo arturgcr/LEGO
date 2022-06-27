@@ -56,27 +56,32 @@ class Estrategia():
 
     #def full_frente_honesta():
 
-    
+# chama as respectivas ações selecionadas
+    def executaEstrategia(self):
+        if self.estrategia == 'arcoInicial':
+            self.arcoInicial() # colocar valores Numericos padronizados de cada robo
+        elif self.estrategia == 'manobraInicial':
+            self.manobraInicial()
+        elif self.estrategia == 'armadilhaInicial':
+            self.armadilhaInicial()
 
+    def arcoInicial(self):             
+        locomocao.arco(Vlin, VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
+        time.sleep(tempo)                       # Alterar tempo
+        locomocao.giro(pwm*self.direcao)        # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        time.sleep(tempo)                       # Alterar tempo
 
-
-# def arcoInicial(self):             
-#         locomocao.arco(Vlin, VAng*self.direcao)   # Alterar Vlin e Vang correspondentes ao robo
-#         time.sleep(tempo)                         # alterar tempo
-#         locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-#         time.sleep(tempo)                         # Alterar tempo     
-
-#     def manobraInicial(self):
-#         locomocao.giro(-pwm*self.direcao)         # Alterar pwm correspondente ao robo
-#         time.sleep(tempo)                         # Alterar tempo (geralmente 0.28) 
-#         locomocao.arco(Vlin, VAng*self.direcao)   # Alterar Vlin e Vang correspondentes ao robo
-#         time.sleep(tempo)                         # alterar tempo
-#         locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-#         time.sleep(tempo)                         # Alterar tempo 
+    def manobraInicial(self):
+        locomocao.giro(-pwm*self.direcao)       # Alterar pwm correspondente ao robo
+        time.sleep(tempo)                       # Alterar tempo (geralmente 0.28) 
+        locomocao.arco(Vlin, VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
+        time.sleep(tempo)                       # alterar tempo
+        locomocao.giro(pwm*self.direcao)        # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        time.sleep(tempo)                       # Alterar tempo 
         
-#     # descobrir se precisa ou nao da func giro em armadilhaInicial
-#     def armadilhaInicial(self):
-#         locomocao.arco(-Vlin, -VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
-#         time.sleep(tempo)                         # alterar tempo
-#         locomocao.giro(pwm*self.direcao)         # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-#         time.sleep(tempo)                         # Alterar tempo
+    # descobrir se precisa ou nao da func giro em armadilhaInicial
+    def armadilhaInicial(self):
+        locomocao.arco(-Vlin, -VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
+        time.sleep(tempo)                         # alterar tempo
+        locomocao.giro(pwm*self.direcao)          # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        time.sleep(tempo)                         # Alterar tempo

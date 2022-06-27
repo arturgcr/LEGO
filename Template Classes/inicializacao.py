@@ -12,20 +12,11 @@ from pybricks.parameters import Port, Stop, Direction, Buttons, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
-import time
 
-import locomocao
 
 # Definicao do objeto com os atributos e metodos relacionadas as peças LEGO
 ev3 = EV3Brick()
 
-# CONFIGURAÇÕES INICIAIS - NÃO ESQUECER ---------------
-# -> Aqui colocar os valores a serem alterados e separar por cada robo (ex: tempoManobra - treta: 5) 
-# -> Treta - Codigo antigo - TESTAR A PARTIR DE:
-#    erroBase = 15
-#    kp = 2
-#    ki = 0
-#    kd = 1.2
 
 class Inicializacao():
     '''
@@ -33,15 +24,13 @@ class Inicializacao():
     nos segundos iniciais da luta. Aqui sao definidos a direcao inicial
     e estrategia atraves do pressionamento de botoes.
     '''
-    def __init__(self, motores): # Alterar tempos correspondentes ao robo
+    def __init__(self): # Alterar tempos correspondentes ao robo
         '''
         Metodo construtor. Define os atributos utilizados nas selecoes.
 
         Self@Inicializacao, ? -> None
         '''
-        # Motores: objeto vindo de Locomoção
-        self.motores = motores
-        
+
         # Botoes do Brick considerando que o Brick tá de lado e com tela para direita do piloto
         self.botao_central   = Buttons.CENTER
         self.botao_direito  = Buttons.UP    # Botão para direita é o botão de cima com o Brick de lado
@@ -58,7 +47,7 @@ class Inicializacao():
         # Atributo que define o sentido do sensoriamento
         self.direcao_do_sensoriamento = 'horario'
 
-    def selecionarCorrecao(self):
+    def selecionar_correcao_ou_desempate(self):
         '''
         Metodo com a primeira selecao que define o angulo da correcao ou
         se o modo das estrategias e de desempate.
@@ -90,7 +79,7 @@ class Inicializacao():
         time.sleep(1)
 
     # descobrir botao direcao e estrategia
-    def selecionarEstrategia(self): # Segunda selecao 
+    def selecionar_estrategia(self): # Segunda selecao 
         """
         Metodo com a segunda selecao que define a estretegia.
 
@@ -134,7 +123,7 @@ class Inicializacao():
         # Espera por 1 segundo
         time.sleep(1)
 
-    def selecionarDirecaoMovimento(self): # Selecao 3 movimentacao
+    def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
         """"
         Metodo com a terceira selecao que escolhe a direcao da 
         movimentacao do robo.
@@ -158,11 +147,11 @@ class Inicializacao():
         
         time.sleep(1)      
     
-    def selecionarDirecaoSensoriamento(self):
-        """"
+    def selecionar_direcao_sensoriamento(self):
+        '''
         Metodo com a quarta e utima selecao que escolhe 
         qual lado o robo vai comecar a sensoriar.
-        """"
+        '''
         while (self.pressionado == 0):
             if self.botao_esquerdo in ev3.buttons.pressed():
                 self.direcao     = 1  # direita (sentido horario)
@@ -171,32 +160,3 @@ class Inicializacao():
                 self.direcao     = -1 #esquerda (Sentido anti horario) 
                 break
 
-    # chama as respectivas ações selecionadas
-    def executaEstrategia(self):
-        if self.estrategia == 'arcoInicial':
-            self.arcoInicial() # colocar valores Numericos padronizados de cada robo
-        elif self.estrategia == 'manobraInicial':
-            self.manobraInicial()
-        elif self.estrategia == 'armadilhaInicial':
-            self.armadilhaInicial()
-
-    def arcoInicial(self):             
-        locomocao.arco(Vlin, VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
-        time.sleep(tempo)                       # Alterar tempo
-        locomocao.giro(pwm*self.direcao)        # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        time.sleep(tempo)                       # Alterar tempo
-
-    def manobraInicial(self):
-        locomocao.giro(-pwm*self.direcao)       # Alterar pwm correspondente ao robo
-        time.sleep(tempo)                       # Alterar tempo (geralmente 0.28) 
-        locomocao.arco(Vlin, VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
-        time.sleep(tempo)                       # alterar tempo
-        locomocao.giro(pwm*self.direcao)        # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        time.sleep(tempo)                       # Alterar tempo 
-        
-    # descobrir se precisa ou nao da func giro em armadilhaInicial
-    def armadilhaInicial(self):
-        locomocao.arco(-Vlin, -VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
-        time.sleep(tempo)                         # alterar tempo
-        locomocao.giro(pwm*self.direcao)          # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        time.sleep(tempo)                         # Alterar tempo
