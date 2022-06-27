@@ -12,7 +12,7 @@ ev3 = EV3Brick()
 from sensor import SensorLEGO
 from sensoriamento import Sensoriamento
 from locomocao import Locomocao
-from setup import Setup
+from inicializacao import Inicializacao
 from estrategia import Estrategia
 from pid import PID
 
@@ -37,27 +37,33 @@ def main ():
     _motores = Locomocao(motores_direita, motores_esquerda, 'ALL') # precisa comportar servo-motores
     
     # Instanciando Setup:
-    _inicio = Setup(_motores)
+    _inicio = Inicializacao()
     
     # Instanciando Estratégias:
     _estrategia = Estrategia(_motores)
     # ----------------------------------------------------------------------
     
     # Escolhendo estratégias e direções iniciais através da class Setup ----
-    _inicio.selecionarEstrategia()
-    _inicio.selecionarDirecao()
+    _inicio.selecionar_correcao_ou_desempate()
+    _inicio.selecionar_estrategia_inicial()
+    _inicio.selecionar_direcao_movimento()
+    _inicio.selecionar_direcao_sensoriamento()
+
+    angulo_correcao = _inicio.angulo_correcao
+    estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
+    direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
+    direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     
     wait(5) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
-    _inicio.executaEstrategia() # precisa corrigir: isso deveria ser executado por estratégia
-    # Se for corrigido, setup entrega o valor que deve ser passado para estratégia executar
-    # sua estratégia inicial. Dessa forma, setup não precisa receber motores
+    _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
+    _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando Sensoriamento -------------------------------------------
-    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, _inicio.direcao) #listadesensores, vistoUltimo, kp, kd, ki = 0, limiar = 40
+    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial) #listadesensores, vistoUltimo, kp, kd, ki = 0, limiar = 40
     # ----------------------------------------------------------------------
 
     # Instanciando PID -----------------------------------------------------
@@ -69,7 +75,7 @@ def main ():
         direcao_oponente = _sensoriamento.busca_oponente() # retorna a direção em que o oponente foi detectado
         erro = _sensoriamento.erro # precisa ser corrigida para ser o retorno de uma função
         pid = _pid.calcula_pid(erro)
-        _estrategia.radarPID(pid)  # Joga info de PID nos motores, mas precisa ser corrigida
+        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid)  # Joga info de PID nos motores, mas precisa ser corrigida
         # precisa ser corrigida para receber também a informação da direcao de detecção
     # -------------------------------------------------------------------------------
 main()
