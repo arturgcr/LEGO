@@ -20,9 +20,9 @@ ev3 = EV3Brick()
 
 class Inicializacao():
     '''
-    Classe com os metodos e atributos responsaveis pelo ajuste do robo
-    nos segundos iniciais da luta. Aqui sao definidos a direcao inicial
-    e estrategia atraves do pressionamento de botoes.
+    Módulo Inicializacao
+    ---------------------
+    Responsável pela escolha da estratégia inicial através das informações dos botões apertados no Brick, selecionando o tipo de estratégia, a direção da estratégia e a direção inicial de sensoriamento, além da possibilidade de pequenos ajuste no posicionamento inicial do robô.
     '''
     def __init__(self): # Alterar tempos correspondentes ao robo
         '''
@@ -97,16 +97,16 @@ class Inicializacao():
                     self.estrategia_inicial_selecionada = 'armadilha_reta'
                     break
                 elif self.botao_baixo in ev3.buttons.pressed(): 
-                    self.estrategia_inicial_selecionada = 'manobra_+_arco_re'
+                    self.estrategia_inicial_selecionada = 'manobra_arco_invertido'
                     break
                 elif self.botao_esquerdo in ev3.buttons.pressed():
-                    self.estrategia_inicial_selecionada  = 'manobra_+_arco'
+                    self.estrategia_inicial_selecionada  = 'manobra_arco'
                     break
                 elif self.botao_direito in ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada  = 'arco'
                     break
                 elif self.botao_central in ev3.buttons.pressed():
-                    self.estrategia_inicial_selecionada  = 'armadilha_+_arco'
+                    self.estrategia_inicial_selecionada  = 'armadilha_arco'
                     break
 
         # Caso contrario, verifica se o modo de estrategia eh desempate
@@ -117,7 +117,7 @@ class Inicializacao():
             # Enquanto algum botao nao for apertado
             while True:
                 if self.botao_central in ev3.buttons.pressed():
-                    self.estrategia_inicial_selecionada = 'giro_em_um_eixo'
+                    self.estrategia_inicial_selecionada = 'giro_eixo'
                     break
         wait(1)
 
