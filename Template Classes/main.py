@@ -49,10 +49,10 @@ def main ():
     _inicio.selecionar_direcao_movimento()
     _inicio.selecionar_direcao_sensoriamento()
 
-    angulo_de_correcao = _inicio.angulo_de_correcao
-    estrategia_inicial_selecionada = _inicio.estrategia_selecionada
+    angulo_de_correcao = _inicio.angulo_correcao
+    estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
     direcao_da_estrategia_inicial = _inicio.direcao
-    direcao_do_sensoriamento = _inicio.direcao_do_sensoriamento
+    direcao_do_sensoriamento = _inicio.direcao_sensoriamento
     
     wait(5) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
