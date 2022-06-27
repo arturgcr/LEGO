@@ -50,7 +50,7 @@ class Inicializacao():
 
     def selecionar_correcao_ou_desempate(self):
         '''
-        Define se existe alguma correção a ser feita na posição inicial do robô (ângulo de correção igual a -90 ou 90) ou não (ângulo de correção = 0), ou ainda se é um round de `desempate`.
+        Seleciona se existe alguma correção a ser feita na posição inicial do robô (ângulo de correção: (-90) `anti-horário`, (90) `horário` ou (0) `mantém posição inicial`, ou ainda se é um round de `desempate`. No caso de ser um round de `desempate`, mudam as estratégias da segunda etapa.
         '''
         # Na selecao da correcao, o brick ira acender uma luz na cor roxa
         ev3.light(Color.PURPLE)
