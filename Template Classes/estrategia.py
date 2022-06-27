@@ -17,6 +17,15 @@ class Estrategia():
     def __init__(self, motores):
         self.motores = motores
  
+    # chama as respectivas ações selecionadas
+    def executa_estrategia_inicial(self, estrategia_selecionada):
+        if estrategia_selecionada == 'arcoInicial':
+            self.arcoInicial() # colocar valores Numericos padronizados de cada robo
+        elif estrategia_selecionada == 'manobraInicial':
+            self.manobraInicial()
+        elif estrategia_selecionada == 'armadilhaInicial':
+            self.armadilhaInicial()
+            
     # girar ao redor de si ate encontrar algo
     # 100 eh valor arbitrario, teremos q testar e descobrir o real
     # na main, chamar tudo e botar loop pra recalcular sensores sempre ate achar oponente, full frente;
@@ -56,14 +65,7 @@ class Estrategia():
 
     #def full_frente_honesta():
 
-# chama as respectivas ações selecionadas
-    def executaEstrategia(self):
-        if self.estrategia == 'arcoInicial':
-            self.arcoInicial() # colocar valores Numericos padronizados de cada robo
-        elif self.estrategia == 'manobraInicial':
-            self.manobraInicial()
-        elif self.estrategia == 'armadilhaInicial':
-            self.armadilhaInicial()
+
 
     def arcoInicial(self):             
         locomocao.arco(Vlin, VAng*self.direcao) # Alterar Vlin e Vang correspondentes ao robo
