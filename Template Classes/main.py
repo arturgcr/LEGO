@@ -48,31 +48,35 @@ def main ():
     _inicio.selecionar_estrategia_inicial()
     _inicio.selecionar_direcao_movimento()
     _inicio.selecionar_direcao_sensoriamento()
-
+    # Coletando atributos após as transformações da estapa anterior
     angulo_correcao = _inicio.angulo_correcao
     estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
-    
+    # Aguardando 5 segundos para o início da movimentação do robô
     wait(5) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
     _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
+    # Executa a estratégia inicial sem fazer nenhum sensoriamento
     _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando Sensoriamento -------------------------------------------
-    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial) #listadesensores, vistoUltimo, kp, kd, ki = 0, limiar = 40
+    #Recebe lista_de_sensores, limiar, direcao_sensoriamento_inicial
+    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando PID -----------------------------------------------------
+    # Recebe apenas kp, kd e ki -> caso não queira calcular algum, basta colocar 0 no seu valor
     _pid = PID(kp, kd, ki)
     # ----------------------------------------------------------------------
 
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
-        direcao_oponente = _sensoriamento.busca_oponente() # retorna a direção em que o oponente foi detectado
+        # Retorna a direção em que o oponente foi detectado [-1, 0, 1] -> esquerda, centro, direita
+        direcao_oponente = _sensoriamento.busca_oponente()
         # erro vai de [0,limiar], já que no cálculo ficamos apenas com o valor absoluto
         erro = _sensoriamento.erro
         # calcula_pid recebe erro [0,limiar]
