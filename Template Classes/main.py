@@ -83,7 +83,9 @@ def main ():
         # O sentido de rotação será decidido (direção_oponente != 0 * pid_convertido_pwm)
         _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid_convertido_pwm)
     # -------------------------------------------------------------------------------
-main()
+
+if __name__ == '__main__':
+    main()
 
 # -----------------------------------------
 #  Nomes de variaveis - classe sensoriamento: erro passado e erro anterior sao IGUAIS
