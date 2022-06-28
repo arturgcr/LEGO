@@ -42,3 +42,13 @@ class PID:
 
         # Retorna o valor de PID
         return PID
+
+    # Vai converter pid para pwm de [0,100], pois o sinal do pwm será determinado pela direção do oponente
+    # No cálculo do erro em Sensoriamento, o valor do erro é absoluto e de [0,limiar] (limiar=40)
+    # A direção do oponente será -1 ou 1, caso ela seja 0, o PID não será considerado no full frente 
+    def converte_pid_para_pwm(self, pid, pid_min = 0, pid_max = 80, pwm_min = 0,  pwm_max = 100):
+        variacao_pid_min_max = pid_max - pid_min
+        variacao_pwm_min_max = pwm_max - pwm_min
+        variacao_pid_a_ser_convertido_com_pid_min = pid - pid_min
+        pid_convertido_pwm = (variacao_pid_a_ser_convertido_com_pid_min * variacao_pwm_min_max) / variacao_pid_min_max + pwm_min
+        return pid_convertido_pwm
