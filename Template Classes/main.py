@@ -48,37 +48,48 @@ def main ():
     _inicio.selecionar_estrategia_inicial()
     _inicio.selecionar_direcao_movimento()
     _inicio.selecionar_direcao_sensoriamento()
-
+    # Coletando atributos após as transformações da estapa anterior
     angulo_correcao = _inicio.angulo_correcao
     estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
-    
+    # Aguardando 5 segundos para o início da movimentação do robô
     wait(5) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
     _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
+    # Executa a estratégia inicial sem fazer nenhum sensoriamento
     _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando Sensoriamento -------------------------------------------
-    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial) #listadesensores, vistoUltimo, kp, kd, ki = 0, limiar = 40
+    #Recebe lista_de_sensores, limiar, direcao_sensoriamento_inicial
+    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando PID -----------------------------------------------------
+    # Recebe apenas kp, kd e ki -> caso não queira calcular algum, basta colocar 0 no seu valor
     _pid = PID(kp, kd, ki)
     # ----------------------------------------------------------------------
 
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
-        direcao_oponente = _sensoriamento.busca_oponente() # retorna a direção em que o oponente foi detectado
-        erro = _sensoriamento.erro # precisa ser corrigida para ser o retorno de uma função
+        # Retorna a direção em que o oponente foi detectado [-1, 0, 1] -> esquerda, centro, direita
+        direcao_oponente = _sensoriamento.busca_oponente()
+        # erro vai de [0,limiar], já que no cálculo ficamos apenas com o valor absoluto
+        erro = _sensoriamento.erro
+        # calcula_pid recebe erro [0,limiar]
         pid = _pid.calcula_pid(erro)
-        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid)  # Joga info de PID nos motores, mas precisa ser corrigida
-        # precisa ser corrigida para receber também a informação da direcao de detecção
+        # Convertendo PID [0, erro * kp] para PWM [0, 100]
+        pid_convertido_pwm = _pid.converte_pid_para_pwm(pid)
+        # Recebe a direcao_oponente (-1, 0, 1) e valor pid convertido para pwm [0, 100]
+        # O sentido de rotação será decidido (direção_oponente != 0 * pid_convertido_pwm)
+        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid_convertido_pwm)
     # -------------------------------------------------------------------------------
-main()
+
+if __name__ == '__main__':
+    main()
 
 # -----------------------------------------
 #  Nomes de variaveis - classe sensoriamento: erro passado e erro anterior sao IGUAIS
