@@ -73,10 +73,15 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         direcao_oponente = _sensoriamento.busca_oponente() # retorna a direção em que o oponente foi detectado
-        erro = _sensoriamento.erro # precisa ser corrigida para ser o retorno de uma função
+        # erro vai de [0,limiar], já que no cálculo ficamos apenas com o valor absoluto
+        erro = _sensoriamento.erro
+        # calcula_pid recebe erro [0,limiar]
         pid = _pid.calcula_pid(erro)
-        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid)  # Joga info de PID nos motores, mas precisa ser corrigida
-        # precisa ser corrigida para receber também a informação da direcao de detecção
+        # Convertendo PID [0, erro * kp] para PWM [0, 100]
+        pid_convertido_pwm = _pid.converte_pid_para_pwm(pid)
+        # Recebe a direcao_oponente (-1, 0, 1) e valor pid convertido para pwm [0, 100]
+        # O sentido de rotação será decidido (direção_oponente != 0 * pid_convertido_pwm)
+        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid_convertido_pwm)
     # -------------------------------------------------------------------------------
 main()
 
