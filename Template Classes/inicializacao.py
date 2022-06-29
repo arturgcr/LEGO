@@ -73,7 +73,7 @@ class Inicializacao():
             elif self.botao_baixo in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'desempate'
                 break
-        wait(1000)
+        wait(500)
 
     # descobrir botao direcao e estrategia
     def selecionar_estrategia_inicial(self): # Segunda selecao 
@@ -116,7 +116,7 @@ class Inicializacao():
                 if self.botao_central in ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada = 'giro_eixo'
                     break
-        wait(1000)
+        wait(500)
 
     def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
         '''
@@ -141,14 +141,13 @@ class Inicializacao():
             elif self.botao_cima in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'full_frente_honesto'
                 break
-        wait(1000)      
+        wait(500)      
     
     def selecionar_direcao_sensoriamento(self):
         '''
         Seleciona a direção para onde o sensoriamento irá iniciar quando entrar no loop de perseguição do adversário. Essa direção só será utilizada até a primeira detecção do adversário. Essa é a última etapa da seleção de estratégia.
         '''
         ev3.light.on(Color.GREEN)
-        wait(10000)
 
         while True:
             if self.botao_esquerdo in ev3.buttons.pressed():
@@ -159,4 +158,4 @@ class Inicializacao():
                 break
             
         ev3.light.on(Color.RED)
-        wait(1000)
+        wait(500)

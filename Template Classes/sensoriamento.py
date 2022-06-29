@@ -52,9 +52,11 @@ class Sensoriamento():
         # Se nenhum dos sensores viu, então retorna a direção de visto por último
         if nao_viu_nada:
             if self.visto_ultimo != None:
+                ev3.light.on(Color.RED)
                 return self.visto_ultimo
         else:
             self.visto_ultimo = enxergando_inimigo
+            ev3.light.on(Color.GREEN)
             self.erro = self.calcula_erro(medicoes_sensores_esquerda, medicoes_sensores_direita)
             return enxergando_inimigo
 
@@ -70,4 +72,3 @@ class Sensoriamento():
         erro = abs(media_medicoes_esquerda - media_medicoes_direita)/100  # está em cm
         
         return erro
-

@@ -62,7 +62,8 @@ class Estrategia():
             self.manobra_arco()
         elif estrategia_inicial_selecionada == 'armadilha_arco':
             self.armadilha_arco()
-
+        elif estrategia_inicial_selecionada == 'radar':
+            self.radar(direcao_oponente, pid_convertido_pwm)
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
     def executa_estrategia_perseguicao(self, direcao_oponente, pid_convertido_pwm):
         self.radar(direcao_oponente, pid_convertido_pwm)
@@ -79,6 +80,7 @@ class Estrategia():
         wait(4000) # o tempo pode variar para cada robô
         self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(1500) # o tempo pode variar para cada robô
+        
     
 
     def bixo_piruleta(self, direcao, pwm):
@@ -109,7 +111,7 @@ class Estrategia():
         velocidade_angular = 15 * direcao
         giro_mesmo_sentido = 100 * direcao # valor para girar o robô no mesmo sentido que a direção da estrategia 
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait() # Alterar Tempo
+        wait(3500) # Alterar Tempo
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         
     def full_frente_honesta(self):

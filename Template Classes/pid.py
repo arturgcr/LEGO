@@ -30,19 +30,25 @@ class PID:
     def calcula_pid(self, erro):
         # Marca o tempo atual menos o tempo anterior para encontrar a variação de tempo entre iterações
         diferenca_tempo = self.temporizador.time() - self.tempo_anterior
+
+        # Verifica se a diferença de tempo é igual a 0
+        if diferenca_tempo == 0:
+            # Se for, iguala a diferença a 1 ms para evitar erros matemáticos
+            diferenca_tempo = 1
         
         # Calcula novos valores para as variáveis com base no novo erro
         self.proporcional = self.kp * erro
         self.integral += self.ki * erro * diferenca_tempo
         self.derivativa = (self.kd * (erro - self.erro_anterior)) / diferenca_tempo
-        PID = self.proporcional + self.integral + self.derivativa
+
+        resultado_do_pid = self.proporcional + self.integral + self.derivativa
             
         # Redefine erro e tempo anterior para o cálculo da próxima iteração
         self.erro_anterior = erro # erro atual passa a ser o erro anterior
         self.tempo_anterior = self.temporizador.time() # marca um novo tempo para o tempo anterior
 
         # Retorna o valor de PID
-        return PID
+        return resultado_do_pid
 
     # Vai converter pid para pwm de [0,100], pois o sinal do pwm será determinado pela direção do oponente
     # No cálculo do erro em Sensoriamento, o valor do erro é absoluto e de [0,limiar] (limiar=40)
