@@ -12,22 +12,22 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-from locomocao import *
+from locomocao import Locomocao
 
-class Estrategia(Locomocao):
+class Estrategia():
     """
     Classe com os métodos e atributos relacionados às estratégias. Esta
     classe herda os métodos e atributos da classe Locomocao do módulo
     locomocao.
     """
-    def __init__(self, motores_direita, motores_esquerda, invertido = 'DEFAULT'):
+    def __init__(self, obj_locomocao):
         """
         Método construtor. Executa o método construtor da super classe
         Locomocao.
 
         Self@Estrategia, list[str], list[str], str -> None
         """
-        super().__init__(motores_direita, motores_esquerda, invertido = 'DEFAULT')
+        self.motores = obj_locomocao
     
     def executa_correcao(self, angulo_correcao):
         '''
@@ -42,11 +42,11 @@ class Estrategia(Locomocao):
             # Verifica se o ângulo é igual a 90
             if angulo_correcao == 90:
                 # Gira o robô em um sentido
-                self.giro(100)
+                self.motores.giro(100)
             # Verifica se o ângulo é igual a -90
             elif angulo_correcao == -90:
                 # Gira o robô no sentido contrário
-                self.giro(-100)
+                self.motores.giro(-100)
         # Caso contrário, faz nada
         else:
             pass
@@ -76,15 +76,15 @@ class Estrategia(Locomocao):
         velocidade_linear = 100
         velocidade_angular = 15 * direcao
         giro_sentido_oposto = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
-        self.locomocao.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+        self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         wait(1000) # o tempo pode variar para cada robô
-        self.locomocao.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(150) # o tempo pode variar para cada robô
     
 
     def bixo_piruleta(self, direcao, pwm):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
-        self.locomocao.giro(pwm*direcao)
+        self.motores.giro(pwm*direcao)
         wait()
 
     # Manobra + Arco => segue reto por alguns segundos e executa um arco
@@ -95,12 +95,11 @@ class Estrategia(Locomocao):
         velocidade_linear = 100
         velocidade_angular = 15 * direcao
         giro_sentido_oposto = 100 * -direcao
-        self.locomocao.reta()
+        self.motores.reta()
         wait(200)
-        self.locomocao.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+        self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         wait(1000) # alterar tempo
-        self.locomocao.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        wait() # Alterar tempo 
+        self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente 
         
    
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
@@ -110,20 +109,21 @@ class Estrategia(Locomocao):
         velocidade_linear = 100
         velocidade_angular = 15 * direcao
         giro_mesmo_sentido = 100 * direcao # valor para girar o robô no mesmo sentido que a direção da estrategia 
-        self.locomocao.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+        self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         wait() # Alterar Tempo
-        self.locomocao.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         
     def full_frente_honesta(self):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
-        self.locomocao.reta()
+        self.motores.reta()
         wait()
 
     # Armadilha reta -
     def baby_come_back(self, pwm):
         """"O robô pode estar posicionado de qualquer forma, mas longe da borda da arena. Inicia dando uma ré, totalmente reta"""
-        
+        pass
+
     # Manobra + Arco invertida
     def capitalismo(self, direcao):
         """"O robô é posicionado de frente um pouco mais no centro na arena. Inicialmente vai para trás ( da ré). 
@@ -132,24 +132,12 @@ class Estrategia(Locomocao):
         velocidade_linear = 100
         velocidade_angular = 15 * direcao
         giro_mesmo_sentido = 100 * direcao
-        self.locomocao.reta(-100)
+        self.motores.reta(-100)
         wait(200)
-        self.locomocao.arco(-velocidade_linear, velocidade_angular) #
+        self.motores.arco(-velocidade_linear, velocidade_angular) #
         wait(1000) # alterar tempo
-        self.locomocao.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait() # Alterar tempo
-
-
-        
-
-    
-        
-        
-
-    
-   
-    
-    
 
     # ==================================================================================================
     
