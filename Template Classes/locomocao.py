@@ -47,7 +47,7 @@ class Locomocao():
         for porta in motores_direita: 
             self.motores_direita.append(Motor(self.seleciona_porta(porta)))
 
-        if servo_motores != None and len(servo_motores) != 0:
+        if servo_motores != None:
             for porta in servo_motores:
                 self.servo_motores.append(Motor(self.seleciona_porta(porta)))
 

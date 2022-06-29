@@ -76,9 +76,9 @@ class Estrategia():
         velocidade_angular = 15 * direcao
         giro_sentido_oposto = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1000) # o tempo pode variar para cada robô
+        wait(4000) # o tempo pode variar para cada robô
         self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        wait(150) # o tempo pode variar para cada robô
+        wait(1500) # o tempo pode variar para cada robô
     
 
     def bixo_piruleta(self, direcao, pwm):

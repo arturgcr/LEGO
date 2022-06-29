@@ -26,8 +26,8 @@ def main ():
     temporizador = StopWatch()
     
     # -> Instanciando e listando Sensores (SensorLEGO):
-    _sensor1 = SensorLEGO('ultrassom', 1, 'esquerda')
-    _sensor2 = SensorLEGO('ultrassom', 2, 'direita')
+    _sensor1 = SensorLEGO('ultrassonico', 1, 'esquerda')
+    _sensor2 = SensorLEGO('ultrassonico', 2, 'direita')
     lista_de_sensores = [_sensor1, _sensor2]
     limiar = 40
 
@@ -35,7 +35,7 @@ def main ():
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
     motores_direita = ['C', 'D'] # lista com portas dos motores da direita
     servo_motores = [] # lista com portas dos servo-motores - Apenas para o caso da Violeta
-    _motores = Locomocao(motores_direita, motores_esquerda, 'ALL') # precisa comportar servo-motores
+    _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
     
     # Instanciando Setup:
     _inicio = Inicializacao()

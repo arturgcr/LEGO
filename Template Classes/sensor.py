@@ -1,7 +1,7 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.ev3devices import InfraredSensor, UltrasonicSensor # ultrassônico da violeta
+from pybricks.nxtdevices import UltrasonicSensor as nxtUltrasonicSensor # esse é o ultrassônico do treta
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
@@ -17,7 +17,6 @@ class SensorLEGO():
     Responsável por instanciar um sensor, definindo: tipo (str: `ultrassonico` ou `infravermelho`), porta (int: `1`, `2`, `3` ou `4`), a posição (str: `esquerda` ou `direita`) e o tamanho do filtro (`int`, por padrão recebe `None`)do sensor.
     '''
     def __init__(self, tipo, porta, posicao, tamanho_filtro=1):
-
         # Instanciando classe Port de acordo com a porta recebida no construtor
         if porta == 1:
             porta = Port.S1
@@ -27,20 +26,24 @@ class SensorLEGO():
             porta = Port.S3
         elif porta == 4:
             porta = Port.S4
+
+        self.sensor = None
         
         # Instanciando a classe correspondente ao sensor, cedendo a Port selecionada como argumento
-        if tipo == 'ultrassonico' or 'ultrasonic':
-            self.sensor = UltrasonicSensor(porta)
-        if tipo == 'infravermelho' or 'infrared':
+        if tipo == 'ultrassonico':
+            try: # se for o sensor ev3 (Violeta)
+                self.sensor = UltrasonicSensor(porta)
+            except: # se for o sensor nxt (Treta)
+                self.sensor = nxtUltrasonicSensor(porta)
+        
+        elif tipo == 'infravermelho':
             self.sensor = InfraredSensor(porta)
 
-        self.posicao = posicao # posição do sensor na estrutura do robô: 'esquerda' ou 'direita'
+        self.posicao = posicao # posição do sensor na estrutura do robô: 'esquerda' ou 'direita'        
         self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
-        
         # guarda o valor numérico da última medição autorizada pelos filtros
         self.ultima_medicao_autorizada = 0 # essencial para organizar o cálculo do erro
 
-    
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
     # Caso receba 0, não cria o filtro
     def criando_filtro(self, tamanho_filtro):
@@ -51,6 +54,7 @@ class SensorLEGO():
             return None
     
     # Função que vai decidir como vai ser a medição do sensor, tornando a classe modular
+    # Não está funcionando
     def medicao(self):
         if isinstance(self.sensor, (UltrasonicSensor, InfraredSensor)):
             distancia = self.sensor.distance()
@@ -75,7 +79,7 @@ class SensorLEGO():
     
     # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
     def enxergando(self, limiar):
-        medicao = self.medicao()
+        medicao = self.sensor.distance()
         if medicao < limiar:
             if self.filtro != None:
                 if self.filtrar():

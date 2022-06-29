@@ -53,7 +53,7 @@ class Inicializacao():
         '''
         # Na selecao da correcao, o brick ira piscar uma luz na cor roxa
 
-        ev3.light.blink(Color.PURPLE, [250, 250])
+        ev3.light.on(Color.RED)
             
         # Enquanto algum botao nao for apertado
         while True:
@@ -73,7 +73,7 @@ class Inicializacao():
             elif self.botao_baixo in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'desempate'
                 break
-        wait(1)
+        wait(1000)
 
     # descobrir botao direcao e estrategia
     def selecionar_estrategia_inicial(self): # Segunda selecao 
@@ -85,7 +85,7 @@ class Inicializacao():
         if self.estrategia_inicial_selecionada == 'padrao':
             # Na selecao das estrategias padroes, o brick ira piscar uma luz na cor ciano
 
-            ev3.light.blink(Color.CYAN, [250, 250])
+            ev3.light.on(Color.GREEN)
 
             # Enquanto algum botao nao for apertado
             while True:
@@ -109,21 +109,21 @@ class Inicializacao():
         elif self.estrategia_inicial_selecionada == 'desempate':
             # Na selecao das estrategias de desempate, o brick ira piscar uma luz na cor vermelha
 
-            ev3.light.blink(Color.RED, [250, 250])
+            ev3.light.on(Color.GREEN)
 
             # Enquanto algum botao nao for apertado
             while True:
                 if self.botao_central in ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada = 'giro_eixo'
                     break
-        wait(1)
+        wait(1000)
 
     def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
         '''
         Seleciona a direção para onde a estratégia inicial será executada: (-1) `esquerda` ou (1) `direita`.
         ''' 
         
-        ev3.light.blink(Color.YELLOW, [500, 500])
+        ev3.light.on(Color.RED)
 
         while True:
             if self.botao_direito in ev3.buttons.pressed(): 
@@ -141,13 +141,13 @@ class Inicializacao():
             elif self.botao_cima in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'full_frente_honesto'
                 break
-        wait(1)      
+        wait(1000)      
     
     def selecionar_direcao_sensoriamento(self):
         '''
         Seleciona a direção para onde o sensoriamento irá iniciar quando entrar no loop de perseguição do adversário. Essa direção só será utilizada até a primeira detecção do adversário. Essa é a última etapa da seleção de estratégia.
         '''
-        ev3.light.blink(Color.BLUE[500,500])
+        ev3.light.on(Color.GREEN)
         wait(10000)
 
         while True:
@@ -158,4 +158,5 @@ class Inicializacao():
                 self.direcao_sensoriamento_inicial = -1 #esquerda (Sentido anti horario) 
                 break
             
-        ev3.light.on(Color.GREEN)
+        ev3.light.on(Color.RED)
+        wait(1000)

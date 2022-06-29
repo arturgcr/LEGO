@@ -39,7 +39,7 @@ class PID:
             
         # Redefine erro e tempo anterior para o cálculo da próxima iteração
         self.erro_anterior = erro # erro atual passa a ser o erro anterior
-        self.tempo_anterior = StopWatch.time() # marca um novo tempo para o tempo anterior
+        self.tempo_anterior = self.temporizador.time() # marca um novo tempo para o tempo anterior
 
         # Retorna o valor de PID
         return PID
