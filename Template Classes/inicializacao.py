@@ -123,7 +123,7 @@ class Inicializacao():
         Seleciona a direção para onde a estratégia inicial será executada: (-1) `esquerda` ou (1) `direita`.
         ''' 
         
-        ev3.light.blink(Color.BLUE, [500, 500])
+        ev3.light.blink(Color.YELLOW, [500, 500])
 
         while True:
             if self.botao_direito in ev3.buttons.pressed(): 
