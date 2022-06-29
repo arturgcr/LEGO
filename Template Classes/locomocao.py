@@ -19,7 +19,7 @@ class Locomocao():
 
     Responsável por instanciar motores e controlar seus movimentos.
     '''
-    def __init__(self, motores_direita, motores_esquerda, invertido = 'DEFAULT'):
+    def __init__(self, motores_direita, motores_esquerda, servo_motores = None, invertido = 'ALL'):
         """
         Método construtor que recebe uma lista de strings com as portas
         dos motores da direita, outra lista com os motores da esquerda e
@@ -31,11 +31,10 @@ class Locomocao():
 
         Self@Locomocao, list[str], list[str], str -> None
         """
-        # Atributo para armazenar os motores esquerdos
+        # Atributo para armazenar os motores e servo-motores
         self.motores_esquerda = []
-
-        # Atributo para armazenar os motores direitos
         self.motores_direita = []
+        self.servo_motores = []
 
         # Atributo para armazenar se o sentido dos motores é invertido ou não
         self.invertido = invertido
@@ -47,6 +46,10 @@ class Locomocao():
         # Adiciona no atributo "self.motores_direita" os motores direitos com suas respectivas portas
         for porta in motores_direita: 
             self.motores_direita.append(Motor(self.seleciona_porta(porta)))
+
+        if servo_motores != None and len(servo_motores) != 0:
+            for porta in servo_motores:
+                self.servo_motores.append(Motor(self.seleciona_porta(porta)))
 
         # Controle de inversão dos motores:
         # - "ALL"        -> todos invertidos;
@@ -94,6 +97,13 @@ class Locomocao():
         """
         for motor in self.motores_direita:
             motor.dc(-pwm * self.sentido_direita)
+
+    def servo_motor_libera_rampa(self):
+        '''
+        Move o servo-motor responsável por liberar a rampa da violeta. Atualmente, está configurado para gerar 180° no sentido anti-horário (-180). Com a adição de mais servos-motores, esse método precisará ser revisto.
+        '''
+        for servo_motor in self.servo_motores:
+            servo_motor.angle(-180) # acho que dessa forma, vai girar 180° no sentido anti-horário
 
     def mapy(self, valor_a_ser_convertido, minimo_da_entrada, maximo_da_entrada, minimo_da_saida,  maximo_da_saida):
         """
