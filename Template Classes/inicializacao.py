@@ -8,7 +8,7 @@ pressionamento de botões.
 
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Buttons, Color
+from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
@@ -31,11 +31,11 @@ class Inicializacao():
         '''
 
         # Botoes do Brick considerando que o Brick tá de lado e com tela para direita do piloto
-        self.botao_central  = Buttons.CENTER
-        self.botao_direito  = Buttons.UP    # Botão para direita é o botão de cima com o Brick de lado
-        self.botao_esquerdo = Buttons.DOWN  # Botao para esquerda é o botao de baixo  do brick de Lado 
-        self.botao_cima     = Buttons.LEFT  # Botao para cima é o botao da esquerda do brick virado de lado 
-        self.botao_baixo    = Buttons.RIGHT # Botao para baixo é o botao da esquerda do brick virado para o lado direito
+        self.botao_central  = Button.CENTER
+        self.botao_direito  = Button.UP    # Botão para direita é o botão de cima com o Brick de lado
+        self.botao_esquerdo = Button.DOWN  # Botao para esquerda é o botao de baixo  do brick de Lado 
+        self.botao_cima     = Button.LEFT  # Botao para cima é o botao da esquerda do brick virado de lado 
+        self.botao_baixo    = Button.RIGHT # Botao para baixo é o botao da esquerda do brick virado para o lado direito
 
         # Atributo que define o angulo que o robo gira na correcao
         self.angulo_correcao = 0
@@ -123,7 +123,7 @@ class Inicializacao():
         Seleciona a direção para onde a estratégia inicial será executada: (-1) `esquerda` ou (1) `direita`.
         ''' 
         
-        blink[500,500]
+        ev3.light.blink(Color.YELLOW, [500, 500])
 
         while True:
             if self.botao_direito in ev3.buttons.pressed(): 
