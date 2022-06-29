@@ -11,7 +11,7 @@ ev3 = EV3Brick()
 
 class PID:
     
-    def __init__(self, kp, kd, ki):
+    def __init__(self, kp, kd, ki, temporizador):
         # Definindo as constantes
         self.kp = kp # constante proporcional
         self.ki = ki # constante integral
@@ -22,13 +22,14 @@ class PID:
         self.integral = 0
         self.derivativa = 0
         
+        self.temporizador = temporizador
         self.erro_anterior = 0 # erro da iteração anterior
         self.tempo_anterior = 0 # tempo para o cálculo da variação de tempo
 
     # junção entre PID e verificaPerto
     def calcula_pid(self, erro):
         # Marca o tempo atual menos o tempo anterior para encontrar a variação de tempo entre iterações
-        diferenca_tempo = StopWatch.time() - self.tempo_anterior
+        diferenca_tempo = self.temporizador.time() - self.tempo_anterior
         
         # Calcula novos valores para as variáveis com base no novo erro
         self.proporcional = self.kp * erro

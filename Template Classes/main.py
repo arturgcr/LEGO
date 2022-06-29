@@ -23,6 +23,7 @@ def main ():
     kp = 2
     ki = 0
     kd = 1.2
+    temporizador = StopWatch()
     
     # -> Instanciando e listando Sensores (SensorLEGO):
     _sensor1 = SensorLEGO('ultrassom', 1, 'esquerda')
@@ -70,7 +71,7 @@ def main ():
 
     # Instanciando PID -----------------------------------------------------
     # Recebe apenas kp, kd e ki -> caso não queira calcular algum, basta colocar 0 no seu valor
-    _pid = PID(kp, kd, ki)
+    _pid = PID(kp, kd, ki, temporizador)
     # ----------------------------------------------------------------------
 
     # Entra no loop de busca por adversário -----------------------------------------
