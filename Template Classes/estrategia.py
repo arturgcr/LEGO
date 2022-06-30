@@ -66,8 +66,8 @@ class Estrategia():
             self.full_frente_honesto(direcao_estrategia_inicial)
 
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
-    def executa_estrategia_perseguicao(self, direcao_oponente, pid_convertido_pwm):
-        self.radar(direcao_oponente, pid_convertido_pwm)
+    def executa_estrategia_perseguicao(self, pid_convertido_pwm):
+        self.radar(pid_convertido_pwm)
             
     
     # =================================== Estratégias Iniciais =========================================
@@ -146,16 +146,13 @@ class Estrategia():
     
     # ============================ Estratégias de Perseguição ========================================== 
     # gira ao redor de si até encontrar algo
-    def radar(self, direcao_oponente, pwm):
+    def radar(self, pwm):
         # Gira no sentido anti-horário com potência determinada pelo PID
-        if direcao_oponente < 0:
-            self.motores.giro(direcao_oponente * pwm) # direcao_oponente = -1
+        if pwm != 0:
+            self.motores.giro(pwm) # direcao_oponente = -1
         # Full frente com potência máxima, desconsiderando PID
-        if direcao_oponente == 0:
-            self.motores.reta()
-        # Gira no sentido horário com potência determinada pelo PID
-        if direcao_oponente > 0:
-            self.motores.giro(direcao_oponente * pwm) # direcao_oponente = 1
+        if pwm == 0:
+            self.motores.reta(100)
     # ==================================================================================================
 
     """ # vai andando em arcos ate encontrar algo
