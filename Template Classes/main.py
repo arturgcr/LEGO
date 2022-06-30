@@ -77,25 +77,20 @@ def main ():
     while True:
         # Lê os sensores de oponente
         _sensor_oponente.lerSensores()
-        print('li os sensores')
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
             pid = _pid.calcula_pid(_sensor_oponente.erro)
             pid_constrained = constrainpy(_pid.calcula_pid(_sensor_oponente.erro), -60, 60)
-            print('pid constrained:' + str(pid_constrained))
             _motores.locomover(100, pid_constrained)
-            print('estou me movimentando')
         # Caso contrário, faz a busca
         else:
             # Faz a busca
             _motores.locomover(0, 80 * _sensor_oponente.visto_por_ultimo)
-            print('estou buscando')
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()
-            print('resentando o pid')
     # -------------------------------------------------------------------------------
 
 if __name__ == '__main__':
