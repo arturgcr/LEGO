@@ -63,7 +63,7 @@ class SensorLEGO():
     # funcão que verifica se o resultado eh vdd ou falso (sensores naturalmente tem um acumulo
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
-        for leitura_filtro in range(self.filtro):
+        for leitura_filtro in range(len(self.filtro)):
             medicao = self.medicao()
             if medicao == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
                 medicao = False
