@@ -1,16 +1,16 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
+from ferramentas import *
+
 ev3 = EV3Brick()
 
-from sensor import SensorLEGO
-from sensoriamento import Sensoriamento
+from sensor import SensorDeOponente
 from locomocao import Locomocao
 from inicializacao import Inicializacao
 from estrategia import Estrategia
@@ -25,11 +25,15 @@ def main ():
     kd = 1.2
     temporizador = StopWatch()
     
-    # -> Instanciando e listando Sensores (SensorLEGO):
-    _sensor1 = SensorLEGO('ultrassonico', 1, 'esquerda')
-    _sensor2 = SensorLEGO('ultrassonico', 2, 'direita')
-    lista_de_sensores = [_sensor1, _sensor2]
-    limiar = 40
+    # Define os sensores de oponente com suas respectivas portas
+    sensoresDeOponente = {"esquerdo": 1, "direito": 2}
+
+    # Define o peso de cada sensor
+    pesoDosSensoresDeOponente = {"esquerdo": -1, "direito": 1}
+    
+    # Define o objeto dos sensores de oponente
+    oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
+
 
     # -> Instanciando Motores (Locomocao):
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
@@ -55,18 +59,13 @@ def main ():
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     # Aguardando 5 segundos para o início da movimentação do robô
-    wait(5) # Função do Pybricks que é similar a time.sleep() do Python
+    wait(5000) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
     _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
     # Executa a estratégia inicial sem fazer nenhum sensoriamento
     _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
-    # ----------------------------------------------------------------------
-
-    # Instanciando Sensoriamento -------------------------------------------
-    #Recebe lista_de_sensores, limiar, direcao_sensoriamento_inicial
-    _sensoriamento = Sensoriamento(lista_de_sensores, limiar, direcao_sensoriamento_inicial)
     # ----------------------------------------------------------------------
 
     # Instanciando PID -----------------------------------------------------
@@ -76,17 +75,24 @@ def main ():
 
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
-        # Retorna a direção em que o oponente foi detectado [-1, 0, 1] -> esquerda, centro, direita
-        direcao_oponente = _sensoriamento.busca_oponente()
-        # erro vai de [0,limiar], já que no cálculo ficamos apenas com o valor absoluto
-        erro = _sensoriamento.erro
-        # calcula_pid recebe erro [0,limiar]
-        pid = _pid.calcula_pid(erro)
-        # Convertendo PID [0, erro * kp] para PWM [0, 100]
-        pid_convertido_pwm = _pid.converte_pid_para_pwm(pid)
-        # Recebe a direcao_oponente (-1, 0, 1) e valor pid convertido para pwm [0, 100]
-        # O sentido de rotação será decidido (direção_oponente != 0 * pid_convertido_pwm)
-        _estrategia.executa_estrategia_perseguicao(direcao_oponente, pid_convertido_pwm)
+        # Lê os sensores de oponente
+        oponente.lerSensores()
+        print('li os sensores')
+
+        # Verifica se o oponente foi detectado
+        if oponente.oponenteDetectado == True:
+            # Se foi detectado, calcula o PID e joga na velocidade angular
+            _motores.locomover(-100, constrainpy(_pid.calcula_pid(oponente.erro), -60, 60))
+            print('estou me movimentando')
+        # Caso contrário, faz a busca
+        else:
+            # Faz a busca
+            _motores.locomover(0, 1)
+            print('estou buscando')
+
+            # Reseta os atributos do PID
+            _pid.resetar_atributos()
+            print('resentando o pid')
     # -------------------------------------------------------------------------------
 
 if __name__ == '__main__':
