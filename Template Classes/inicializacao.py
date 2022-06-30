@@ -85,21 +85,21 @@ class Inicializacao():
         if self.estrategia_inicial_selecionada == 'padrao':
             # Na selecao das estrategias padroes, o brick ira piscar uma luz na cor ciano
 
-            ev3.light.on(Color.GREEN)
+            ev3.light.on(Color.ORANGE)
 
             # Enquanto algum botao nao for apertado
             while True:
                 if self.botao_cima in ev3.buttons.pressed():
-                    self.estrategia_inicial_selecionada = '???'
+                    self.estrategia_inicial_selecionada = 'moonwalk'
                     break
                 elif self.botao_baixo in ev3.buttons.pressed(): 
-                    self.estrategia_inicial_selecionada = 'manobra_arco_invertido'
+                    self.estrategia_inicial_selecionada = 'arco'
                     break
                 elif self.botao_esquerdo in ev3.buttons.pressed():
-                    self.estrategia_inicial_selecionada  = 'manobra_arco'
+                    self.estrategia_inicial_selecionada  = 'comunismo'
                     break
                 elif self.botao_direito in ev3.buttons.pressed():
-                    self.estrategia_inicial_selecionada  = 'arco'
+                    self.estrategia_inicial_selecionada  = 'capitalismo'
                     break
                 elif self.botao_central in ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada  = 'armadilha_arco'
@@ -123,7 +123,7 @@ class Inicializacao():
         Seleciona a direção para onde a estratégia inicial será executada: (-1) `esquerda` ou (1) `direita`.
         ''' 
         
-        ev3.light.on(Color.RED)
+        ev3.light.on(Color.GREEN)
 
         while True:
             if self.botao_direito in ev3.buttons.pressed(): 

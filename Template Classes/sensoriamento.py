@@ -42,6 +42,7 @@ class Sensoriamento():
                 enxergando_inimigo += 1
                 nao_viu_nada = False
                 medicoes_sensores_direita.append(sensor.ultima_medicao_autorizada)
+                print(medicoes_sensores_direita)
 
         for sensor in self.sensores_esquerda:
             if sensor.enxergando(self.limiar):
