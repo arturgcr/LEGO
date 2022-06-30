@@ -1,4 +1,5 @@
 #!/usr/bin/env pybricks-micropython
+
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import InfraredSensor, UltrasonicSensor # ultrassônico da violeta
 from pybricks.nxtdevices import UltrasonicSensor as nxtUltrasonicSensor # esse é o ultrassônico do treta
@@ -7,42 +8,97 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-ev3 = EV3Brick()
-
-
-class SensorLEGO():
+class SensorDeOponente():
     '''
     Módulo de SensorLEGO
     --------------------
     Responsável por instanciar um sensor, definindo: tipo (str: `ultrassonico` ou `infravermelho`), porta (int: `1`, `2`, `3` ou `4`), a posição (str: `esquerda` ou `direita`) e o tamanho do filtro (`int`, por padrão recebe `None`)do sensor.
     '''
-    def __init__(self, tipo, porta, posicao, tamanho_filtro=1):
-        # Instanciando classe Port de acordo com a porta recebida no construtor
-        if porta == 1:
-            porta = Port.S1
-        elif porta == 2:
-            porta = Port.S2
-        elif porta == 3:
-            porta = Port.S3
-        elif porta == 4:
-            porta = Port.S4
+    def __init__(self, sensores, pesos, tipo, tamanho_filtro=1):
+        """
+        Self, dict[str, int], dict[str, int], str -> None
+        """
+        # Atributo para armazenar os sensores de oponente
+        self.sensores = sensores
 
-        self.sensor = None
-        
-        # Instanciando a classe correspondente ao sensor, cedendo a Port selecionada como argumento
-        if tipo == 'ultrassonico':
-            try: # se for o sensor ev3 (Violeta)
-                self.sensor = UltrasonicSensor(porta)
-            except: # se for o sensor nxt (Treta)
-                self.sensor = nxtUltrasonicSensor(porta)
-        
-        elif tipo == 'infravermelho':
-            self.sensor = InfraredSensor(porta)
+        # Atributo para armazenar os pesos dos sensores de oponente
+        self.pesoDosSensores = pesos
 
-        self.posicao = posicao # posição do sensor na estrutura do robô: 'esquerda' ou 'direita'        
+        # Atributo para armazenar o tipo dos sensores de oponente
+        self.tipo = tipo
+
+        # Atributo para armazenar as leituras dos sensores
+        self.leituraDosSensores = {}
+        # Inicia todos os sensores como "False"
+        for sensor in sensores:
+            self.leituraDosSensores[sensor] = False
+
+        # Atributo que armazena se o oponente foi detectado ou não
+        self.oponenteDetectado = False
+
+        # Atributo que armazena o erro dos sensores
+        self.erro = 0;
+
+        # Define as portas de cada sensor
+        for sensor in sensores:
+            if self.sensores[sensor] == 1:
+                self.sensores[sensor] = Port.S1
+            elif self.sensores[sensor] == 2:
+                self.sensores[sensor] = Port.S2
+            elif self.sensores[sensor] == 3:
+                self.sensores[sensor] = Port.S3
+            elif self.sensores[sensor] == 4:
+                self.sensores[sensor] = Port.S4
+
+        # Define o objeto de cada sensor
+        if self.tipo == "ultrassonico":
+            for sensor in sensores:
+                self.sensores[sensor] = UltrasonicSensor(self.sensores[sensor])
+        elif self.tipo == "nxtultrassonico":
+            for sensor in sensores:
+                self.sensores[sensor] = nxtUltrasonicSensor(self.sensores[sensor])
+        elif self.tipo == "infravermelho":
+            for sensor in sensores:
+                self.sensores[sensor] = InfraredSensor(self.sensores[sensor])
+
         self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
         # guarda o valor numérico da última medição autorizada pelos filtros
         self.ultima_medicao_autorizada = 0 # essencial para organizar o cálculo do erro
+
+    def lerSensores(self, limiar = 40):
+        # Passa por todos os sensores e verifica se o oponente foi detectado ou não
+        for sensor in self.sensores:
+            if self.sensores[sensor].distance() < limiar:
+                self.leituraDosSensores[sensor] = True
+            else:
+                self.leituraDosSensores[sensor] = False
+
+        # Atualiza o atributo que armazena se o oponente foi detectado ou não
+        self.oponenteDetectado = True in self.leituraDosSensores.values()
+
+        # Caso o oponente tenha sido detectado, calcula o erro dos sensores
+        if self.oponenteDetectado == True:
+            self.erro = self.calcularErro()
+
+    def calcularErro(self):
+        # Variável para armazenar a soma dos pesos dos sensores que detectaram o oponente
+        soma = 0
+
+        # Variável para armazenar o número de sensores que detectaram o oponente
+        numeroDeDeteccoes = 0
+
+        # Passa por todos os sensores
+        for sensor in self.sensores:
+            # Verifica se o sensor detectou o oponente
+            if self.leituraDosSensores[sensor] == True:
+                # Soma o peso do sensor na soma dos pesos dos sensores que detectaram o oponente
+                soma += self.pesoDosSensores[sensor]
+
+                # Incrementa 1 no número de detecções
+                numeroDeDeteccoes += 1
+
+        # Retorna a média ponderada dos sensores que detectaram o oponente
+        return soma / numeroDeDeteccoes
 
     # Recebe o tamanho do filtro e cria uma lista de tamanho igual
     # Caso receba 0, não cria o filtro
@@ -90,4 +146,3 @@ class SensorLEGO():
             return True
         else:
             return False
-

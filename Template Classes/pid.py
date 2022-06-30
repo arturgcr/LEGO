@@ -50,6 +50,11 @@ class PID:
         # Retorna o valor de PID
         return resultado_do_pid
 
+    def resetar_atributos(self):
+        self.integral = 0
+        self.erro_anterior = 0
+        self.tempo_anterior = 0
+
     # Vai converter pid para pwm de [0,100], pois o sinal do pwm será determinado pela direção do oponente
     # No cálculo do erro em Sensoriamento, o valor do erro é absoluto e de [0,limiar] (limiar=40)
     # A direção do oponente será -1 ou 1, caso ela seja 0, o PID não será considerado no full frente 
