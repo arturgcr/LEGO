@@ -86,7 +86,7 @@ class Locomocao():
         Self@Locomocao, int -> None
         """
         for motor in self.motores_esquerda:
-            motor.dc(-pwm * self.sentido_esquerda)
+            motor.dc(pwm * self.sentido_esquerda)
 
     def aplicar_roda_direita(self, pwm):
         """
@@ -96,7 +96,7 @@ class Locomocao():
         Self@Locomocao, int -> None
         """
         for motor in self.motores_direita:
-            motor.dc(-pwm * self.sentido_direita)
+            motor.dc(pwm * self.sentido_direita)
 
     def servo_motor_libera_rampa(self):
         '''
@@ -127,6 +127,8 @@ class Locomocao():
         # Realiza os cálculos da mixagem
         pwm_roda_esquerda = velocidade_linear + velocidade_angular
         pwm_roda_direita  = velocidade_linear - velocidade_angular
+        print('pwm_esquerda: ' + str(pwm_roda_esquerda))
+        print('pwm_direita: ' + str(pwm_roda_direita))
 
         # Converte de volta para o intervalo [-100, 100]
         pwm_roda_esquerda = int(self.mapy(pwm_roda_esquerda, -200, 200, -100, 100))

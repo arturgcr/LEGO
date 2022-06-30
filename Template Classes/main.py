@@ -26,13 +26,13 @@ def main ():
     temporizador = StopWatch()
     
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
-    sensoresDeOponente = {"esquerdo": 1, "direito": 2}
+    sensoresDeOponente = {"esquerdo": 2, "direito": 1}
 
     # Define o peso de cada sensor  \ define qual sensor ta vendo
-    pesoDosSensoresDeOponente = {"esquerdo": -1, "direito": 1}
+    pesoDosSensoresDeOponente = {"esquerdo": -100, "direito": 100}
     
     # Define o objeto dos sensores de oponente
-    _oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
+    _sensor_oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
 
 
     # -> Instanciando Motores (Locomocao):
@@ -76,22 +76,21 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _oponente.lerSensores()
+        _sensor_oponente.lerSensores()
         print('li os sensores')
 
         # Verifica se o oponente foi detectado
-        if _oponente.oponenteDetectado == True:
+        if _sensor_oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
-            pid = _pid.calcula_pid(_oponente.erro)
-            pid_constrained = constrainpy(_pid.calcula_pid(_oponente.erro), -60, 60)
+            pid = _pid.calcula_pid(_sensor_oponente.erro)
+            pid_constrained = constrainpy(_pid.calcula_pid(_sensor_oponente.erro), -60, 60)
             print('pid constrained:' + str(pid_constrained))
-            # _estrategia.executa_estrategia_perseguicao(constrainpy(pid, -100, 100))
-            _motores.locomover(-100, pid_constrained)
+            _motores.locomover(100, pid_constrained)
             print('estou me movimentando')
         # Caso contrário, faz a busca
         else:
             # Faz a busca
-            _motores.locomover(0, 1)
+            _motores.locomover(0, 80 * _sensor_oponente.visto_por_ultimo)
             print('estou buscando')
 
             # Reseta os atributos do PID

@@ -61,20 +61,26 @@ class SensorDeOponente():
             for sensor in sensores:
                 self.sensores[sensor] = InfraredSensor(self.sensores[sensor])
 
-        self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
+        # guarda a última direção que foi detectado
+        self.visto_por_ultimo = -1
+        # guarda o valor que será usado para o tamanho do filtro durante a leitura dos sensores
+        self.tamanho_filtro = tamanho_filtro
         # guarda o valor numérico da última medição autorizada pelos filtros
         self.ultima_distancia_autorizada = 0 # essencial para organizar o cálculo do erro
 
     def lerSensores(self, limiar = 400):
         # Passa por todos os sensores e verifica se o oponente foi detectado ou não
         for sensor in self.sensores:
-            if self.sensores[sensor].distance() < limiar:
-                print('leitura do sensor:' + str(self.sensores[sensor].distance()))
+            filtro = [0] * self.tamanho_filtro
+            leitura = bool(self.sensores[sensor].distance() < limiar) 
+            if leitura:
+                for leitura_filtro in filtro:
+                    nova_leitura = bool(self.sensores[sensor].distance() < limiar)
+                    if nova_leitura == False:
+                        self.leituraDosSensores[sensor] = False
                 self.leituraDosSensores[sensor] = True
-                print('li o sensor')
             else:
                 self.leituraDosSensores[sensor] = False
-                print('não li o sensor')
         # Atualiza o atributo que armazena se o oponente foi detectado ou não
         self.oponenteDetectado = True in self.leituraDosSensores.values()
 
@@ -98,53 +104,53 @@ class SensorDeOponente():
 
                 # Incrementa 1 no número de detecções
                 numeroDeDeteccoes += 1
-
+        self.visto_por_ultimo = soma
         # Retorna a média ponderada dos sensores que detectaram o oponente
         return soma / numeroDeDeteccoes
 
-    # Recebe o tamanho do filtro e cria uma lista de tamanho igual
-    # Caso receba 0, não cria o filtro
-    def criando_filtro(self, tamanho_filtro):
-        if tamanho_filtro != 0:
-            filtro = [0] * tamanho_filtro
-            return filtro
-        else:
-            return None
+    # # Recebe o tamanho do filtro e cria uma lista de tamanho igual
+    # # Caso receba 0, não cria o filtro
+    # def criando_filtro(self, tamanho_filtro):
+    #     if tamanho_filtro != 0:
+    #         filtro = [0] * tamanho_filtro
+    #         return filtro
+    #     else:
+    #         return None
     
-    # Função que vai decidir como vai ser a medição do sensor, tornando a classe modular
-    # Não está funcionando
-    def medicao(self):
-        if isinstance(self.sensor, (UltrasonicSensor, InfraredSensor)):
-            distancia = self.sensor.distance()
-            return distancia
+    # # Função que vai decidir como vai ser a medição do sensor, tornando a classe modular
+    # # Não está funcionando
+    # def medicao(self):
+    #     if isinstance(self.sensor, (UltrasonicSensor, InfraredSensor)):
+    #         distancia = self.sensor.distance()
+    #         return distancia
     
-    # funcão que verifica se o resultado eh vdd ou falso (sensores naturalmente tem um acumulo
-    # de erros com o tempo, resultando em falsos positivos e falsos negativos)
-    def filtrar(self):
-        for leitura_filtro in range(len(self.filtro)):
-            distancia = self.distancia()
-            if distancia == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
-                distancia = False
-            elif distancia != 0:
-                distancia = True
-            self.filtro[leitura_filtro] = distancia
-            if self.filtro[leitura_filtro] != self.filtro[0]:
-                break
-        if False not in self.filtro:
-            return True
-        else:
-            return False
+    # # funcão que verifica se o resultado eh vdd ou falso (sensores naturalmente tem um acumulo
+    # # de erros com o tempo, resultando em falsos positivos e falsos negativos)
+    # def filtrar(self):
+    #     for leitura_filtro in range(len(self.filtro)):
+    #         distancia = self.distancia()
+    #         if distancia == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
+    #             distancia = False
+    #         elif distancia != 0:
+    #             distancia = True
+    #         self.filtro[leitura_filtro] = distancia
+    #         if self.filtro[leitura_filtro] != self.filtro[0]:
+    #             break
+    #     if False not in self.filtro:
+    #         return True
+    #     else:
+    #         return False
     
-    # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
-    def enxergando(self, limiar):
-        distancia = self.sensor.distance()
-        if distancia < limiar:
-            if self.filtro != None:
-                if self.filtrar():
-                    self.ultima_distancia_autorizada = distancia
-                    return True
-                else:
-                    return False
-            return True
-        else:
-            return False
+    # # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
+    # def enxergando(self, limiar):
+    #     distancia = self.sensor.distance()
+    #     if distancia < limiar:
+    #         if self.filtro != None:
+    #             if self.filtrar():
+    #                 self.ultima_distancia_autorizada = distancia
+    #                 return True
+    #             else:
+    #                 return False
+    #         return True
+    #     else:
+    #         return False
