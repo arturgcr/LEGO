@@ -37,7 +37,7 @@ class SensorDeOponente():
         self.oponenteDetectado = False
 
         # Atributo que armazena o erro dos sensores
-        self.erro = 0;
+        self.erro = 0
 
         # Define as portas de cada sensor
         for sensor in sensores:
@@ -69,12 +69,11 @@ class SensorDeOponente():
         # Passa por todos os sensores e verifica se o oponente foi detectado ou não
         for sensor in self.sensores:
             if self.sensores[sensor].distance() < limiar:
-                print(self.sensores[sensor].distance())
+                print('leitura do sensor:' + str(self.sensores[sensor].distance()))
                 self.leituraDosSensores[sensor] = True
                 print('li o sensor')
             else:
                 self.leituraDosSensores[sensor] = False
-                print(self.sensores[sensor].distance())
                 print('não li o sensor')
         # Atualiza o atributo que armazena se o oponente foi detectado ou não
         self.oponenteDetectado = True in self.leituraDosSensores.values()

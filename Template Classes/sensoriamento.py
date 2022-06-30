@@ -49,7 +49,19 @@ class Sensoriamento():
                 enxergando_inimigo -= 1
                 nao_viu_nada = False
                 medicoes_sensores_esquerda.append(sensor.ultima_medicao_autorizada)
-        
+        # Se nenhum dos sensores viu, então retorna a direção de visto por último
+        if nao_viu_nada:
+            if self.visto_ultimo != None:
+                print('n viu nd')
+                print(self.visto_ultimo)
+                return self.visto_ultimo
+        else:
+            self.visto_ultimo = enxergando_inimigo
+            self.erro = self.calcula_erro(medicoes_sensores_esquerda, medicoes_sensores_direita)
+            print('viu algo')
+            print('enxergando_inimigo:', enxergando_inimigo)
+            return enxergando_inimigo
+
     def calcula_erro(self, medicoes_sensores_esquerda, medicoes_sensores_direita):  # o erro é dado pela diferença entre a medição dos sensores
         for medicao in medicoes_sensores_esquerda:
             soma_medicoes_esquerda += medicao
@@ -66,17 +78,3 @@ class Sensoriamento():
         print(self.erro)
         return self.erro
 
-        # Se nenhum dos sensores viu, então retorna a direção de visto por último
-        if nao_viu_nada:
-            if self.visto_ultimo != None:
-                print('n viu nd')
-                print(self.visto_ultimo)
-                return self.visto_ultimo
-        else:
-            self.visto_ultimo = enxergando_inimigo
-            self.erro = self.calcula_erro(medicoes_sensores_esquerda, medicoes_sensores_direita)
-            print('viu algo')
-            print('enxergando_inimigo:', enxergando_inimigo)
-            return enxergando_inimigo
-
-  

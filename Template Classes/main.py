@@ -25,14 +25,14 @@ def main ():
     kd = 1.2
     temporizador = StopWatch()
     
-    # Define os sensores de oponente com suas respectivas portas
+    # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
     sensoresDeOponente = {"esquerdo": 1, "direito": 2}
 
-    # Define o peso de cada sensor
+    # Define o peso de cada sensor  \ define qual sensor ta vendo
     pesoDosSensoresDeOponente = {"esquerdo": -1, "direito": 1}
     
     # Define o objeto dos sensores de oponente
-    oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
+    _oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
 
 
     # -> Instanciando Motores (Locomocao):
@@ -76,13 +76,17 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        oponente.lerSensores()
+        _oponente.lerSensores()
         print('li os sensores')
 
         # Verifica se o oponente foi detectado
-        if oponente.oponenteDetectado == True:
+        if _oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
-            _motores.locomover(-100, constrainpy(_pid.calcula_pid(oponente.erro), -60, 60))
+            pid = _pid.calcula_pid(_oponente.erro)
+            pid_constrained = constrainpy(_pid.calcula_pid(_oponente.erro), -60, 60)
+            print('pid constrained:' + str(pid_constrained))
+            # _estrategia.executa_estrategia_perseguicao(constrainpy(pid, -100, 100))
+            _motores.locomover(-100, pid_constrained)
             print('estou me movimentando')
         # Caso contrário, faz a busca
         else:

@@ -48,7 +48,6 @@ class PID:
         self.tempo_anterior = self.temporizador.time() # marca um novo tempo para o tempo anterior
 
         # Retorna o valor de PID
-        print('pid')
         return resultado_do_pid
 
     def resetar_atributos(self):
