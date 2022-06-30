@@ -121,6 +121,14 @@ class Estrategia():
         velocidade = 100 * abs(direcao)
         self.motores.reta(velocidade)
         wait(5000)
+    
+
+    def full_re_honesto(self, direcao):
+        '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
+            com essa manobra '''
+        velocidade = -100 * abs(direcao)
+        self.motores.reta(velocidade)
+        wait(5000)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):

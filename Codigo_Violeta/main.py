@@ -37,8 +37,8 @@ def main ():
 
     # -> Instanciando Motores (Locomocao):
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
-    motores_direita = ['C', 'D'] # lista com portas dos motores da direita
-    servo_motores = [] # lista com portas dos servo-motores - Apenas para o caso da Violeta
+    motores_direita = ['C'] # lista com portas dos motores da direita
+    servo_motores = ['D'] # lista com portas dos servo-motores - Apenas para o caso da Violeta
     _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
     
     # Instanciando Setup:
@@ -59,7 +59,6 @@ def main ():
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     _sensor_oponente.visto_por_ultimo = direcao_sensoriamento_inicial
-
     # Aguardando 5 segundos para o início da movimentação do robô
     wait(5000) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
@@ -89,11 +88,10 @@ def main ():
         # Caso contrário, faz a busca
         else:
             # Faz a busca
-            _motores.locomover(0, 0.70 * _sensor_oponente.visto_por_ultimo)
+            _motores.locomover(0, 80 * _sensor_oponente.visto_por_ultimo)
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()
-        print(_sensor_oponente.visto_por_ultimo)
     # -------------------------------------------------------------------------------
 
 if __name__ == '__main__':
