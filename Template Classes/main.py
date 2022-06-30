@@ -32,9 +32,8 @@ def main ():
     pesoDosSensoresDeOponente = {"esquerdo": -1, "direito": 1}
     
     # Define o objeto dos sensores de oponente
-    oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'ultrassonico')
+    oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
 
-    limiar = 40
 
     # -> Instanciando Motores (Locomocao):
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
@@ -60,7 +59,7 @@ def main ():
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     # Aguardando 5 segundos para o início da movimentação do robô
-    wait(5) # Função do Pybricks que é similar a time.sleep() do Python
+    wait(5000) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
     
     # Executando estratégia inicial ----------------------------------------
@@ -78,18 +77,22 @@ def main ():
     while True:
         # Lê os sensores de oponente
         oponente.lerSensores()
+        print('li os sensores')
 
         # Verifica se o oponente foi detectado
         if oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
-            _motores.locomover(100, constrainpy(_pid.calcula_pid(oponente.erro), -60, 60))
+            _motores.locomover(-100, constrainpy(_pid.calcula_pid(oponente.erro), -60, 60))
+            print('estou me movimentando')
         # Caso contrário, faz a busca
         else:
             # Faz a busca
             _motores.locomover(0, 1)
+            print('estou buscando')
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()
+            print('resentando o pid')
     # -------------------------------------------------------------------------------
 
 if __name__ == '__main__':

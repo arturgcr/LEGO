@@ -62,8 +62,9 @@ class Estrategia():
             self.manobra_arco()
         elif estrategia_inicial_selecionada == 'armadilha_arco':
             self.armadilha_arco()
-        elif estrategia_inicial_selecionada == 'radar':
-            self.radar(direcao_oponente, pid_convertido_pwm)
+        elif estrategia_inicial_selecionada == 'full_frente_honesto':
+            self.full_frente_honesto(direcao_estrategia_inicial)
+
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
     def executa_estrategia_perseguicao(self, direcao_oponente, pid_convertido_pwm):
         self.radar(direcao_oponente, pid_convertido_pwm)
@@ -114,11 +115,12 @@ class Estrategia():
         wait(3500) # Alterar Tempo
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         
-    def full_frente_honesta(self):
+    def full_frente_honesto(self, direcao):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
-        self.motores.reta()
-        wait()
+        velocidade = 100 * abs(direcao)
+        self.motores.reta(velocidade)
+        wait(5000)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):

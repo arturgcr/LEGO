@@ -63,16 +63,19 @@ class SensorDeOponente():
 
         self.filtro = self.criando_filtro(tamanho_filtro) # cria um filtro com o tamanho cedido
         # guarda o valor numérico da última medição autorizada pelos filtros
-        self.ultima_medicao_autorizada = 0 # essencial para organizar o cálculo do erro
+        self.ultima_distancia_autorizada = 0 # essencial para organizar o cálculo do erro
 
-    def lerSensores(self, limiar = 40):
+    def lerSensores(self, limiar = 400):
         # Passa por todos os sensores e verifica se o oponente foi detectado ou não
         for sensor in self.sensores:
             if self.sensores[sensor].distance() < limiar:
+                print(self.sensores[sensor].distance())
                 self.leituraDosSensores[sensor] = True
+                print('li o sensor')
             else:
                 self.leituraDosSensores[sensor] = False
-
+                print(self.sensores[sensor].distance())
+                print('não li o sensor')
         # Atualiza o atributo que armazena se o oponente foi detectado ou não
         self.oponenteDetectado = True in self.leituraDosSensores.values()
 
@@ -120,12 +123,12 @@ class SensorDeOponente():
     # de erros com o tempo, resultando em falsos positivos e falsos negativos)
     def filtrar(self):
         for leitura_filtro in range(len(self.filtro)):
-            medicao = self.medicao()
-            if medicao == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
-                medicao = False
-            elif medicao != 0:
-                medicao = True
-            self.filtro[leitura_filtro] = medicao
+            distancia = self.distancia()
+            if distancia == 0: # Converte o resultado para booleano, pq oq nos interessa é a presença apenas
+                distancia = False
+            elif distancia != 0:
+                distancia = True
+            self.filtro[leitura_filtro] = distancia
             if self.filtro[leitura_filtro] != self.filtro[0]:
                 break
         if False not in self.filtro:
@@ -135,11 +138,11 @@ class SensorDeOponente():
     
     # se filtro aprovado, confia no resultado e entra em def enxergando; enxergando afirma se ta vendo oponente ou nao
     def enxergando(self, limiar):
-        medicao = self.sensor.distance()
-        if medicao < limiar:
+        distancia = self.sensor.distance()
+        if distancia < limiar:
             if self.filtro != None:
                 if self.filtrar():
-                    self.ultima_medicao_autorizada = medicao
+                    self.ultima_distancia_autorizada = distancia
                     return True
                 else:
                     return False

@@ -48,27 +48,34 @@ class Sensoriamento():
                 enxergando_inimigo -= 1
                 nao_viu_nada = False
                 medicoes_sensores_esquerda.append(sensor.ultima_medicao_autorizada)
+        
+    def calcula_erro(self, medicoes_sensores_esquerda, medicoes_sensores_direita):  # o erro é dado pela diferença entre a medição dos sensores
+        for medicao in medicoes_sensores_esquerda:
+            soma_medicoes_esquerda += medicao
+            media_medicoes_esquerda = soma_medicoes_esquerda / len(medicoes_sensores_esquerda)
+            print('media medições esquerda:', media_medicoes_esquerda)
+
+        for medicao in medicoes_sensores_direita:
+            soma_medicoes_direita += medicao
+            media_medicoes_direita = soma_medicoes_direita / len(medicoes_sensores_direita)
+            print('media medições direita:', media_medicoes_direita)
+
+        self.erro = (media_medicoes_esquerda - media_medicoes_direita)  # está em mm
+        
+        print(self.erro)
+        return self.erro
 
         # Se nenhum dos sensores viu, então retorna a direção de visto por último
         if nao_viu_nada:
             if self.visto_ultimo != None:
-                ev3.light.on(Color.RED)
+                print('n viu nd')
+                print(self.visto_ultimo)
                 return self.visto_ultimo
         else:
             self.visto_ultimo = enxergando_inimigo
-            ev3.light.on(Color.GREEN)
             self.erro = self.calcula_erro(medicoes_sensores_esquerda, medicoes_sensores_direita)
+            print('viu algo')
+            print('enxergando_inimigo:', enxergando_inimigo)
             return enxergando_inimigo
 
-    def calcula_erro(self, medicoes_sensores_esquerda, medicoes_sensores_direita):  # o erro é dado pela diferença entre a medição dos sensores
-        for medicao in medicoes_sensores_esquerda:
-            soma_medicoes_esquerda += medicao
-            media_medicoes_esquerda = soma_medicoes_esquerda/len(medicoes_sensores_esquerda)
-
-        for medicao in medicoes_sensores_direita:
-            soma_medicoes_direita += medicao
-            media_medicoes_direita = soma_medicoes_direita/len(medicoes_sensores_direita)
-        
-        erro = abs(media_medicoes_esquerda - media_medicoes_direita)/100  # está em cm
-        
-        return erro
+  
