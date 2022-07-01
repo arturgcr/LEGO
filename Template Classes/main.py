@@ -66,9 +66,9 @@ def main ():
     
     # Executando estratégia inicial ----------------------------------------
     # if estrategia_inicial_selecionada != 'radar':
-        _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
+    _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
     # Executa a estratégia inicial sem fazer nenhum sensoriamento
-        _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
+    _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
     # else:
     #    pass
     # ----------------------------------------------------------------------

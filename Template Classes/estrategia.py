@@ -67,9 +67,9 @@ class Estrategia():
         elif estrategia_inicial_selecionada == 'moonwalk':
             self.moonwalk(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'full_frente_honesto':
-            self.full_frente_honesto()
+            self.full_frente_honesto(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'full_re_honesto':
-            self.full_re_honesto()
+            self.full_re_honesto(direcao_estrategia_inicial)
 
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
     def executa_estrategia_perseguicao(self, pid_convertido_pwm):
@@ -129,6 +129,7 @@ class Estrategia():
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
         velocidade = 100 * abs(direcao)
+        print(velocidade)
         self.motores.reta(velocidade)
         wait(5000)
     
