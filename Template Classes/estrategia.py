@@ -62,18 +62,14 @@ class Estrategia():
             self.arco(direcao_estrategia_inicial) # O método já define a direção (esquerda, direita)
         elif estrategia_inicial_selecionada == 'comunismo': #Pronto
             self.comunismo(direcao_estrategia_inicial)
-        elif estrategia_inicial_selecionada == 'capitalismo':
+        elif estrategia_inicial_selecionada == 'capitalismo': #Pronto
             self.capitalismo(direcao_estrategia_inicial)
-        elif estrategia_inicial_selecionada == 'moonwalk':
+        elif estrategia_inicial_selecionada == 'moonwalk': #Pronto
             self.moonwalk(direcao_estrategia_inicial)
-        elif estrategia_inicial_selecionada == 'full_frente_honesto':
+        elif estrategia_inicial_selecionada == 'full_frente_honesto': #Pronto
             self.full_frente_honesto()
-        elif estrategia_inicial_selecionada == 'full_re_honesto':
+        elif estrategia_inicial_selecionada == 'full_re_honesto': #Pronto
             self.full_re_honesto()
-        elif estrategia_inicial_selecionada == 'comunismo':
-            self.comunismo(direcao_estrategia_inicial)
-        elif estrategia_inicial_selecionada == 'capitalismo':
-            self.capitalismo(direcao_estrategia_inicial)
         else:
             print('ATENCAO! Nenhuma estrategia selecionada')        
 
