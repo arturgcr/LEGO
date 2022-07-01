@@ -113,13 +113,17 @@ class Estrategia():
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
     def moonwalk(self, direcao):
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
-        o robô irá percorrer a borda da arena de costas"""     
-        velocidade_linear = 100
-        velocidade_angular = 15 * direcao
-        giro_mesmo_sentido = 100 * direcao # valor para girar o robô no mesmo sentido que a direção da estrategia 
+        o robô irá percorrer a borda da arena de costas"""  
+        print("Meu nome é Michael Jackson!")   
+        velocidade_linear = 200
+        velocidade_angular = 150 * direcao
+        giro_mesmo_sentido = 100 * -direcao # valor para girar o robô no mesmo sentido que a direção da estrategia 
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(3500) # Alterar Tempo
+        print('velocidade linear:', velocidade_linear)
+        print('velocidade angular:', velocidade_angular)
+        wait(2500) # Alterar Tempo
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        wait(700)
         
     def full_frente_honesto(self, direcao):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
