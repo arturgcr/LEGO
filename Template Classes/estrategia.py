@@ -69,7 +69,14 @@ class Estrategia():
         elif estrategia_inicial_selecionada == 'full_frente_honesto':
             self.full_frente_honesto(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'full_re_honesto':
-            self.full_re_honesto(direcao_estrategia_inicial)
+            self.full_re_honesto()
+        elif estrategia_inicial_selecionada == 'comunismo':
+            self.comunismo(direcao_estrategia_inicial)
+        elif estrategia_inicial_selecionada == 'capitalismo':
+            self.capitalismo(direcao_estrategia_inicial)
+        else:
+            print('ATENCAO! Nenhuma estrategia selecionada')        
+
 
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
     def executa_estrategia_perseguicao(self, pid_convertido_pwm):
@@ -101,13 +108,17 @@ class Estrategia():
         Executa um curto movimento em linha reta e logo em seguida executa um arco e finaliza se voltando para o centro da arena.
         '''
         velocidade_linear = 100
-        velocidade_angular = 15 * direcao
+        velocidade_angular = 50 * -direcao
         giro_sentido_oposto = 100 * -direcao
-        self.motores.reta()
+        giro_mesmo_sentido = 100 * direcao
+        self.motores.reta() #frente
         wait(200)
-        self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1000) # alterar tempo
-        self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente 
+        self.motores.giro(giro_mesmo_sentido) #angulo
+        wait(350)
+        self.motores.arco(velocidade_linear+20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
+        wait(1200) # alterar tempo
+        self.motores.giro(giro_sentido_oposto) #angulo
+        wait(250)
         
    
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
@@ -125,21 +136,21 @@ class Estrategia():
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(700)
         
-    def full_frente_honesto(self, direcao):
+    def full_frente_honesto(self):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
-        velocidade = 100 * abs(direcao)
-        print(velocidade)
+        
+        velocidade = 100 
         self.motores.reta(velocidade)
         wait(5000)
     
 
-    def full_re_honesto(self, direcao):
+    def full_re_honesto(self):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
-        velocidade = -100 * abs(direcao)
-        self.motores.reta(velocidade)
-        wait(5000)
+        velocidade = 100 
+        self.motores.re(velocidade)
+        wait(7000)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):
@@ -152,14 +163,18 @@ class Estrategia():
         Faz o giro para uma direção selecionada (gira) e executa o arco na direção selecionada"""
 
         velocidade_linear = 100
-        velocidade_angular = 15 * direcao
+        velocidade_angular = 50 * -direcao
         giro_mesmo_sentido = 100 * direcao
-        self.motores.reta(-100)
-        wait(200)
-        self.motores.arco(-velocidade_linear, velocidade_angular) #
-        wait(1000) # alterar tempo
-        self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        wait() # Alterar tempo
+        giro_sentido_oposto = 100 * -direcao
+        #self.motores.reta(-velocidade_linear)
+        self.motores.re(velocidade_linear)
+        wait(450)
+        self.motores.giro(giro_mesmo_sentido)
+        wait(350)
+        self.motores.arco(velocidade_linear +20, velocidade_angular) #
+        wait(1700) # alterar tempo
+        self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        wait(500) # Alterar tempo
 
     # ==================================================================================================
     
