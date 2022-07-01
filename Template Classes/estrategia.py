@@ -42,12 +42,12 @@ class Estrategia():
             if angulo_correcao == 90:
                 # Gira o robô no sentido horário
                 self.motores.giro(100)
-                wait(3000)
+                wait(1000)
             # Verifica se o ângulo é igual a -90
             elif angulo_correcao == -90:
                 # Gira o robô no sentido anti-horário
                 self.motores.giro(-100)
-                wait(3000)
+                wait(1000)
         # Caso contrário, faz nada
         else:
             pass
@@ -58,16 +58,16 @@ class Estrategia():
         
         Self@Estrategia, str, str -> None
         """
-        if estrategia_inicial_selecionada == 'arco':
+        if estrategia_inicial_selecionada == 'arco': #Pronto
             self.arco(direcao_estrategia_inicial) # O método já define a direção (esquerda, direita)
-        elif estrategia_inicial_selecionada == 'manobra_arco':
-            self.manobra_arco(direcao_estrategia_inicial)
-        elif estrategia_inicial_selecionada == 'armadilha_arco':
-            self.armadilha_arco(direcao_estrategia_inicial)
+        elif estrategia_inicial_selecionada == 'comunismo': #Pronto
+            self.comunismo(direcao_estrategia_inicial)
+        elif estrategia_inicial_selecionada == 'capitalismo':
+            self.capitalismo(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'moonwalk':
             self.moonwalk(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'full_frente_honesto':
-            self.full_frente_honesto(direcao_estrategia_inicial)
+            self.full_frente_honesto()
         elif estrategia_inicial_selecionada == 'full_re_honesto':
             self.full_re_honesto()
         elif estrategia_inicial_selecionada == 'comunismo':
@@ -88,19 +88,21 @@ class Estrategia():
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
         o robô irá percorrer a borda da arena"""
         velocidade_linear = 100
-        velocidade_angular = 45 * -direcao
+        velocidade_angular = 50* -direcao
         giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1700) # o tempo pode variar para cada robô
+        print('iniciou o arco')
+        wait(2000) # o tempo pode variar para cada robô
         self.motores.giro(giro_mesmo_sentido)
-        wait(500)
+        wait(550)
+        print('girou no msm sentido')
         
     
 
     def bixo_piruleta(self, direcao, pwm):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
         self.motores.giro(pwm*direcao)
-        wait()
+        wait(1500)
 
     # Manobra + Arco => segue reto por alguns segundos e executa um arco
     def comunismo(self, direcao):
