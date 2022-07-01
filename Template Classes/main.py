@@ -26,19 +26,19 @@ def main ():
     temporizador = StopWatch()
     
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
-    sensoresDeOponente = {"esquerdo": 2, "direito": 1}
+    sensoresDeOponente = {"esquerdo": 1, "direito": 2}
 
     # Define o peso de cada sensor  \ define qual sensor ta vendo
     pesoDosSensoresDeOponente = {"esquerdo": -100, "direito": 100}
     
     # Define o objeto dos sensores de oponente
-    _sensor_oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
+    _sensor_oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'ultrassonico')
 
 
     # -> Instanciando Motores (Locomocao):
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
-    motores_direita = ['C', 'D'] # lista com portas dos motores da direita
-    servo_motores = [] # lista com portas dos servo-motores - Apenas para o caso da Violeta
+    motores_direita = ['C'] # lista com portas dos motores da direita
+    servo_motores = ['D'] # lista com portas dos servo-motores - Apenas para o caso da Violeta
     _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
     
     # Instanciando Setup:
@@ -46,6 +46,7 @@ def main ():
     
     # Instanciando Estratégias:
     _estrategia = Estrategia(_motores)
+    
     # ----------------------------------------------------------------------
     
     # Escolhendo estratégias e direções iniciais através da class Setup ----
@@ -64,14 +65,15 @@ def main ():
     # Aguardando 5 segundos para o início da movimentação do robô
     wait(5000) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
-    
+    print(estrategia_inicial_selecionada)
+    print(direcao_estrategia_inicial)
+    print(_inicio.direcao_sensoriamento_inicial)
     # Executando estratégia inicial ----------------------------------------
-    # if estrategia_inicial_selecionada != 'radar':
+
     _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
     # Executa a estratégia inicial sem fazer nenhum sensoriamento
+
     _estrategia.executa_estrategia_inicial(estrategia_inicial_selecionada, direcao_estrategia_inicial)
-    # else:
-    #    pass
     # ----------------------------------------------------------------------
 
     # Instanciando PID -----------------------------------------------------
