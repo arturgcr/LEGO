@@ -39,15 +39,15 @@ class Estrategia():
         # Verifica se o ângulo é diferente de 0
         if angulo_correcao != 0:
             # Verifica se o ângulo é igual a 90
-            if angulo_correcao == 90:
+            if angulo_correcao == 35:
                 # Gira o robô no sentido horário
                 self.motores.giro(100)
-                wait(1000)
+                wait(500)
             # Verifica se o ângulo é igual a -90
-            elif angulo_correcao == -90:
+            elif angulo_correcao == -35:
                 # Gira o robô no sentido anti-horário
                 self.motores.giro(-100)
-                wait(1000)
+                wait(500)
         # Caso contrário, faz nada
         else:
             pass

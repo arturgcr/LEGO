@@ -59,11 +59,11 @@ class Inicializacao():
         while True:
             # Caso o botao direito tenha sido apertado, o angulo de correcao é de 90 graus para a direita
             if self.botao_direito in ev3.buttons.pressed(): # Faz uma correção rotacionando 90 graus sobre o próprio eixo para a direita
-                self.angulo_correcao = 90
+                self.angulo_correcao = 35
                 break
             # Caso o botao esquerdo tenha sido apertado, o angulo de correcao é de 90 graus para a esquerda
             elif self.botao_esquerdo in ev3.buttons.pressed():
-                self.angulo_correcao = -90
+                self.angulo_correcao = -35
                 break
             # Caso o botao do centro tenha sido apertado, o angulo de correcao é de 0 graus
             elif self.botao_central in ev3.buttons.pressed():
