@@ -40,12 +40,14 @@ class Estrategia():
         if angulo_correcao != 0:
             # Verifica se o ângulo é igual a 90
             if angulo_correcao == 90:
-                # Gira o robô em um sentido
+                # Gira o robô no sentido horário
                 self.motores.giro(100)
+                wait(3000)
             # Verifica se o ângulo é igual a -90
             elif angulo_correcao == -90:
-                # Gira o robô no sentido contrário
+                # Gira o robô no sentido anti-horário
                 self.motores.giro(-100)
+                wait(3000)
         # Caso contrário, faz nada
         else:
             pass
@@ -59,11 +61,15 @@ class Estrategia():
         if estrategia_inicial_selecionada == 'arco':
             self.arco(direcao_estrategia_inicial) # O método já define a direção (esquerda, direita)
         elif estrategia_inicial_selecionada == 'manobra_arco':
-            self.manobra_arco()
+            self.manobra_arco(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'armadilha_arco':
-            self.armadilha_arco()
+            self.armadilha_arco(direcao_estrategia_inicial)
+        elif estrategia_inicial_selecionada == 'moonwalk':
+            self.moonwalk(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'full_frente_honesto':
-            self.full_frente_honesto(direcao_estrategia_inicial)
+            self.full_frente_honesto()
+        elif estrategia_inicial_selecionada == 'full_re_honesto':
+            self.full_re_honesto()
 
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
     def executa_estrategia_perseguicao(self, pid_convertido_pwm):
@@ -75,12 +81,10 @@ class Estrategia():
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
         o robô irá percorrer a borda da arena"""
         velocidade_linear = 100
-        velocidade_angular = 15 * direcao
-        giro_sentido_oposto = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
+        velocidade_angular = 45 * -direcao
+        giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(4000) # o tempo pode variar para cada robô
-        self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        wait(1500) # o tempo pode variar para cada robô
+        wait(1700) # o tempo pode variar para cada robô
         
     
 
