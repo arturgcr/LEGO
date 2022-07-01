@@ -39,7 +39,7 @@ def main ():
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
     motores_direita = ['C'] # lista com portas dos motores da direita
     servo_motores = ['D'] # lista com portas dos servo-motores - Apenas para o caso da Violeta
-    _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
+    _motores = Locomocao(motores_direita, motores_esquerda, servo_motores) # precisa comportar servo-motores
     
     # Instanciando Setup:
     _inicio = Inicializacao()
@@ -70,6 +70,7 @@ def main ():
     print(_inicio.direcao_sensoriamento_inicial)
     # Executando estratégia inicial ----------------------------------------
 
+    _motores.servo_motor_libera_rampa()
     if estrategia_inicial_selecionada != 'radar':
         _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
     # Executa a estratégia inicial sem fazer nenhum sensoriamento
