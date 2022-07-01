@@ -85,6 +85,8 @@ class Estrategia():
         giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         wait(1700) # o tempo pode variar para cada robô
+        self.motores.giro(giro_mesmo_sentido)
+        wait(500)
         
     
 
