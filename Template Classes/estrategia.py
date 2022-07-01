@@ -42,12 +42,12 @@ class Estrategia():
             if angulo_correcao == 90:
                 # Gira o robô no sentido horário
                 self.motores.giro(100)
-                wait(3000)
+                wait(1000)
             # Verifica se o ângulo é igual a -90
             elif angulo_correcao == -90:
                 # Gira o robô no sentido anti-horário
                 self.motores.giro(-100)
-                wait(3000)
+                wait(1000)
         # Caso contrário, faz nada
         else:
             pass
@@ -58,18 +58,21 @@ class Estrategia():
         
         Self@Estrategia, str, str -> None
         """
-        if estrategia_inicial_selecionada == 'arco':
+        if estrategia_inicial_selecionada == 'arco': #Pronto
             self.arco(direcao_estrategia_inicial) # O método já define a direção (esquerda, direita)
-        elif estrategia_inicial_selecionada == 'manobra_arco':
-            self.manobra_arco(direcao_estrategia_inicial)
-        elif estrategia_inicial_selecionada == 'armadilha_arco':
-            self.armadilha_arco(direcao_estrategia_inicial)
+        elif estrategia_inicial_selecionada == 'comunismo': #Pronto
+            self.comunismo(direcao_estrategia_inicial)
+        elif estrategia_inicial_selecionada == 'capitalismo':
+            self.capitalismo(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'moonwalk':
             self.moonwalk(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'full_frente_honesto':
-            self.full_frente_honesto(direcao_estrategia_inicial)
+            self.full_frente_honesto()
         elif estrategia_inicial_selecionada == 'full_re_honesto':
-            self.full_re_honesto(direcao_estrategia_inicial)
+            self.full_re_honesto()
+        elif estrategia_inicial_selecionada == 'bixo_piruleta':
+            self.bixo_piruleta(direcao_estrategia_inicial)
+
 
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
     def executa_estrategia_perseguicao(self, pid_convertido_pwm):
@@ -81,19 +84,21 @@ class Estrategia():
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
         o robô irá percorrer a borda da arena"""
         velocidade_linear = 100
-        velocidade_angular = 45 * -direcao
+        velocidade_angular = 50* -direcao
         giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1700) # o tempo pode variar para cada robô
+        print('iniciou o arco')
+        wait(2000) # o tempo pode variar para cada robô
         self.motores.giro(giro_mesmo_sentido)
-        wait(500)
+        wait(550)
+        print('girou no msm sentido')
         
     
 
     def bixo_piruleta(self, direcao, pwm):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
         self.motores.giro(pwm*direcao)
-        wait()
+        wait(1500)
 
     # Manobra + Arco => segue reto por alguns segundos e executa um arco
     def comunismo(self, direcao):
@@ -101,14 +106,17 @@ class Estrategia():
         Executa um curto movimento em linha reta e logo em seguida executa um arco e finaliza se voltando para o centro da arena.
         '''
         velocidade_linear = 100
-        velocidade_angular = 15 * direcao
+        velocidade_angular = 45 * -direcao
         giro_sentido_oposto = 100 * -direcao
+        giro_mesmo_sentido = 100 * direcao
         self.motores.reta()
         wait(200)
+        self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente 
+        wait(350)
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1000) # alterar tempo
+        wait(1700) # alterar tempo
         self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente 
-        
+        wait(350)
    
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
     def moonwalk(self, direcao):
@@ -125,21 +133,20 @@ class Estrategia():
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(700)
         
-    def full_frente_honesto(self, direcao):
+    def full_frente_honesto(self):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
-        velocidade = 100 * abs(direcao)
-        print(velocidade)
+        velocidade = 100
         self.motores.reta(velocidade)
         wait(5000)
     
 
-    def full_re_honesto(self, direcao):
+    def full_re_honesto(self):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
             com essa manobra '''
-        velocidade = -100 * abs(direcao)
-        self.motores.reta(velocidade)
-        wait(5000)
+        velocidade = 100
+        slef.motores.re()
+        wait(7000)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):
@@ -152,14 +159,17 @@ class Estrategia():
         Faz o giro para uma direção selecionada (gira) e executa o arco na direção selecionada"""
 
         velocidade_linear = 100
-        velocidade_angular = 15 * direcao
+        velocidade_angular = 15 * -direcao
         giro_mesmo_sentido = 100 * direcao
-        self.motores.reta(-100)
+        giro_sentido_oposto = 100 * -direcao
+        self.motores.re()
         wait(200)
-        self.motores.arco(-velocidade_linear, velocidade_angular) #
+        self.motores.giro(giro_mesmo_sentido)
+        wait(350)
+        self.motores.arco(velocidade_linear, velocidade_angular) #
         wait(1000) # alterar tempo
-        self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
-        wait() # Alterar tempo
+        self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
+        wait(350) # Alterar tempo
 
     # ==================================================================================================
     

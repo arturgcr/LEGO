@@ -59,6 +59,7 @@ def main ():
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     _sensor_oponente.visto_por_ultimo = direcao_sensoriamento_inicial
+    print(direcao_estrategia_inicial)
 
     # Aguardando 5 segundos para o início da movimentação do robô
     wait(5000) # Função do Pybricks que é similar a time.sleep() do Python

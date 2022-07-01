@@ -185,6 +185,11 @@ class Locomocao():
         """
         self.locomover(pwm, 0)
 
+    def re(self, pwm = 100):
+        velocidade_angular = 10
+        self.motores.arco(-pwm, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+
+
     # talvez arco nao esteja rodando pras duas direcoes, e sim, so pra direita (se sim, criar um if e inverter sinais)
     def arco (self, velocidade_linear = 100, velocidade_angular = 15): # [Vang: que é metade da diferença de potencia entre os motores]
         """
