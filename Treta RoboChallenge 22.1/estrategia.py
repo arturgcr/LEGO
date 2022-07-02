@@ -140,7 +140,7 @@ class Estrategia():
         
         velocidade = 100 
         self.motores.reta(velocidade)
-        wait(5000)
+        wait(1200)
     
 
     def full_re_honesto(self):
@@ -148,7 +148,8 @@ class Estrategia():
             com essa manobra '''
         velocidade = 100 
         self.motores.re(velocidade)
-        wait(7000)
+        
+        wait(2500)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):
