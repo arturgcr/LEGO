@@ -32,13 +32,13 @@ def main ():
     pesoDosSensoresDeOponente = {"esquerdo": -100, "direito": 100}
     
     # Define o objeto dos sensores de oponente
-    _sensor_oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'ultrassonico')
+    _sensor_oponente = SensorDeOponente(sensoresDeOponente, pesoDosSensoresDeOponente, 'nxtultrassonico')
 
 
     # -> Instanciando Motores (Locomocao):
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
-    motores_direita = ['C'] # lista com portas dos motores da direita
-    servo_motores = ['D'] # lista com portas dos servo-motores - Apenas para o caso da Violeta
+    motores_direita = ['C','D'] # lista com portas dos motores da direita
+    servo_motores = [] # lista com portas dos servo-motores - Apenas para o caso da Violeta
     _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
     
     # Instanciando Setup:
