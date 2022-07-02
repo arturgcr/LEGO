@@ -20,7 +20,7 @@ class Locomocao():
 
     Responsável por instanciar motores e controlar seus movimentos.
     '''
-    def __init__(self, motores_direita, motores_esquerda, servo_motores = None, invertido = 'ALL'):
+    def __init__(self, motores_direita, motores_esquerda, servo_motores, invertido = 'ALL'):
         """
         Método construtor que recebe uma lista de strings com as portas
         dos motores da direita, outra lista com os motores da esquerda e
@@ -48,9 +48,8 @@ class Locomocao():
         for porta in motores_direita: 
             self.motores_direita.append(Motor(self.seleciona_porta(porta)))
 
-        if servo_motores != None:
-            for porta in servo_motores:
-                self.servo_motores.append(Motor(self.seleciona_porta(porta)))
+        for porta in servo_motores:
+            self.servo_motores.append(Motor(self.seleciona_porta(porta)))
 
         # Controle de inversão dos motores:
         # - "ALL"        -> todos invertidos;
@@ -104,7 +103,8 @@ class Locomocao():
         Move o servo-motor responsável por liberar a rampa da violeta. Atualmente, está configurado para gerar 180° no sentido anti-horário (-180). Com a adição de mais servos-motores, esse método precisará ser revisto.
         '''
         for servo_motor in self.servo_motores:
-            servo_motor.angle(-180) # acho que dessa forma, vai girar 180° no sentido anti-horário
+            servo_motor.run_angle(1000,-180) # função que faz o servo motor girar e cair a rampa. 1° parametro é de velocidade em deg/s e o 2° o angulo
+        print('roda caiu')
 
     def mapy(self, valor_a_ser_convertido, minimo_da_entrada, maximo_da_entrada, minimo_da_saida,  maximo_da_saida):
         """

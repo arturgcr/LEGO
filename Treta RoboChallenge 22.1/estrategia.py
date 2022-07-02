@@ -70,6 +70,8 @@ class Estrategia():
             self.full_frente_honesto()
         elif estrategia_inicial_selecionada == 'full_re_honesto': #Pronto
             self.full_re_honesto()
+        elif estrategia_inicial_selecionada == 'bixo_piruleta': #Pronto
+            self.bixo_piruleta()
         else:
             print('ATENCAO! Nenhuma estrategia selecionada')        
 
@@ -95,10 +97,10 @@ class Estrategia():
         
     
 
-    def bixo_piruleta(self, direcao, pwm):
+    def bixo_piruleta(self):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
-        self.motores.giro(pwm*direcao)
-        wait(1500)
+        self.motores.giro(100)
+        wait(800)
 
     # Manobra + Arco => segue reto por alguns segundos e executa um arco
     def comunismo(self, direcao):
