@@ -42,12 +42,12 @@ class Estrategia():
             if angulo_correcao == 35:
                 # Gira o robô no sentido horário
                 self.motores.giro(100)
-                wait(500)
+                wait(250)
             # Verifica se o ângulo é igual a -90
             elif angulo_correcao == -35:
                 # Gira o robô no sentido anti-horário
                 self.motores.giro(-100)
-                wait(500)
+                wait(250)
         # Caso contrário, faz nada
         else:
             pass
@@ -86,11 +86,11 @@ class Estrategia():
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
         o robô irá percorrer a borda da arena"""
         velocidade_linear = 100
-        velocidade_angular = 50* -direcao
+        velocidade_angular = 45* -direcao
         giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         print('iniciou o arco')
-        wait(2000) # o tempo pode variar para cada robô
+        wait(1700) # o tempo pode variar para cada robô
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
         print('girou no msm sentido')
