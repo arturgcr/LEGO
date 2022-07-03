@@ -92,8 +92,43 @@ class Estrategia():
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
         print('girou no msm sentido')
-        
+
+    # def andarUmPouquinho():
+    # a violeta ja abaixa a rampa oq mostra p juiz que ela ta viva
+    # mas o treta nao
+    # poderiamos fazer ele andar pouquinho mas isso n abaixaria o chifre
+    # nao abaixar o chifre --> sensoria o proprio chifre
+    # Ftreta
+
+    # def maracutaia(self):
+    #     distancia_min = 100 #mudar
+    #     distancia_max = 400 #mudar
+    #     distancia_de_ataque = 20 #mudar
+     
+    #     ataque_do_oponente = False
+    #     distancia = 0
     
+    #     while ataque_do_oponente == False:
+    #         distancia_antiga = distancia
+    #         distancia = self.sensores[sensor].distance()
+
+    #         if distancia <= distancia_min:
+    #             break
+
+    #         if distancia > distancia_max:
+    #             #procurar ate achar
+                  #SO PROCURAR
+    #             continue
+            
+    #         wait(50)
+    #         andarUmPouquinho()
+    #         wait(50) #breve tempo em que ele vai ficar parado por loop
+            
+    #         if (distancia - distancia_antiga) > distancia_de_ataque :
+    #             #diferenca de ditancia / tempo no wait = velocidade
+    #             #se for muito rapido eh ataque
+    #             ataque_do_oponente = True
+         
 
     def bixo_piruleta(self, direcao, pwm):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
