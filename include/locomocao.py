@@ -11,6 +11,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+
 from ferramentas import constrainpy
 
 class Locomocao():
@@ -104,7 +105,8 @@ class Locomocao():
         Move o servo-motor responsável por liberar a rampa da violeta. Atualmente, está configurado para gerar 180° no sentido anti-horário (-180). Com a adição de mais servos-motores, esse método precisará ser revisto.
         '''
         for servo_motor in self.servo_motores:
-            servo_motor.angle(-180) # acho que dessa forma, vai girar 180° no sentido anti-horário
+            servo_motor.run_angle(2000,-180) # função que faz o servo motor girar e cair a rampa. 1° parametro é de velocidade em deg/s e o 2° o angulo
+        print('roda caiu')
 
     def mapy(self, valor_a_ser_convertido, minimo_da_entrada, maximo_da_entrada, minimo_da_saida,  maximo_da_saida):
         """

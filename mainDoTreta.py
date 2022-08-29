@@ -6,15 +6,15 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-from ferramentas import *
+from include.ferramentas import *
 
 ev3 = EV3Brick()
 
-from sensor import SensorDeOponente
-from locomocao import Locomocao
-from inicializacao import Inicializacao
-from estrategia import Estrategia
-from pid import PID
+from include.sensor import SensorDeOponente
+from include.locomocao import Locomocao
+from include.inicializacao import Inicializacao
+from include.estrategia import Estrategia
+from include.pid import PID
 
 def main ():
     # ============ Configurações iniciais ============

@@ -12,6 +12,7 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
+from configuracoes import *
 
 class Estrategia():
     """
@@ -142,7 +143,7 @@ class Estrategia():
         
         velocidade = 100 
         self.motores.reta(velocidade)
-        wait(5000)
+        wait(tempo_do_full_frente_honesto)
     
 
     def full_re_honesto(self):
@@ -150,7 +151,8 @@ class Estrategia():
             com essa manobra '''
         velocidade = 100 
         self.motores.re(velocidade)
-        wait(7000)
+        
+        wait(tempo_do_full_re_honesto)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):
