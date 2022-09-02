@@ -53,8 +53,6 @@ class Inicializacao():
         Seleciona se será feita alguma `correção na posição inicial do robô` (ângulo de correção: (-90) `anti-horário`, (90) `horário` ou (0) `mantém posição inicial`, ou ainda se é um round de `desempate`. No caso de ser um round de `desempate`, mudam as estratégias da segunda etapa.
         """
 
-        # Na selecao da correcao, o brick ira piscar uma luz na cor roxa
-
         ev3.light.on(Color.ORANGE)
             
         # Enquanto algum botao nao for apertado
@@ -88,7 +86,6 @@ class Inicializacao():
         # Verifica se o modo de estrategia eh padrao
         if self.tipo_de_estrategia_inicial == 'padrao':
 
-            # Na selecao das estrategias padroes, o brick ira piscar uma luz na cor ciano
             ev3.light.on(Color.GREEN)
 
             # Enquanto algum botao nao for apertado
@@ -111,7 +108,6 @@ class Inicializacao():
 
         # Caso contrario, verifica se o modo de estrategia eh desempate
         elif self.tipo_de_estrategia_inicial == 'desempate':
-            # Na selecao das estrategias de desempate, o brick ira piscar uma luz na cor vermelha
 
             ev3.light.on(Color.RED)
 
