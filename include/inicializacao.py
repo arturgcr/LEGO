@@ -101,6 +101,9 @@ class Inicializacao():
                 elif self.botao_direito in ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada  = 'capitalismo'
                     break
+                # Botão central simplesmente avança para as próximas estratégias
+                elif self.botao_central in ev3.buttons.pressed():
+                    break
 
         # Caso contrario, verifica se o modo de estrategia eh desempate
         elif self.estrategia_inicial_selecionada == 'desempate':
