@@ -128,7 +128,7 @@ class Inicializacao():
             # Pressionando o botão direito a estratégia será executada para direita
             if self.botao_direito in ev3.buttons.pressed(): 
                 self.direcao_estrategia_inicial = 1  # direita
-                # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no moonwalk
+                # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no 'moonwalk'
                 if self.estrategia_inicial_selecionado == 'moonwalk':
                     self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
                 else:
@@ -138,19 +138,24 @@ class Inicializacao():
             # Pressionando o botão esquerdo a estratégia será executada para esquerda
             elif self.botao_esquerdo in ev3.buttons.pressed():
                 self.direcao_estrategia_inicial = -1 # esquerda
-                # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no moonwalk
+                # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no 'moonwalk'
                 if self.estrategia_inicial_selecionada == 'moonwalk':
                     self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # esquerda
                 else:
                     self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
                 break
 
+            # Ignora as estratégias selecionadas anteriormente e faz simplemente o 'radar'
             elif self.botao_central in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'radar'
                 break
+            
+            # Ignora as estratégias selecionadas anteriormente e vai 'full_re_honesto'
             elif self.botao_baixo in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'full_re_honesto'
                 break
+
+            # Ignora as estratégias selecionadas anteriormente e vai 'full_frente'
             elif self.botao_cima in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'full_frente_honesto'
                 break
