@@ -43,15 +43,18 @@ class Locomocao():
 
         # Adiciona no atributo "self.motores_esquerda" os motores esquerdos com suas respectivas portas
         for porta in motores_esquerda:
-            self.motores_esquerda.append(Motor(self.seleciona_porta(porta)))
+            motor_esquerda = self.instancia_motor(porta)
+            self.motores_esquerda.append(motor_esquerda)
 
         # Adiciona no atributo "self.motores_direita" os motores direitos com suas respectivas portas
-        for porta in motores_direita: 
-            self.motores_direita.append(Motor(self.seleciona_porta(porta)))
+        for porta in motores_direita:
+            motor_direita = self.instancia_motor(porta)
+            self.motores_direita.append(motor_direita)
 
         if servo_motores != None:
             for porta in servo_motores:
-                self.servo_motores.append(Motor(self.seleciona_porta(porta)))
+                servo_motor = self.instancia_motor(porta)
+                self.servo_motores.append(servo_motor)
 
         # Controle de inversão dos motores:
         # - "ALL"        -> todos invertidos;
@@ -65,20 +68,24 @@ class Locomocao():
         if self.invertido == "ALL" or "LEFT":
             self.sentido_esquerda = -1
 
-    def seleciona_porta(self, porta):
+    def instancia_motor(self, porta):
         """
         Método para selecionar a porta do motor.
 
         Self@Locomocao, str -> ?
         """
         if porta == 'A':
-            return Port.A
+            obj_porta = Port.A
         elif porta == 'B':
-            return Port.B
+            obj_porta = Port.B
         elif porta == 'C':
-            return Port.C
+            obj_porta = Port.C
         elif porta == 'D':
-            return Port.D
+            obj_porta = Port.D
+
+        motor = Motor(obj_porta)
+
+        return motor
 
     def aplicar_roda_esquerda(self, pwm):
         """
