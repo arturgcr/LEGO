@@ -117,26 +117,34 @@ class Inicializacao():
 
     def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
         '''
-        Seleciona a direção para onde a estratégia inicial será executada: (-1) `esquerda` ou (1) `direita`.
+        selecionar_direcao_movimento()
+        ---
+        Seleciona a direção de movimendo da estratégia inicial. Por padrão, o sentido de sensoriamento é o contrário do sentido do movimento da estratégia, exceto no 'moonwalk'.
         ''' 
         
         ev3.light.on(Color.ORANGE)
 
         while True:
+            # Pressionando o botão direito a estratégia será executada para direita
             if self.botao_direito in ev3.buttons.pressed(): 
                 self.direcao_estrategia_inicial = 1  # direita
+                # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no moonwalk
                 if self.estrategia_inicial_selecionado == 'moonwalk':
-                    self.direcao_sensoriamento_inicial = 1
+                    self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
                 else:
-                    self.direcao_sensoriamento_inicial = -1
+                    self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # esquerda
                 break
+            
+            # Pressionando o botão esquerdo a estratégia será executada para esquerda
             elif self.botao_esquerdo in ev3.buttons.pressed():
                 self.direcao_estrategia_inicial = -1 # esquerda
+                # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no moonwalk
                 if self.estrategia_inicial_selecionada == 'moonwalk':
-                    self.direcao_sensoriamento_inicial = -1
+                    self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # esquerda
                 else:
-                    self.direcao_sensoriamento_inicial = 1
+                    self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
                 break
+
             elif self.botao_central in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'radar'
                 break
