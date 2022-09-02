@@ -125,9 +125,17 @@ class Inicializacao():
         while True:
             if self.botao_direito in ev3.buttons.pressed(): 
                 self.direcao_estrategia_inicial = 1  # direita
+                if self.estrategia_inicial_selecionado == 'moonwalk':
+                    self.direcao_sensoriamento_inicial = 1
+                else:
+                    self.direcao_sensoriamento_inicial = -1
                 break
             elif self.botao_esquerdo in ev3.buttons.pressed():
                 self.direcao_estrategia_inicial = -1 # esquerda
+                if self.estrategia_inicial_selecionada == 'moonwalk':
+                    self.direcao_sensoriamento_inicial = -1
+                else:
+                    self.direcao_sensoriamento_inicial = 1
                 break
             elif self.botao_central in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'radar'
