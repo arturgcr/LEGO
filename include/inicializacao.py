@@ -18,17 +18,17 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 ev3 = EV3Brick()
 
 class Inicializacao():
-    '''
+    """
     Módulo Inicializacao
-    ---------------------
-    Responsável pela escolha da estratégia inicial através das informações dos botões apertados no Brick, selecionando o tipo de estratégia, a direção da estratégia e a direção inicial de sensoriamento, além da possibilidade de pequenos ajuste no posicionamento inicial do robô.
-    '''
+    ---
+    Responsável pela escolha da estratégia inicial através das informações dos botões apertados no Brick. Com os cliques, são selecionados: o tipo, a estratégia inicial em si, sua direção e o sentido do sensoriamento, além da possibilidade de pequenos ajuste no posicionamento inicial do robô.
+    """
     def __init__(self): # Alterar tempos correspondentes ao robo
-        '''
+        """
         Metodo construtor. Define os atributos utilizados nas selecoes.
 
         Self@Inicializacao -> None
-        '''
+        """
 
         # Botoes do Brick considerando que o Brick tá de lado e com tela para direita do piloto
         self.botao_central  = Button.CENTER
@@ -47,9 +47,12 @@ class Inicializacao():
         self.direcao_sensoriamento_inicial = -1
 
     def selecionar_correcao_ou_desempate(self):
-        '''
-        Seleciona se existe alguma correção a ser feita na posição inicial do robô (ângulo de correção: (-90) `anti-horário`, (90) `horário` ou (0) `mantém posição inicial`, ou ainda se é um round de `desempate`. No caso de ser um round de `desempate`, mudam as estratégias da segunda etapa.
-        '''
+        """
+        selecionar_correcao_ou_desempate()
+        ---
+        Seleciona se será feita alguma `correção na posição inicial do robô` (ângulo de correção: (-90) `anti-horário`, (90) `horário` ou (0) `mantém posição inicial`, ou ainda se é um round de `desempate`. No caso de ser um round de `desempate`, mudam as estratégias da segunda etapa.
+        """
+
         # Na selecao da correcao, o brick ira piscar uma luz na cor roxa
 
         ev3.light.on(Color.ORANGE)
@@ -158,11 +161,11 @@ class Inicializacao():
         wait(500)
 
     def selecionar_direcao_estrategia_inicial(self): # Selecao 3 movimentacao
-        '''
+        """
         selecionar_direcao_estrategia_inicial()
         ---
         Seleciona a direção de movimendo da estratégia inicial. Por padrão, o sentido de sensoriamento é o contrário do sentido do movimento da estratégia, exceto no 'moonwalk'.
-        ''' 
+        """ 
         
         ev3.light.on(Color.ORANGE)
 
