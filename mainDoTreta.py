@@ -49,11 +49,12 @@ def main ():
     
     # ----------------------------------------------------------------------
     
-    # Escolhendo estratégias e direções iniciais através da class Setup ----
+    # Escolhendo estratégia inicial através da class Inicializacao ----
     _inicio.selecionar_correcao_ou_desempate()
-    _inicio.selecionar_estrategia_inicial()
-    _inicio.selecionar_direcao_movimento()
-    _inicio.selecionar_direcao_sensoriamento()
+    _inicio.selecionar_estrategia_inicial_primeira_etapa()
+    _inicio.selecionar_estrategia_inicial_segunda_etapa()
+    _inicio.selecionar_direcao_estrategia_inicial()
+
     # Coletando atributos após as transformações da estapa anterior
     angulo_correcao = _inicio.angulo_correcao
     estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
