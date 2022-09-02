@@ -140,9 +140,9 @@ class Inicializacao():
                 self.direcao_estrategia_inicial = -1 # esquerda
                 # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no 'moonwalk'
                 if self.estrategia_inicial_selecionada == 'moonwalk':
-                    self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # esquerda
+                    self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # esquerda
                 else:
-                    self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
+                    self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # direita
                 break
 
             # Ignora as estratégias selecionadas anteriormente e faz simplemente o 'radar'
