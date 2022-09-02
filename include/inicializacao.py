@@ -40,12 +40,11 @@ class Inicializacao():
         # Atributo que define o angulo que o robo gira na correcao
         self.angulo_correcao = 0
         
-        # Atributo que define a estrategia selecionada
-        self.estrategia_inicial_selecionada = 'padrao'
+        # Atributo que define os parâmetros da estratégia inicial selecionada
+        self.tipo_de_estrategia_inicial = 'padrao'
+        self.estrategia_inicial_selecionada = 'radar'
         self.direcao_estrategia_inicial = 0
-
-        # Atributo que define o sentido do sensoriamento
-        self.direcao_sensoriamento_inicial = 0
+        self.direcao_sensoriamento_inicial = -1
 
     def selecionar_correcao_ou_desempate(self):
         '''
@@ -71,20 +70,20 @@ class Inicializacao():
                 break
             # Caso o botao de cima tenha sido apertado, vai para a rodada de desempate
             elif self.botao_baixo in ev3.buttons.pressed():
-                self.estrategia_inicial_selecionada = 'desempate'
+                self.tipo_de_estrategia_inicial = 'desempate'
                 break
         wait(500)
 
     # descobrir botao direcao e estrategia
-    def selecionar_estrategia_inicial(self): # Segunda selecao 
+    def selecionar_estrategia_inicial_primeira_etapa(self): # Segunda selecao 
         """
-        Seleciona a estratégia inicial do robô. No caso de, na etapa anterior, ter sido selecionado que se trata de um round de desempate, muda as opções de estratégia e a cor do led do Brick.
+        Seleciona 1 das 4 estratégias iniciais. Elas podem ser do tipo `padrao` ou `desempate`. Caso na etapa anterior tenha sido selecionado que se trata de um round de `desempate`, muda as opções de estratégia e a cor do led do Brick. O botão central pula para a próxima etapa.
         """
 
         # Verifica se o modo de estrategia eh padrao
-        if self.estrategia_inicial_selecionada == 'padrao':
-            # Na selecao das estrategias padroes, o brick ira piscar uma luz na cor ciano
+        if self.tipo_de_estrategia_inicial == 'padrao':
 
+            # Na selecao das estrategias padroes, o brick ira piscar uma luz na cor ciano
             ev3.light.on(Color.GREEN)
 
             # Enquanto algum botao nao for apertado
@@ -101,12 +100,12 @@ class Inicializacao():
                 elif self.botao_direito in ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada  = 'capitalismo'
                     break
-                # Botão central simplesmente avança para as próximas estratégias
+                # Botão central - simplesmente avança para as próximas estratégias
                 elif self.botao_central in ev3.buttons.pressed():
                     break
 
         # Caso contrario, verifica se o modo de estrategia eh desempate
-        elif self.estrategia_inicial_selecionada == 'desempate':
+        elif self.tipo_de_estrategia_inicial == 'desempate':
             # Na selecao das estrategias de desempate, o brick ira piscar uma luz na cor vermelha
 
             ev3.light.on(Color.RED)
@@ -118,9 +117,45 @@ class Inicializacao():
                     break
         wait(500)
 
-    def selecionar_direcao_movimento(self): # Selecao 3 movimentacao
+    def selecionar_estrategia_inicial_segunda_etapa(self):
+        """
+        Seleciona 1 das 4 estratégias iniciais. Elas podem ser do tipo `padrao` ou `desempate`. O botão central pula para a próxima etapa.
+        """
+        
+        if self.tipo_de_estrategia_inicial == 'padrao':
+            
+            ev3.light.on(Color.RED)
+            
+            while True:
+                if self.botao_cima in ev3.buttons.pressed():
+                    break
+                elif self.botao_baixo in ev3.buttons.pressed():
+                    break
+                elif self.botao_esquerdo in ev3.buttons.pressed():
+                    break 
+                elif self.botao_direito in ev3.buttons.pressed():
+                    break
+        
+        elif self.tipo_de_estrategia_inicial == 'desempate':
+            
+            ev3.light.on(Color.RED)
+
+            while True:
+                if self.botao_cima in ev3.buttons.pressed():
+                    break
+                elif self.botao_baixo in ev3.buttons.pressed():
+                    break
+                elif self.botao_esquerdo in ev3.buttons.pressed():
+                    break 
+                elif self.botao_direito in ev3.buttons.pressed():
+                    break
+            
+        ev3.light.on(Color.GREEN)
+        wait(500)
+
+    def selecionar_direcao_estrategia_inicial(self): # Selecao 3 movimentacao
         '''
-        selecionar_direcao_movimento()
+        selecionar_direcao_estrategia_inicial()
         ---
         Seleciona a direção de movimendo da estratégia inicial. Por padrão, o sentido de sensoriamento é o contrário do sentido do movimento da estratégia, exceto no 'moonwalk'.
         ''' 
@@ -163,20 +198,3 @@ class Inicializacao():
                 self.estrategia_inicial_selecionada = 'full_frente_honesto'
                 break
         wait(500)      
-    
-    def selecionar_direcao_sensoriamento(self):
-        '''
-        Seleciona a direção para onde o sensoriamento irá iniciar quando entrar no loop de perseguição do adversário. Essa direção só será utilizada até a primeira detecção do adversário. Essa é a última etapa da seleção de estratégia.
-        '''
-        ev3.light.on(Color.RED)
-
-        while True:
-            if self.botao_esquerdo in ev3.buttons.pressed():
-                self.direcao_sensoriamento_inicial = 1  # direita (sentido horario)
-                break 
-            elif self.botao_direito in ev3.buttons.pressed():
-                self.direcao_sensoriamento_inicial = -1 #esquerda (Sentido anti horario) 
-                break
-            
-        ev3.light.on(Color.GREEN)
-        wait(500)
