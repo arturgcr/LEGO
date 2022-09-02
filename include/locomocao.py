@@ -70,7 +70,7 @@ class Locomocao():
 
     def instancia_motor(self, porta):
         """
-        Método para selecionar a porta do motor.
+        Método recebe uma string com o nome da porta, instancia um objeto Port do pybrick e retorna um objeto Motor do pybricks.
 
         Self@Locomocao, str -> ?
         """
