@@ -77,6 +77,8 @@ class Inicializacao():
     # descobrir botao direcao e estrategia
     def selecionar_estrategia_inicial_primeira_etapa(self): # Segunda selecao 
         """
+        selecionar_estrategia_inicial_primeira_etapa()
+        ---
         Seleciona 1 das 4 estratégias iniciais. Elas podem ser do tipo `padrao` ou `desempate`. Caso na etapa anterior tenha sido selecionado que se trata de um round de `desempate`, muda as opções de estratégia e a cor do led do Brick. O botão central pula para a próxima etapa.
         """
 
@@ -119,6 +121,8 @@ class Inicializacao():
 
     def selecionar_estrategia_inicial_segunda_etapa(self):
         """
+        selecionar_estrategia_inicial_segunda_etapa()
+        ---
         Seleciona 1 das 4 estratégias iniciais. Elas podem ser do tipo `padrao` ou `desempate`. O botão central pula para a próxima etapa.
         """
         
