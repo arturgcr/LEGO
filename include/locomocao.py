@@ -74,6 +74,8 @@ class Locomocao():
 
         Self@Locomocao, str -> ?
         """
+        obj_porta = None
+
         if porta == 'A':
             obj_porta = Port.A
         elif porta == 'B':
