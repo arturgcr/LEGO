@@ -12,7 +12,7 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-from ferramentas import constrainpy
+from include.ferramentas import constrainpy
 
 class Locomocao():
     '''
