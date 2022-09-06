@@ -7,6 +7,7 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 from include.ferramentas import *
+from include.configuracoes import *
 
 ev3 = EV3Brick()
 
@@ -17,8 +18,13 @@ from include.estrategia import Estrategia
 from include.pid import PID
 
 def main ():
-    # ============ Configurações iniciais ============
+    global nomeDoRobo
     
+    # ============ Configurações iniciais ============
+    # Configurando parâmetros das estratégias:
+    nomeDoRobo = "Treta"
+    configurar_estrategias()
+
     # -> Constantes para o cálculo do PID:
     kp = 2
     ki = 0
