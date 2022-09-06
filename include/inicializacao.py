@@ -138,10 +138,12 @@ class Inicializacao():
                     break 
                 elif self.botao_direito in ev3.buttons.pressed():
                     break
-        
+                elif self.botao_central in ev3.buttons.pressed():
+                    break
+
         elif self.tipo_de_estrategia_inicial == 'desempate':
             
-            ev3.light.on(Color.RED)
+            ev3.light.on(Color.GREEN)
 
             while True:
                 if self.botao_cima in ev3.buttons.pressed():
@@ -153,7 +155,6 @@ class Inicializacao():
                 elif self.botao_direito in ev3.buttons.pressed():
                     break
             
-        ev3.light.on(Color.GREEN)
         wait(500)
 
     def selecionar_direcao_estrategia_inicial(self): # Selecao 3 movimentacao
@@ -170,7 +171,7 @@ class Inicializacao():
             if self.botao_direito in ev3.buttons.pressed(): 
                 self.direcao_estrategia_inicial = 1  # direita
                 # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no 'moonwalk'
-                if self.estrategia_inicial_selecionado == 'moonwalk':
+                if self.tipo_de_estrategia_inicial == 'moonwalk':
                     self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
                 else:
                     self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # esquerda
@@ -200,4 +201,6 @@ class Inicializacao():
             elif self.botao_cima in ev3.buttons.pressed():
                 self.estrategia_inicial_selecionada = 'full_frente_honesto'
                 break
+
+        ev3.light.on(Color.GREEN)    
         wait(500)      

@@ -74,6 +74,8 @@ class Locomocao():
 
         Self@Locomocao, str -> ?
         """
+        obj_porta = None
+
         if porta == 'A':
             obj_porta = Port.A
         elif porta == 'B':
@@ -138,8 +140,9 @@ class Locomocao():
         pwm_roda_esquerda = velocidade_linear + velocidade_angular
         pwm_roda_direita  = velocidade_linear - velocidade_angular
         
-        # teste
+        # Calcula a diferença das mixagens
         diff = abs(abs(velocidade_angular) - abs(velocidade_linear))
+
         if (pwm_roda_esquerda < 0):
             pwm_roda_esquerda -= diff
         else:
@@ -150,22 +153,15 @@ class Locomocao():
         else:
             pwm_roda_direita += diff
 
-
-        # se não é pra virar muito, vai full pra frente
-        if(velocidade_angular < 5 and velocidade_angular > -5):
-            pwm_roda_esquerda = 200
-            pwm_roda_direita  = 200
-
         # Converte de volta para o intervalo [-100, 100]
         pwm_roda_esquerda = int(self.mapy(pwm_roda_esquerda, -200, 200, -100, 100))
         pwm_roda_esquerda = constrainpy(pwm_roda_esquerda,-100,100)
         pwm_roda_direita  = int(self.mapy(pwm_roda_direita, -200, 200, -100, 100))
         pwm_roda_direita = constrainpy(pwm_roda_direita,-100,100)
 
-
-
         print('pwm_esquerda: ' + str(pwm_roda_esquerda))
         print('pwm_direita: ' + str(pwm_roda_direita))
+
         # Retorna uma tupla com a primeira posição o valor de PWM do motor esquerdo e a segunda posição com o valor do motor direito
         return pwm_roda_esquerda, pwm_roda_direita
 
