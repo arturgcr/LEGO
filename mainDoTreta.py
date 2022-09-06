@@ -88,7 +88,7 @@ def main ():
 
     # Instanciando PID -----------------------------------------------------
     # Recebe apenas kp, kd e ki -> caso não queira calcular algum, basta colocar 0 no seu valor
-    _pid = PID(kp, kd, ki, temporizador)
+    _pid = PID(kp, kd, ki)
     # ----------------------------------------------------------------------
 
     # Entra no loop de busca por adversário -----------------------------------------
