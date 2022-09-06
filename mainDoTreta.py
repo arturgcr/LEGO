@@ -26,9 +26,9 @@ def main ():
     configurar_estrategias()
 
     # -> Constantes para o cálculo do PID:
-    kp = 2
+    kp = 0.6
     ki = 0
-    kd = 1.2
+    kd = 0
     temporizador = StopWatch()
     
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
@@ -100,7 +100,7 @@ def main ():
         if _sensor_oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
             pid = _pid.calcula_pid(_sensor_oponente.erro)
-            pid_constrained = constrainpy(_pid.calcula_pid(_sensor_oponente.erro), -60, 60)
+            pid_constrained = constrainpy(_pid.calcula_pid(_sensor_oponente.erro), -100, 100)
             _motores.locomover(100, pid_constrained)
         # Caso contrário, faz a busca
         else:
