@@ -170,7 +170,7 @@ class Inicializacao():
             if self.botao_direito in ev3.buttons.pressed(): 
                 self.direcao_estrategia_inicial = 1  # direita
                 # O sentido do sensoriamento, por padrão, vai ser o contrário, exceto no 'moonwalk'
-                if self.estrategia_inicial_selecionado == 'moonwalk':
+                if self.tipo_de_estrategia_inicial == 'moonwalk':
                     self.direcao_sensoriamento_inicial = self.direcao_estrategia_inicial # direita
                 else:
                     self.direcao_sensoriamento_inicial = -self.direcao_estrategia_inicial # esquerda
