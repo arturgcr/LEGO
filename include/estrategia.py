@@ -37,7 +37,7 @@ class Estrategia():
         Função com a definição dos valores das variáveis de tempo de cada
         robô.
 
-        None -> None
+        nome_do_robo: str -> None
         """
         # Configurações das estratégias da Violeta
         if nome_do_robo == "Violeta":

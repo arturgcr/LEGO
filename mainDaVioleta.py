@@ -27,7 +27,6 @@ def main ():
     kp = 0.6
     ki = 0
     kd = 0
-    temporizador = StopWatch()
     
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
     sensoresDeOponente = {"esquerdo": 1, "direito": 2}
@@ -50,6 +49,9 @@ def main ():
     
     # Instanciando Estratégias:
     _estrategia = Estrategia(_motores)
+
+    # Configurando estratégias iniciais:
+    _estrategia.configurar_estrategias(nome_do_robo)
     
     # ----------------------------------------------------------------------
     
