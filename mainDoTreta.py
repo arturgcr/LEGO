@@ -18,18 +18,14 @@ from include.estrategia import Estrategia
 from include.pid import PID
 
 def main ():
-    global nome_do_robo
-    
     # ============ Configurações iniciais ============
     # Configurando parâmetros das estratégias:
     nome_do_robo = "Treta"
-    configurar_estrategias()
 
     # -> Constantes para o cálculo do PID:
     kp = 0.6
     ki = 0
     kd = 0
-    temporizador = StopWatch()
     
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
     sensoresDeOponente = {"esquerdo": 2, "direito": 1}
@@ -53,6 +49,9 @@ def main ():
     # Instanciando Estratégias:
     _estrategia = Estrategia(_motores)
     
+    # Configurando estratégias iniciais:
+    _estrategia.configurar_estrategias(nome_do_robo)
+
     # ----------------------------------------------------------------------
     
     # Escolhendo estratégia inicial através da class Inicializacao ----
