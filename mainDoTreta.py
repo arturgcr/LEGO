@@ -18,11 +18,11 @@ from include.estrategia import Estrategia
 from include.pid import PID
 
 def main ():
-    global nomeDoRobo
+    global nome_do_robo
     
     # ============ Configurações iniciais ============
     # Configurando parâmetros das estratégias:
-    nomeDoRobo = "Treta"
+    nome_do_robo = "Treta"
     configurar_estrategias()
 
     # -> Constantes para o cálculo do PID:

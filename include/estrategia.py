@@ -27,6 +27,29 @@ class Estrategia():
         Self@Estrategia, list[str], list[str], str -> None
         """
         self.motores = obj_locomocao
+
+        # Configurações das estratégias com tempos diferentes
+        self.tempo_do_full_frente_honesto = 0
+        self.tempo_do_full_re_honesto = 0
+
+    def configurar_estrategias(self, nome_do_robo):
+        """
+        Função com a definição dos valores das variáveis de tempo de cada
+        robô.
+
+        None -> None
+        """
+        # Configurações das estratégias da Violeta
+        if nome_do_robo == "Violeta":
+            self.tempo_do_full_frente_honesto = 5000
+            self.tempo_do_full_re_honesto     = 7000
+        # Configurações das estratégias do Treta
+        elif nome_do_robo == "Treta":
+            self.tempo_do_full_frente_honesto = 1200
+            self.tempo_do_full_re_honesto     = 2500
+        else:
+            self.tempo_do_full_frente_honesto = 0
+            self.tempo_do_full_re_honesto     = 0
     
     def executa_correcao(self, angulo_correcao):
         '''
@@ -94,8 +117,6 @@ class Estrategia():
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
         print('girou no msm sentido')
-        
-    
 
     def bixo_piruleta(self):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
@@ -142,7 +163,7 @@ class Estrategia():
         
         velocidade = 100 
         self.motores.reta(velocidade)
-        wait(tempo_do_full_frente_honesto)
+        wait(self.tempo_do_full_frente_honesto)
     
 
     def full_re_honesto(self):
@@ -151,7 +172,7 @@ class Estrategia():
         velocidade = 100 
         self.motores.re(velocidade)
         
-        wait(tempo_do_full_re_honesto)
+        wait(self.tempo_do_full_re_honesto)
 
     # Armadilha reta -
     def baby_come_back(self, pwm):
