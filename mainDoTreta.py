@@ -7,7 +7,6 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 from include.ferramentas import *
-from include.configuracoes import *
 
 ev3 = EV3Brick()
 
