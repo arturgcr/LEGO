@@ -1,20 +1,16 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
 
+from pybricks.hubs import EV3Brick
+from pybricks.tools import wait
+
+from include.estrategia import *
 from include.ferramentas import *
+from include.inicializacao import *
+from include.locomocao import *
+from include.pid import *
+from include.sensor import *
 
 ev3 = EV3Brick()
-
-from include.sensor import SensorDeOponente
-from include.locomocao import Locomocao
-from include.inicializacao import Inicializacao
-from include.estrategia import Estrategia
-from include.pid import PID
 
 def main ():
     # ============ Configurações iniciais ============
@@ -43,7 +39,7 @@ def main ():
     _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
     
     # Instanciando Setup:
-    _inicio = Inicializacao()
+    _inicio = Inicializacao(ev3)
     
     # Instanciando Estratégias:
     _estrategia = Estrategia(_motores)
@@ -97,8 +93,8 @@ def main ():
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
-            pid = _pid.calcula_pid(_sensor_oponente.erro)
-            pid_constrained = constrainpy(_pid.calcula_pid(_sensor_oponente.erro), -100, 100)
+            pid = _pid.calcular_pid(_sensor_oponente.erro)
+            pid_constrained = ferramentas.constrainpy(_pid.calcular_pid(_sensor_oponente.erro), -100, 100)
             _motores.locomover(100, pid_constrained)
         # Caso contrário, faz a busca
         else:

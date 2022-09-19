@@ -1,18 +1,12 @@
-#!/usr/bin/env pybricks-micropython
-
 """
 Módulo responsável pela definicao da classe com os métodos e atributos
 relacionados a locomoção do robô.
 """
 
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
+from pybricks.ev3devices import Motor
+from pybricks.parameters import Port
 
-from include.ferramentas import constrainpy
+from include.ferramentas import *
 
 class Locomocao():
     '''
@@ -117,17 +111,6 @@ class Locomocao():
             servo_motor.run_angle(2000,-180) # função que faz o servo motor girar e cair a rampa. 1° parametro é de velocidade em deg/s e o 2° o angulo
         print('roda caiu')
 
-    def mapy(self, valor_a_ser_convertido, minimo_da_entrada, maximo_da_entrada, minimo_da_saida,  maximo_da_saida):
-        """
-        Método com a função map lá do Arduino em sua verdadeira forma, em Python.
-
-        self@Locomocao, int ou float, int ou float, int ou float, int ou float, int ou float -> float
-        """
-        diferenca_das_entradas = maximo_da_entrada - minimo_da_entrada
-        diferenca_das_saidas = maximo_da_saida - minimo_da_saida
-        diferenca_do_valor_a_ser_convertido_com_o_minimo_da_entrada = valor_a_ser_convertido - minimo_da_entrada
-        return (diferenca_do_valor_a_ser_convertido_com_o_minimo_da_entrada * diferenca_das_saidas) / diferenca_das_entradas + minimo_da_saida
-
     def mixagem(self, velocidade_linear, velocidade_angular):
         """
         Método que realiza os cálculos da mixagem.
@@ -154,10 +137,10 @@ class Locomocao():
             pwm_roda_direita += diff
 
         # Converte de volta para o intervalo [-100, 100]
-        pwm_roda_esquerda = int(self.mapy(pwm_roda_esquerda, -200, 200, -100, 100))
-        pwm_roda_esquerda = constrainpy(pwm_roda_esquerda,-100,100)
-        pwm_roda_direita  = int(self.mapy(pwm_roda_direita, -200, 200, -100, 100))
-        pwm_roda_direita = constrainpy(pwm_roda_direita,-100,100)
+        pwm_roda_esquerda = int(ferramentas.mapy(pwm_roda_esquerda, -200, 200, -100, 100))
+        pwm_roda_esquerda = ferramentas.constrainpy(pwm_roda_esquerda, -100, 100)
+        pwm_roda_direita  = int(ferramentas.mapy(pwm_roda_direita, -200, 200, -100, 100))
+        pwm_roda_direita = ferramentas.constrainpy(pwm_roda_direita, -100, 100)
 
         print('pwm_esquerda: ' + str(pwm_roda_esquerda))
         print('pwm_direita: ' + str(pwm_roda_direita))

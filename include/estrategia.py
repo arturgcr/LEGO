@@ -1,17 +1,9 @@
-#!/usr/bin/env pybricks-micropython
-
 """
 Módulo responsável pela definição da classe com os métodos e atributos
 relacionados às estratégias.
 """
 
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
-
+from pybricks.tools import wait
 
 class Estrategia():
     """
@@ -95,6 +87,10 @@ class Estrategia():
             self.full_re_honesto()
         elif estrategia_inicial_selecionada == 'bixo_piruleta': #Pronto
             self.bixo_piruleta()
+        elif estrategia_inicial_selecionada == 'de_ladinho': #A ser feito
+            self.de_ladinho()
+        elif estrategia_inicial_selecionada == 'maracutaia': #A ser feito
+            self.maracutaia()
         else:
             print('ATENCAO! Nenhuma estrategia selecionada')        
 
@@ -174,11 +170,6 @@ class Estrategia():
         
         wait(self.tempo_do_full_re_honesto)
 
-    # Armadilha reta -
-    def baby_come_back(self, pwm):
-        """"O robô pode estar posicionado de qualquer forma, mas longe da borda da arena. Inicia dando uma ré, totalmente reta"""
-        pass
-
     # Manobra + Arco invertida
     def capitalismo(self, direcao):
         """"O robô é posicionado de frente um pouco mais no centro na arena. Inicialmente vai para trás ( da ré). 
@@ -197,6 +188,15 @@ class Estrategia():
         wait(1700) # alterar tempo
         self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(500) # Alterar tempo
+
+    # Armadilha
+    def de_ladinho(self, direcao):
+        """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
+        pass
+
+    def maracutaia(self):
+        """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
+        pass
 
     # ==================================================================================================
     
