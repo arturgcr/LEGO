@@ -15,7 +15,7 @@ class Locomocao():
 
     Responsável por instanciar motores e controlar seus movimentos.
     '''
-    def __init__(self, motores_direita, motores_esquerda, servo_motores = None, invertido = 'ALL'):
+    def __init__(self, motores_direita, motores_esquerda, servo_motores = None, motores_arma = None, invertido = 'ALL'):
         """
         Método construtor que recebe uma lista de strings com as portas
         dos motores da direita, outra lista com os motores da esquerda e
@@ -31,6 +31,7 @@ class Locomocao():
         self.motores_esquerda = []
         self.motores_direita = []
         self.servo_motores = []
+        self.motores_arma = []
 
         # Atributo para armazenar se o sentido dos motores é invertido ou não
         self.invertido = invertido
@@ -49,6 +50,11 @@ class Locomocao():
             for porta in servo_motores:
                 servo_motor = self.instancia_motor(porta)
                 self.servo_motores.append(servo_motor)
+
+        if motores_arma != None:
+            for porta in motores_arma:
+                motor_arma = self.instancia_motor(porta)
+                self.motores_arma.append(motor_arma)
 
         # Controle de inversão dos motores:
         # - "ALL"        -> todos invertidos;
@@ -110,6 +116,14 @@ class Locomocao():
         for servo_motor in self.servo_motores:
             servo_motor.run_angle(2000,-180) # função que faz o servo motor girar e cair a rampa. 1° parametro é de velocidade em deg/s e o 2° o angulo
         print('roda caiu')
+
+    def ativar_arma(self):
+        for motor in self.motores_arma:
+            motor.dc(-100)
+
+    def desativar_arma(self):
+        for motor in self.motores_arma:
+            motor.brake()
 
     def mixagem(self, velocidade_linear, velocidade_angular):
         """

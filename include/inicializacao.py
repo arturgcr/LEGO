@@ -133,6 +133,10 @@ class Inicializacao():
                     break
                 elif self.botao_central in self.ev3.buttons.pressed():
                     break
+
+        if self.tipo_de_estrategia_inicial == 'desempate':
+
+            pass
             
         wait(500)
 
