@@ -108,6 +108,10 @@ class Inicializacao():
                 if self.botao_central in self.ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada = 'bixo_piruleta'
                     break
+                elif self.botao_baixo in self.ev3.buttons.pressed():
+                    self.estrategia_inicial_selecionada = 'full_re_honesto'
+                    break
+        
         wait(500)
 
     def selecionar_estrategia_inicial_segunda_etapa(self):
@@ -135,7 +139,6 @@ class Inicializacao():
                     break
 
         if self.tipo_de_estrategia_inicial == 'desempate':
-
             pass
             
         wait(500)
