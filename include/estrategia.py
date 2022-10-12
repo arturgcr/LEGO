@@ -40,8 +40,8 @@ class Estrategia():
             self.tempo_do_full_frente_honesto = 1200
             self.tempo_do_full_re_honesto     = 2500
         else:
-            self.tempo_do_full_frente_honesto = 0
-            self.tempo_do_full_re_honesto     = 0
+            self.tempo_do_full_frente_honesto = 6000
+            self.tempo_do_full_re_honesto     = 6000 
     
     def executa_correcao(self, angulo_correcao):
         '''
