@@ -88,7 +88,7 @@ class Estrategia():
         elif estrategia_inicial_selecionada == 'bixo_piruleta': #Pronto
             self.bixo_piruleta()
         elif estrategia_inicial_selecionada == 'de_ladinho': #A ser feito
-            self.de_ladinho()
+            self.de_ladinho(direcao_estrategia_inicial)
         elif estrategia_inicial_selecionada == 'maracutaia': #A ser feito
             self.maracutaia()
         else:
@@ -159,7 +159,10 @@ class Estrategia():
         
         velocidade = 100 
         self.motores.reta(velocidade)
+        print('velocidade linear:', velocidade)
+        print('estou andando')
         wait(self.tempo_do_full_frente_honesto)
+        
     
 
     def full_re_honesto(self):
@@ -192,11 +195,18 @@ class Estrategia():
     # Armadilha
     def de_ladinho(self, direcao):
         """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
-        pass
+        print("di ladin q é mais gostoso")   
+        velocidade_linear = 100
+        velocidade_angular = 50 * direcao
+        self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+        print('velocidade linear:', velocidade_linear)
+        print('velocidade angular:', velocidade_angular)
+        wait(800) # Alterar Tempo
+  
 
     def maracutaia(self):
         """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
-        pass
+        
 
     # ==================================================================================================
     
