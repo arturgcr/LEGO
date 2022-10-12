@@ -1,19 +1,17 @@
-#!/usr/bin/env pybricks-micropython
+"""
+#TODO: Fazer o cabeçalho.
+"""
 
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import InfraredSensor, UltrasonicSensor # ultrassônico da violeta
-from pybricks.nxtdevices import UltrasonicSensor as nxtUltrasonicSensor # esse é o ultrassônico do treta
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
+from pybricks.ev3devices import InfraredSensor, UltrasonicSensor # Sensor ultrassônico EV3
+from pybricks.nxtdevices import UltrasonicSensor as nxtUltrasonicSensor # Sensor ultrassônico NXT
+from pybricks.parameters import Port
 
 class SensorDeOponente():
-    '''
+    """
     Módulo de SensorLEGO
     --------------------
     Responsável por instanciar um sensor, definindo: tipo (str: `ultrassonico` ou `infravermelho`), porta (int: `1`, `2`, `3` ou `4`), a posição (str: `esquerda` ou `direita`) e o tamanho do filtro (`int`, por padrão recebe `None`)do sensor.
-    '''
+    """
     def __init__(self, sensores, pesos, tipo, tamanho_filtro=1):
         """
         Self, dict[str, int], dict[str, int], str -> None

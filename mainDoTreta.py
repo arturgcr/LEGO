@@ -1,29 +1,26 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
 
-from ferramentas import *
+from pybricks.hubs import EV3Brick
+from pybricks.tools import wait
+
+from include.estrategia import *
+from include.ferramentas import *
+from include.inicializacao import *
+from include.locomocao import *
+from include.pid import *
+from include.sensor import *
 
 ev3 = EV3Brick()
 
-from sensor import SensorDeOponente
-from locomocao import Locomocao
-from inicializacao import Inicializacao
-from estrategia import Estrategia
-from pid import PID
-
 def main ():
     # ============ Configurações iniciais ============
-    
+    # Configurando parâmetros das estratégias:
+    nome_do_robo = "Treta"
+
     # -> Constantes para o cálculo do PID:
-    kp = 2
+    kp = 0.6
     ki = 0
-    kd = 1.2
-    temporizador = StopWatch()
+    kd = 0
     
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
     sensoresDeOponente = {"esquerdo": 2, "direito": 1}
@@ -42,18 +39,22 @@ def main ():
     _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
     
     # Instanciando Setup:
-    _inicio = Inicializacao()
+    _inicio = Inicializacao(ev3)
     
     # Instanciando Estratégias:
     _estrategia = Estrategia(_motores)
     
+    # Configurando estratégias iniciais:
+    _estrategia.configurar_estrategias(nome_do_robo)
+
     # ----------------------------------------------------------------------
     
-    # Escolhendo estratégias e direções iniciais através da class Setup ----
+    # Escolhendo estratégia inicial através da class Inicializacao ----
     _inicio.selecionar_correcao_ou_desempate()
-    _inicio.selecionar_estrategia_inicial()
-    _inicio.selecionar_direcao_movimento()
-    _inicio.selecionar_direcao_sensoriamento()
+    _inicio.selecionar_estrategia_inicial_primeira_etapa()
+    _inicio.selecionar_estrategia_inicial_segunda_etapa()
+    _inicio.selecionar_direcao_estrategia_inicial()
+
     # Coletando atributos após as transformações da estapa anterior
     angulo_correcao = _inicio.angulo_correcao
     estrategia_inicial_selecionada = _inicio.estrategia_inicial_selecionada
@@ -81,7 +82,7 @@ def main ():
 
     # Instanciando PID -----------------------------------------------------
     # Recebe apenas kp, kd e ki -> caso não queira calcular algum, basta colocar 0 no seu valor
-    _pid = PID(kp, kd, ki, temporizador)
+    _pid = PID(kp, kd, ki)
     # ----------------------------------------------------------------------
 
     # Entra no loop de busca por adversário -----------------------------------------
@@ -92,8 +93,8 @@ def main ():
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
-            pid = _pid.calcula_pid(_sensor_oponente.erro)
-            pid_constrained = constrainpy(_pid.calcula_pid(_sensor_oponente.erro), -60, 60)
+            pid = _pid.calcular_pid(_sensor_oponente.erro)
+            pid_constrained = ferramentas.constrainpy(_pid.calcular_pid(_sensor_oponente.erro), -100, 100)
             _motores.locomover(100, pid_constrained)
         # Caso contrário, faz a busca
         else:
