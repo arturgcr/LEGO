@@ -19,7 +19,7 @@ def main ():
     nome_do_robo = "Picasso"
     
     # -> Constantes para o cálculo do PID:
-    kp = 0.6
+    kp = 1.5
     ki = 0
     kd = 0
     
@@ -92,7 +92,7 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _sensor_oponente.lerSensores(50) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
+        _sensor_oponente.lerSensores(80) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
@@ -100,6 +100,7 @@ def main ():
             pid = _pid.calcular_pid(_sensor_oponente.erro)
             pid_constrained = ferramentas.constrainpy(_pid.calcular_pid(_sensor_oponente.erro), -100, 100)
             _motores.locomover(100, pid_constrained)
+            print('pid:', pid_constrained)
         # Caso contrário, faz a busca
         else:
             # Gira no mesmo sentido do sensor que viu o oponente por ultimo

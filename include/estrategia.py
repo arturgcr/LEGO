@@ -38,6 +38,9 @@ class Estrategia():
         # Configurações das estratégias do Treta
         elif nome_do_robo == "Treta":
             self.tempo_do_full_frente_honesto = 1200
+            self.tempo_do_full_re_honesto     = 7000
+        elif nome_do_robo == "Picasso":
+            self.tempo_do_full_frente_honesto = 3000
             self.tempo_do_full_re_honesto     = 2500
         else:
             self.tempo_do_full_frente_honesto = 0
@@ -163,7 +166,7 @@ class Estrategia():
     
 
     def full_re_honesto(self):
-        '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
+        '''Uma full ré honesta, nada mais nada menos. O robô apenas vai pra trás com tudo, cuidados devem ser tomados
             com essa manobra '''
         velocidade = 100 
         self.motores.re(velocidade)
@@ -192,6 +195,11 @@ class Estrategia():
     # Armadilha
     def de_ladinho(self, direcao):
         """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
+        
+        velocidade_linear = 200
+        velocidade_angular = 150 * direcao
+        self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+        wait(200)
         pass
 
     def maracutaia(self):
