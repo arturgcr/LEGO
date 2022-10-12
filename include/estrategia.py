@@ -1,17 +1,9 @@
-#!/usr/bin/env pybricks-micropython
-
 """
 Módulo responsável pela definição da classe com os métodos e atributos
 relacionados às estratégias.
 """
 
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
-
+from pybricks.tools import wait
 
 class Estrategia():
     """
@@ -27,6 +19,32 @@ class Estrategia():
         Self@Estrategia, list[str], list[str], str -> None
         """
         self.motores = obj_locomocao
+
+        # Configurações das estratégias com tempos diferentes
+        self.tempo_do_full_frente_honesto = 0
+        self.tempo_do_full_re_honesto = 0
+
+    def configurar_estrategias(self, nome_do_robo):
+        """
+        Função com a definição dos valores das variáveis de tempo de cada
+        robô.
+
+        nome_do_robo: str -> None
+        """
+        # Configurações das estratégias da Violeta
+        if nome_do_robo == "Violeta":
+            self.tempo_do_full_frente_honesto = 5000
+            self.tempo_do_full_re_honesto     = 7000
+        # Configurações das estratégias do Treta
+        elif nome_do_robo == "Treta":
+            self.tempo_do_full_frente_honesto = 1200
+            self.tempo_do_full_re_honesto     = 7000
+        elif nome_do_robo == "Picasso":
+            self.tempo_do_full_frente_honesto = 3000
+            self.tempo_do_full_re_honesto     = 2500
+        else:
+            self.tempo_do_full_frente_honesto = 0
+            self.tempo_do_full_re_honesto     = 0
     
     def executa_correcao(self, angulo_correcao):
         '''
@@ -42,12 +60,12 @@ class Estrategia():
             if angulo_correcao == 35:
                 # Gira o robô no sentido horário
                 self.motores.giro(100)
-                wait(500)
+                wait(250)
             # Verifica se o ângulo é igual a -90
             elif angulo_correcao == -35:
                 # Gira o robô no sentido anti-horário
                 self.motores.giro(-100)
-                wait(500)
+                wait(250)
         # Caso contrário, faz nada
         else:
             pass
@@ -70,6 +88,12 @@ class Estrategia():
             self.full_frente_honesto()
         elif estrategia_inicial_selecionada == 'full_re_honesto': #Pronto
             self.full_re_honesto()
+        elif estrategia_inicial_selecionada == 'bixo_piruleta': #Pronto
+            self.bixo_piruleta()
+        elif estrategia_inicial_selecionada == 'de_ladinho': #A ser feito
+            self.de_ladinho()
+        elif estrategia_inicial_selecionada == 'maracutaia': #A ser feito
+            self.maracutaia()
         else:
             print('ATENCAO! Nenhuma estrategia selecionada')        
 
@@ -84,19 +108,19 @@ class Estrategia():
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
         o robô irá percorrer a borda da arena"""
         velocidade_linear = 100
-        velocidade_angular = 50* -direcao
+        velocidade_angular = 45* -direcao
         giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         print('iniciou o arco')
-        wait(2000) # o tempo pode variar para cada robô
+        wait(1700) # o tempo pode variar para cada robô
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
-        print('girou no msm sentido')    
+        print('girou no msm sentido')
 
-    def bixo_piruleta(self, direcao, pwm):
+    def bixo_piruleta(self):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
-        self.motores.giro(pwm*direcao)
-        wait(1500)
+        self.motores.giro(100)
+        wait(800)
 
     # Manobra + Arco => segue reto por alguns segundos e executa um arco
     def comunismo(self, direcao):
@@ -138,20 +162,16 @@ class Estrategia():
         
         velocidade = 100 
         self.motores.reta(velocidade)
-        wait(5000)
+        wait(self.tempo_do_full_frente_honesto)
     
 
     def full_re_honesto(self):
-        '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
+        '''Uma full ré honesta, nada mais nada menos. O robô apenas vai pra trás com tudo, cuidados devem ser tomados
             com essa manobra '''
         velocidade = 100 
         self.motores.re(velocidade)
-        wait(7000)
-
-    # Armadilha reta -
-    def baby_come_back(self, pwm):
-        """"O robô pode estar posicionado de qualquer forma, mas longe da borda da arena. Inicia dando uma ré, totalmente reta"""
-        pass
+        
+        wait(self.tempo_do_full_re_honesto)
 
     # Manobra + Arco invertida
     def capitalismo(self, direcao):
@@ -172,41 +192,19 @@ class Estrategia():
         self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(500) # Alterar tempo
 
-    # def andarUmPouquinho():
-    # a violeta ja abaixa a rampa oq mostra p juiz que ela ta viva
-    # mas o treta nao
-    # poderiamos fazer ele andar pouquinho mas isso n abaixaria o chifre
-    # nao abaixar o chifre --> sensoria o proprio chifre
-    # Ftreta
+    # Armadilha
+    def de_ladinho(self, direcao):
+        """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
+        
+        velocidade_linear = 200
+        velocidade_angular = 150 * direcao
+        self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
+        wait(200)
+        pass
 
-    # def maracutaia(self):
-    #     distancia_min = 100 #mudar
-    #     distancia_max = 400 #mudar
-    #     distancia_de_ataque = 20 #mudar
-     
-    #     ataque_do_oponente = False
-    #     distancia = 0
-    
-    #     while ataque_do_oponente == False:
-    #         distancia_antiga = distancia
-    #         distancia = self.sensores[sensor].distance()
-
-    #         if distancia <= distancia_min:
-    #             break
-
-    #         if distancia > distancia_max:
-    #             #procurar ate achar
-                  #SO PROCURAR
-    #             continue
-            
-    #         wait(50)
-    #         andarUmPouquinho()
-    #         wait(50) #breve tempo em que ele vai ficar parado por loop
-            
-    #         if (distancia - distancia_antiga) > distancia_de_ataque :
-    #             #diferenca de ditancia / tempo no wait = velocidade
-    #             #se for muito rapido eh ataque
-    #             ataque_do_oponente = True
+    def maracutaia(self):
+        """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
+        pass
 
     # ==================================================================================================
     

@@ -1,17 +1,12 @@
-#!/usr/bin/env pybricks-micropython
-
 """
 Módulo responsável pela definicao da classe com os métodos e atributos
 relacionados a locomoção do robô.
 """
 
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
-from ferramentas import constrainpy
+from pybricks.ev3devices import Motor
+from pybricks.parameters import Port
+
+from include.ferramentas import *
 
 class Locomocao():
     '''
@@ -20,7 +15,7 @@ class Locomocao():
 
     Responsável por instanciar motores e controlar seus movimentos.
     '''
-    def __init__(self, motores_direita, motores_esquerda, servo_motores = None, invertido = 'ALL'):
+    def __init__(self, motores_direita, motores_esquerda, servo_motores = None, motores_arma = None, invertido = 'ALL'):
         """
         Método construtor que recebe uma lista de strings com as portas
         dos motores da direita, outra lista com os motores da esquerda e
@@ -36,21 +31,30 @@ class Locomocao():
         self.motores_esquerda = []
         self.motores_direita = []
         self.servo_motores = []
+        self.motores_arma = []
 
         # Atributo para armazenar se o sentido dos motores é invertido ou não
         self.invertido = invertido
 
         # Adiciona no atributo "self.motores_esquerda" os motores esquerdos com suas respectivas portas
         for porta in motores_esquerda:
-            self.motores_esquerda.append(Motor(self.seleciona_porta(porta)))
+            motor_esquerda = self.instancia_motor(porta)
+            self.motores_esquerda.append(motor_esquerda)
 
         # Adiciona no atributo "self.motores_direita" os motores direitos com suas respectivas portas
-        for porta in motores_direita: 
-            self.motores_direita.append(Motor(self.seleciona_porta(porta)))
+        for porta in motores_direita:
+            motor_direita = self.instancia_motor(porta)
+            self.motores_direita.append(motor_direita)
 
         if servo_motores != None:
             for porta in servo_motores:
-                self.servo_motores.append(Motor(self.seleciona_porta(porta)))
+                servo_motor = self.instancia_motor(porta)
+                self.servo_motores.append(servo_motor)
+
+        if motores_arma != None:
+            for porta in motores_arma:
+                motor_arma = self.instancia_motor(porta)
+                self.motores_arma.append(motor_arma)
 
         # Controle de inversão dos motores:
         # - "ALL"        -> todos invertidos;
@@ -64,20 +68,26 @@ class Locomocao():
         if self.invertido == "ALL" or "LEFT":
             self.sentido_esquerda = -1
 
-    def seleciona_porta(self, porta):
+    def instancia_motor(self, porta):
         """
-        Método para selecionar a porta do motor.
+        Método recebe uma string com o nome da porta, instancia um objeto Port do pybrick e retorna um objeto Motor do pybricks.
 
         Self@Locomocao, str -> ?
         """
+        obj_porta = None
+
         if porta == 'A':
-            return Port.A
+            obj_porta = Port.A
         elif porta == 'B':
-            return Port.B
+            obj_porta = Port.B
         elif porta == 'C':
-            return Port.C
+            obj_porta = Port.C
         elif porta == 'D':
-            return Port.D
+            obj_porta = Port.D
+
+        motor = Motor(obj_porta)
+
+        return motor
 
     def aplicar_roda_esquerda(self, pwm):
         """
@@ -104,18 +114,16 @@ class Locomocao():
         Move o servo-motor responsável por liberar a rampa da violeta. Atualmente, está configurado para gerar 180° no sentido anti-horário (-180). Com a adição de mais servos-motores, esse método precisará ser revisto.
         '''
         for servo_motor in self.servo_motores:
-            servo_motor.angle(-180) # acho que dessa forma, vai girar 180° no sentido anti-horário
+            servo_motor.run_angle(2000,-60) # função que faz o servo motor girar e cair a rampa. 1° parametro é de velocidade em deg/s e o 2° o angulo
+        print('roda caiu')
 
-    def mapy(self, valor_a_ser_convertido, minimo_da_entrada, maximo_da_entrada, minimo_da_saida,  maximo_da_saida):
-        """
-        Método com a função map lá do Arduino em sua verdadeira forma, em Python.
+    def ativar_arma(self):
+        for motor in self.motores_arma:
+            motor.dc(-100)
 
-        self@Locomocao, int ou float, int ou float, int ou float, int ou float, int ou float -> float
-        """
-        diferenca_das_entradas = maximo_da_entrada - minimo_da_entrada
-        diferenca_das_saidas = maximo_da_saida - minimo_da_saida
-        diferenca_do_valor_a_ser_convertido_com_o_minimo_da_entrada = valor_a_ser_convertido - minimo_da_entrada
-        return (diferenca_do_valor_a_ser_convertido_com_o_minimo_da_entrada * diferenca_das_saidas) / diferenca_das_entradas + minimo_da_saida
+    def desativar_arma(self):
+        for motor in self.motores_arma:
+            motor.brake()
 
     def mixagem(self, velocidade_linear, velocidade_angular):
         """
@@ -129,8 +137,9 @@ class Locomocao():
         pwm_roda_esquerda = velocidade_linear + velocidade_angular
         pwm_roda_direita  = velocidade_linear - velocidade_angular
         
-        # teste
+        # Calcula a diferença das mixagens
         diff = abs(abs(velocidade_angular) - abs(velocidade_linear))
+
         if (pwm_roda_esquerda < 0):
             pwm_roda_esquerda -= diff
         else:
@@ -141,22 +150,15 @@ class Locomocao():
         else:
             pwm_roda_direita += diff
 
-
-        # se não é pra virar muito, vai full pra frente
-        if(velocidade_angular < 5 and velocidade_angular > -5):
-            pwm_roda_esquerda = 200
-            pwm_roda_direita  = 200
-
         # Converte de volta para o intervalo [-100, 100]
-        pwm_roda_esquerda = int(self.mapy(pwm_roda_esquerda, -200, 200, -100, 100))
-        pwm_roda_esquerda = constrainpy(pwm_roda_esquerda,-100,100)
-        pwm_roda_direita  = int(self.mapy(pwm_roda_direita, -200, 200, -100, 100))
-        pwm_roda_direita = constrainpy(pwm_roda_direita,-100,100)
-
-
+        pwm_roda_esquerda = int(ferramentas.mapy(pwm_roda_esquerda, -200, 200, -100, 100))
+        pwm_roda_esquerda = ferramentas.constrainpy(pwm_roda_esquerda, -100, 100)
+        pwm_roda_direita  = int(ferramentas.mapy(pwm_roda_direita, -200, 200, -100, 100))
+        pwm_roda_direita = ferramentas.constrainpy(pwm_roda_direita, -100, 100)
 
         print('pwm_esquerda: ' + str(pwm_roda_esquerda))
         print('pwm_direita: ' + str(pwm_roda_direita))
+
         # Retorna uma tupla com a primeira posição o valor de PWM do motor esquerdo e a segunda posição com o valor do motor direito
         return pwm_roda_esquerda, pwm_roda_direita
 
