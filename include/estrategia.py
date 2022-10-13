@@ -100,7 +100,7 @@ class Estrategia():
         elif estrategia_inicial_selecionada == 'maracutaia': #A ser feito
             self.maracutaia()
         else:
-            print('ATENCAO! Nenhuma estrategia selecionada')        
+            pass   
 
 
     # Executa a estratégia de perseguição com base na leitura do sensores e do PID
@@ -204,11 +204,9 @@ class Estrategia():
         """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
         print("di ladin q é mais gostoso")   
         velocidade_linear = 100
-        velocidade_angular = 50 * direcao
+        velocidade_angular = 75 * direcao
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        print('velocidade linear:', velocidade_linear)
-        print('velocidade angular:', velocidade_angular)
-        wait(800) # Alterar Tempo
+        wait(1000) # Alterar Tempo
 
     def maracutaia(self):
         """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
