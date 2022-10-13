@@ -19,10 +19,9 @@ def main ():
     nome_do_robo = "Picasso"
     
     # -> Constantes para o cálculo do PID:
-    kp = 1.5
-    ki = 0
-    kd = 0
-    
+    kp = 0.6
+    ki = 0.0
+    kd = 0.2   
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
     sensoresDeOponente = {"esquerdo": 1, "direito": 2}
 
@@ -92,23 +91,23 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _sensor_oponente.lerSensores(70) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
+        _sensor_oponente.lerSensores(60) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
             # Se foi detectado, calcula o PID e joga na velocidade angular
             pid = _pid.calcular_pid(_sensor_oponente.erro)
             pid_constrained = ferramentas.constrainpy(_pid.calcular_pid(_sensor_oponente.erro), -100, 100)
-            _motores.locomover(100, pid_constrained)
-            print('pid:', pid_constrained)
+            _motores.locomover(100, -pid_constrained)
+            print('pid:', -pid_constrained)
         # Caso contrário, faz a busca
         else:
             # Gira no mesmo sentido do sensor que viu o oponente por ultimo
-            _motores.locomover(0, 80* -_sensor_oponente.visto_por_ultimo)
+            _motores.locomover(0, 80 * -_sensor_oponente.visto_por_ultimo)
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()
-        print(-_sensor_oponente.visto_por_ultimo)
+        print('vistoporultimo:', 80 * -_sensor_oponente.visto_por_ultimo)
     # -------------------------------------------------------------------------------
 
 if __name__ == '__main__':
