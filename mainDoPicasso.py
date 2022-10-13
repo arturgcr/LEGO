@@ -92,7 +92,7 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _sensor_oponente.lerSensores(80) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
+        _sensor_oponente.lerSensores(70) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
@@ -104,7 +104,7 @@ def main ():
         # Caso contrário, faz a busca
         else:
             # Gira no mesmo sentido do sensor que viu o oponente por ultimo
-            _motores.locomover(0, 80 * -_sensor_oponente.visto_por_ultimo)
+            _motores.locomover(0, 80* -_sensor_oponente.visto_por_ultimo)
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()
