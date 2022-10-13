@@ -35,8 +35,9 @@ def main ():
     # -> Instanciando Motores (Locomocao):
     motores_esquerda = ['A', 'B'] # lista com portas dos motores da esquerda
     motores_direita = ['C', 'D'] # lista com portas dos motores da direita
-    servo_motores = [] # lista com portas dos servo-motores - Apenas para o caso da Violeta
-    _motores = Locomocao(motores_direita, motores_esquerda) # precisa comportar servo-motores
+    servo_motores = None # lista com portas dos servo-motores - Apenas para o caso da Violeta
+    motores_arma = None
+    _motores = Locomocao(motores_direita, motores_esquerda, servo_motores, motores_arma) # precisa comportar servo-motores
     
     # Instanciando Setup:
     _inicio = Inicializacao(ev3)

@@ -187,14 +187,13 @@ class Locomocao():
         """
         self.locomover(pwm, 0)
 
-    def re(self, velocidade_linear = 100):
+    def re(self, pwm = 100, correcao_angular = 0):
         """
         Empericamente percebemos ums dificuldade em fazer o calculo de mixagem  com velocidade linear 
         negativa e angular nula.
         Portanto criamos a funcao re que eh , essencialmente, um moonwalk com uma pequena velocidade angular
         """
-        valor_limiar_angular = 10 # provisorio
-        self.arco(-velocidade_linear, valor_limiar_angular)
+        self.locomover(-pwm, correcao_angular)
 
     # talvez arco nao esteja rodando pras duas direcoes, e sim, so pra direita (se sim, criar um if e inverter sinais)
     def arco (self, velocidade_linear = 100, velocidade_angular = 15): # [Vang: que é metade da diferença de potencia entre os motores]
