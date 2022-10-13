@@ -212,7 +212,7 @@ class Estrategia():
 
     def maracutaia(self):
         """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
-        
+        pass
 
     # ==================================================================================================
     
