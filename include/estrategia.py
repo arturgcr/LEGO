@@ -149,7 +149,7 @@ class Estrategia():
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         print('velocidade linear:', velocidade_linear)
         print('velocidade angular:', velocidade_angular)
-        wait(2500) # Alterar Tempo
+        wait(2300) # Alterar Tempo
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(700)
         

@@ -131,6 +131,9 @@ class Inicializacao():
                     self.estrategia_inicial_selecionada = 'maracutaia'
                 elif self.botao_baixo in self.ev3.buttons.pressed():
                     self.estrategia_inicial_selecionada = 'de_ladinho'
+                    # Botão central - simplesmente avança para as próximas estratégias
+                elif self.botao_central in self.ev3.buttons.pressed():
+                    break
 
         if self.tipo_de_estrategia_inicial == 'desempate':
             pass
