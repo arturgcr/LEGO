@@ -68,8 +68,8 @@ class Estrategia():
             self.tempo_capitalismo         = 2000
             self.tempo_comunismo           = 1500
             self.tempo_de_ladinho          = 1500
-            self.tempo_full_frente_honesto = 2000
-            self.tempo_full_re_honesto     = 2000
+            self.tempo_full_frente_honesto = 1500
+            self.tempo_full_re_honesto     = 1500
             self.tempo_moonwalk            = 2500
         
         else:
