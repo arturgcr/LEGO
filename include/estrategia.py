@@ -43,7 +43,7 @@ class Estrategia():
             self.nome_robo = nome_robo
             self.tempo_arco                = 2000
             self.tempo_capitalismo         = 1700
-            self.tempo_comunismo           = 1200
+            self.tempo_comunismo           = 1500
             self.tempo_de_ladinho          = 1000
             self.tempo_full_frente_honesto = 1800
             self.tempo_full_re_honesto     = 1800
@@ -166,20 +166,28 @@ class Estrategia():
         giro_sentido_oposto = 100 * -direcao
         giro_mesmo_sentido = 100 * direcao
         tempo_reta = 200
+        tempo_giro_mesmo_sentido = 350
+        tempo_giro_sentido_oposto = 250
         
-        if (self.nome_robo == "Violeta") or (self.nome_robo == "Picasso"):
+        if self.nome_robo == "Violeta":
             tempo_reta = 500
             if direcao > 0:
                 velocidade_angular = 30 * -direcao
 
+        elif self.nome_robo == "Picasso":
+            tempo_reta = 500
+            if direcao > 0:
+                velocidade_linear = 100
+                velocidade_angular = 60 * -direcao
+
         self.motores.reta() #frente
         wait(tempo_reta)
         self.motores.giro(giro_mesmo_sentido) #angulo
-        wait(350)
+        wait(tempo_giro_mesmo_sentido)
         self.motores.arco(velocidade_linear+20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
         wait(self.tempo_comunismo) # alterar tempo
         self.motores.giro(giro_sentido_oposto) #angulo
-        wait(250)
+        wait(tempo_giro_sentido_oposto)
         
    
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
