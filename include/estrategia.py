@@ -138,10 +138,16 @@ class Estrategia():
         giro_mesmo_sentido = 100 * -direcao
 
         if self.nome_robo == "Violeta":
-            velocidade_angular = 30 * -direcao
+            if direcao < 0:
+                velocidade_angular = 30 * -direcao
+            if direcao > 0:
+                velocidade_angular = 35 * -direcao
         
-        self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(self.tempo_arco) # o tempo pode variar para cada robô
+        if self.nome_robo == "Treta":
+            velocidade_angular = 35 * -direcao
+        
+        self.motores.arco(velocidade_linear, velocidade_angular)
+        wait(self.tempo_arco)
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
 
@@ -155,32 +161,22 @@ class Estrategia():
         '''
         Executa um curto movimento em linha reta e logo em seguida executa um arco e finaliza se voltando para o centro da arena.
         '''
+        velocidade_linear = 100
+        velocidade_angular = 50 * -direcao
+        giro_sentido_oposto = 100 * -direcao
+        giro_mesmo_sentido = 100 * direcao
+        
         if self.nome_robo == "Violeta" and direcao > 0:
-            velocidade_linear = 100
             velocidade_angular = 35 * -direcao
-            giro_sentido_oposto = 100 * -direcao
-            giro_mesmo_sentido = 100 * direcao
-            self.motores.reta() #frente
-            wait(200)
-            self.motores.giro(giro_mesmo_sentido) #angulo
-            wait(350)
-            self.motores.arco(velocidade_linear + 20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
-            wait(self.tempo_comunismo) # alterar tempo
-            self.motores.giro(giro_sentido_oposto) #angulo
-            wait(250)
-        else:
-            velocidade_linear = 100
-            velocidade_angular = 50 * -direcao
-            giro_sentido_oposto = 100 * -direcao
-            giro_mesmo_sentido = 100 * direcao
-            self.motores.reta() #frente
-            wait(200)
-            self.motores.giro(giro_mesmo_sentido) #angulo
-            wait(350)
-            self.motores.arco(velocidade_linear+20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
-            wait(self.tempo_comunismo) # alterar tempo
-            self.motores.giro(giro_sentido_oposto) #angulo
-            wait(250)
+
+        self.motores.reta() #frente
+        wait(200)
+        self.motores.giro(giro_mesmo_sentido) #angulo
+        wait(350)
+        self.motores.arco(velocidade_linear+20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
+        wait(self.tempo_comunismo) # alterar tempo
+        self.motores.giro(giro_sentido_oposto) #angulo
+        wait(250)
         
    
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
