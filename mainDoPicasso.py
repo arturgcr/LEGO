@@ -62,14 +62,11 @@ def main ():
     direcao_estrategia_inicial = _inicio.direcao_estrategia_inicial
     direcao_sensoriamento_inicial = _inicio.direcao_sensoriamento_inicial
     _sensor_oponente.visto_por_ultimo = direcao_sensoriamento_inicial
-    print(direcao_estrategia_inicial)
 
     # Aguardando 5 segundos para o início da movimentação do robô
     wait(4700) # Função do Pybricks que é similar a time.sleep() do Python
     # ----------------------------------------------------------------------
-    print(estrategia_inicial_selecionada)
-    print(direcao_estrategia_inicial)
-    print(_inicio.direcao_sensoriamento_inicial)
+
     # Executando estratégia inicial ----------------------------------------
 
     _motores.ativar_arma()
@@ -91,7 +88,7 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _sensor_oponente.lerSensores(70) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
+        _sensor_oponente.lerSensores(40) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
@@ -102,7 +99,7 @@ def main ():
         # Caso contrário, faz a busca
         else:
             # Gira no mesmo sentido do sensor que viu o oponente por ultimo
-            _motores.locomover(0, 70 * -_sensor_oponente.visto_por_ultimo)
+            _motores.locomover(0, 70 * _sensor_oponente.visto_por_ultimo)
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()

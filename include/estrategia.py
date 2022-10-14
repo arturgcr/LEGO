@@ -165,12 +165,15 @@ class Estrategia():
         velocidade_angular = 50 * -direcao
         giro_sentido_oposto = 100 * -direcao
         giro_mesmo_sentido = 100 * direcao
+        tempo_reta = 200
         
-        if self.nome_robo == "Violeta" and direcao > 0:
-            velocidade_angular = 35 * -direcao
+        if (self.nome_robo == "Violeta") or (self.nome_robo == "Picasso"):
+            tempo_reta = 500
+            if direcao > 0:
+                velocidade_angular = 30 * -direcao
 
         self.motores.reta() #frente
-        wait(200)
+        wait(tempo_reta)
         self.motores.giro(giro_mesmo_sentido) #angulo
         wait(350)
         self.motores.arco(velocidade_linear+20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
@@ -252,21 +255,3 @@ class Estrategia():
     def radar(self):
         pass
     # ==================================================================================================
-
-    """ # vai andando em arcos ate encontrar algo
-    # 100 e 15 eh valor arbitrario, teremos q testar e descobrir o real
-    def radarArco (self,erro):
-        if erro < 0:
-            self.motores.arco(100,-15)
-        if erro == 0:
-            self.motores.reta(100)
-        if erro > 0:
-            self.motores.arco(100,15) 
-
-    # vai andando em arcos ate encontrar algo
-    def radarPID (self, erro, vLin=0):
-        # na func arco - primeiro argumento: Vlin; segundo argumento: erro;
-        if erro != 0:
-            self.motores.arco(vLin,erro)
-        if erro == 0:
-            self.motores.reta(100) """
