@@ -114,8 +114,7 @@ class Locomocao():
         Move o servo-motor responsável por liberar a rampa da violeta. Atualmente, está configurado para gerar 180° no sentido anti-horário (-180). Com a adição de mais servos-motores, esse método precisará ser revisto.
         '''
         for servo_motor in self.servo_motores:
-            servo_motor.run_angle(2000,-60) # função que faz o servo motor girar e cair a rampa. 1° parametro é de velocidade em deg/s e o 2° o angulo
-        print('roda caiu')
+            servo_motor.run_angle(2000, -60)
 
     def ativar_arma(self):
         for motor in self.motores_arma:
