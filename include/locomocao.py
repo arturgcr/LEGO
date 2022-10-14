@@ -158,9 +158,6 @@ class Locomocao():
         pwm_roda_direita  = int(ferramentas.mapy(pwm_roda_direita, -200, 200, -100, 100))
         pwm_roda_direita = ferramentas.constrainpy(pwm_roda_direita, -100, 100)
 
-        print('pwm_esquerda: ' + str(pwm_roda_esquerda))
-        print('pwm_direita: ' + str(pwm_roda_direita))
-
         # Retorna uma tupla com a primeira posição o valor de PWM do motor esquerdo e a segunda posição com o valor do motor direito
         return pwm_roda_esquerda, pwm_roda_direita
 

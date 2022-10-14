@@ -22,34 +22,60 @@ class Estrategia():
         self.nome_robo = "Robo Genérico"
 
         # Configurações das estratégias com tempos diferentes
+        self.tempo_arco = 0
+        self.tempo_capitalismo = 0
+        self.tempo_comunismo = 0
+        self.tempo_de_ladinho = 0
         self.tempo_full_frente_honesto = 0
         self.tempo_full_re_honesto = 0
+        self.tempo_moonwalk = 0
 
-    def configurar_estrategias(self, nome_do_robo):
+    def configurar_estrategias(self, nome_robo):
         """
         Função com a definição dos valores das variáveis de tempo de cada
         robô.
 
         nome_do_robo: str -> None
         """
-        # Configurações das estratégias da Violeta
-        if nome_do_robo == "Violeta":
+
+        # Configurações da Violeta (1 motor de um lado e 2 motores do outro)
+        if nome_robo == "Violeta":
+            self.nome_robo = nome_robo
+            self.tempo_arco                = 2000
+            self.tempo_capitalismo         = 1700
+            self.tempo_comunismo           = 1200
+            self.tempo_de_ladinho          = 1000
             self.tempo_full_frente_honesto = 1800
             self.tempo_full_re_honesto     = 1800
-            self.nome_robo = nome_do_robo
-        # Configurações das estratégias do Treta
-        elif nome_do_robo == "Treta":
+            self.tempo_moonwalk            = 2300
+            # add correções para: "arco", "comunismo", "capitalismo", "moonwalk" e "de_ladinho"
+
+        # Configurações do Treta (2 motores de cada lado)
+        elif nome_robo == "Treta":
+            self.nome_robo = nome_robo
+            self.tempo_arco                = 1700
+            self.tempo_capitalismo         = 1700
+            self.tempo_comunismo           = 1200
+            self.tempo_de_ladinho          = 1000
             self.tempo_full_frente_honesto = 1200
-            self.tempo_full_re_honesto     = 7000
-            self.nome_robo = nome_do_robo
-        elif nome_do_robo == "Picasso":
+            self.tempo_full_re_honesto     = 1600
+            self.tempo_moonwalk            = 2300
+        
+        # Configurações do Picasso (1 motor de cada lado)
+        elif nome_robo == "Picasso":
+            self.nome_robo = nome_robo
+            self.tempo_arco                = 2200
+            self.tempo_capitalismo         = 2000
+            self.tempo_comunismo           = 1500
+            self.tempo_de_ladinho          = 1500
             self.tempo_full_frente_honesto = 2000
             self.tempo_full_re_honesto     = 2000
-            self.nome_robo = nome_do_robo
+            self.tempo_moonwalk            = 2500
+        
         else:
+            self.nome_robo = nome_robo
             self.tempo_full_frente_honesto = 6000
             self.tempo_full_re_honesto     = 6000
-            self.nome_robo = nome_do_robo
     
     def executa_correcao(self, angulo_correcao):
         '''
@@ -100,27 +126,30 @@ class Estrategia():
         elif estrategia_inicial_selecionada == 'maracutaia': #A ser feito
             self.maracutaia()
         else:
-            pass   
-
-
-    # Executa a estratégia de perseguição com base na leitura do sensores e do PID
-    def executa_estrategia_perseguicao(self, pid_convertido_pwm):
-        self.radar(pid_convertido_pwm)
-            
+            pass           
     
     # =================================== Estratégias Iniciais =========================================
     def arco(self, direcao):
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
         o robô irá percorrer a borda da arena"""
+        # Verifica se a Violeta está usando os motores mais potentes e se está no sentido anti-horário
         velocidade_linear = 100
-        velocidade_angular = 45* -direcao
-        giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
-        self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        print('iniciou o arco')
-        wait(1700) # o tempo pode variar para cada robô
+        velocidade_angular = 45 * -direcao
+        giro_mesmo_sentido = 100 * -direcao
+
+        if self.nome_robo == "Violeta":
+            if direcao < 0:
+                velocidade_angular = 30 * -direcao
+            if direcao > 0:
+                velocidade_angular = 35 * -direcao
+        
+        if self.nome_robo == "Treta":
+            velocidade_angular = 35 * -direcao
+        
+        self.motores.arco(velocidade_linear, velocidade_angular)
+        wait(self.tempo_arco)
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
-        print('girou no msm sentido')
 
     def bixo_piruleta(self):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
@@ -136,12 +165,19 @@ class Estrategia():
         velocidade_angular = 50 * -direcao
         giro_sentido_oposto = 100 * -direcao
         giro_mesmo_sentido = 100 * direcao
+        tempo_reta = 200
+        
+        if (self.nome_robo == "Violeta") or (self.nome_robo == "Picasso"):
+            tempo_reta = 500
+            if direcao > 0:
+                velocidade_angular = 30 * -direcao
+
         self.motores.reta() #frente
-        wait(200)
+        wait(tempo_reta)
         self.motores.giro(giro_mesmo_sentido) #angulo
         wait(350)
         self.motores.arco(velocidade_linear+20, velocidade_angular ) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1200) # alterar tempo
+        wait(self.tempo_comunismo) # alterar tempo
         self.motores.giro(giro_sentido_oposto) #angulo
         wait(250)
         
@@ -149,26 +185,22 @@ class Estrategia():
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
     def moonwalk(self, direcao):
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
-        o robô irá percorrer a borda da arena de costas"""  
-        print("Meu nome é Michael Jackson!")   
+        o robô irá percorrer a borda da arena de costas"""
         velocidade_linear = 200
         velocidade_angular = 150 * direcao
         giro_mesmo_sentido = 100 * -direcao # valor para girar o robô no mesmo sentido que a direção da estrategia 
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(2300) # Alterar Tempo
+        wait(self.tempo_moonwalk) # Alterar Tempo
         self.motores.giro(giro_mesmo_sentido) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(700)
         
     def full_frente_honesto(self):
         '''Uma full frente honesta, nada mais nada menos. O robô apenas vai pra frente com tudo, cuidados devem ser tomados
-            com essa manobra '''
-        
+            com essa manobra '''  
         velocidade = 100 
         self.motores.reta(velocidade)
         wait(self.tempo_full_frente_honesto)
         
-    
-
     def full_re_honesto(self):
         '''Uma full ré honesta, nada mais nada menos. O robô apenas vai pra trás com tudo, cuidados devem ser tomados
             com essa manobra '''
@@ -184,29 +216,33 @@ class Estrategia():
     def capitalismo(self, direcao):
         """"O robô é posicionado de frente um pouco mais no centro na arena. Inicialmente vai para trás ( da ré). 
         Faz o giro para uma direção selecionada (gira) e executa o arco na direção selecionada"""
-
+        
         velocidade_linear = 100
         velocidade_angular = 50 * -direcao
+        tempo_re = 450
         giro_mesmo_sentido = 100 * direcao
         giro_sentido_oposto = 100 * -direcao
-        #self.motores.reta(-velocidade_linear)
+
+        if self.nome_robo == "Picasso":
+            velocidade_angular = 60 * -direcao
+            tempo_re = 200
+        
         self.motores.re(velocidade_linear)
-        wait(450)
+        wait(tempo_re)
         self.motores.giro(giro_mesmo_sentido)
         wait(350)
         self.motores.arco(velocidade_linear +20, velocidade_angular) #
-        wait(1700) # alterar tempo
+        wait(self.tempo_capitalismo) # alterar tempo
         self.motores.giro(giro_sentido_oposto) # Alterar pwm correspondente ao robo - pra virar pro meio da arena novamente
         wait(500) # Alterar tempo
 
     # Armadilha
     def de_ladinho(self, direcao):
-        """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
-        print("di ladin q é mais gostoso")   
+        """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""   
         velocidade_linear = 100
-        velocidade_angular = 75 * direcao
+        velocidade_angular = 80 * -direcao
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(1000) # Alterar Tempo
+        wait(self.tempo_de_ladinho) # Alterar Tempo
 
     def maracutaia(self):
         """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
@@ -216,29 +252,6 @@ class Estrategia():
     
     # ============================ Estratégias de Perseguição ========================================== 
     # gira ao redor de si até encontrar algo
-    def radar(self, pwm):
-        # Gira no sentido anti-horário com potência determinada pelo PID
-        if pwm != 0:
-            self.motores.giro(pwm) # direcao_oponente = -1
-        # Full frente com potência máxima, desconsiderando PID
-        if pwm == 0:
-            self.motores.reta(100)
+    def radar(self):
+        pass
     # ==================================================================================================
-
-    """ # vai andando em arcos ate encontrar algo
-    # 100 e 15 eh valor arbitrario, teremos q testar e descobrir o real
-    def radarArco (self,erro):
-        if erro < 0:
-            self.motores.arco(100,-15)
-        if erro == 0:
-            self.motores.reta(100)
-        if erro > 0:
-            self.motores.arco(100,15) 
-
-    # vai andando em arcos ate encontrar algo
-    def radarPID (self, erro, vLin=0):
-        # na func arco - primeiro argumento: Vlin; segundo argumento: erro;
-        if erro != 0:
-            self.motores.arco(vLin,erro)
-        if erro == 0:
-            self.motores.reta(100) """
