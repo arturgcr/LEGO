@@ -74,6 +74,7 @@ def main ():
     # Executando estratégia inicial ----------------------------------------
 
     _motores.servo_motor_libera_rampa() # Assim que a luta se inicia, a rampa cai
+    
     if estrategia_inicial_selecionada != 'radar':
         _estrategia.executa_correcao(angulo_correcao) # se for igual a zero, passa direto sem corrigir
     # Executa a estratégia inicial sem fazer nenhum sensoriamento
