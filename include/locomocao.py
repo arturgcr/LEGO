@@ -5,6 +5,7 @@ relacionados a locomoção do robô.
 
 from pybricks.ev3devices import Motor
 from pybricks.parameters import Port
+from pybricks.tools import wait
 
 from include.ferramentas import *
 
@@ -114,7 +115,9 @@ class Locomocao():
         Move o servo-motor responsável por liberar a rampa da violeta. Atualmente, está configurado para gerar 180° no sentido anti-horário (-180). Com a adição de mais servos-motores, esse método precisará ser revisto.
         '''
         for servo_motor in self.servo_motores:
-            servo_motor.run_angle(2000, -60)
+            servo_motor.dc(-100)
+            wait(100)
+            servo_motor.dc(0)
 
     def ativar_arma(self):
         for motor in self.motores_arma:
