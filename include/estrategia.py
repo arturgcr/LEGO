@@ -25,7 +25,7 @@ class Estrategia():
         self.tempo_full_frente_honesto = 0
         self.tempo_full_re_honesto = 0
 
-    def configurar_estrategias(self, nome_do_robo):
+    def configurar_estrategias(self, nome_robo):
         """
         Função com a definição dos valores das variáveis de tempo de cada
         robô.
@@ -33,23 +33,23 @@ class Estrategia():
         nome_do_robo: str -> None
         """
         # Configurações das estratégias da Violeta
-        if nome_do_robo == "Violeta":
+        if nome_robo == "Violeta":
+            self.nome_robo = nome_robo
             self.tempo_full_frente_honesto = 1800
             self.tempo_full_re_honesto     = 1800
-            self.nome_robo = nome_do_robo
         # Configurações das estratégias do Treta
-        elif nome_do_robo == "Treta":
+        elif nome_robo == "Treta":
+            self.nome_robo = nome_robo
             self.tempo_full_frente_honesto = 1200
             self.tempo_full_re_honesto     = 7000
-            self.nome_robo = nome_do_robo
-        elif nome_do_robo == "Picasso":
+        elif nome_robo == "Picasso":
+            self.nome_robo = nome_robo
             self.tempo_full_frente_honesto = 2000
             self.tempo_full_re_honesto     = 2000
-            self.nome_robo = nome_do_robo
         else:
+            self.nome_robo = nome_robo
             self.tempo_full_frente_honesto = 6000
             self.tempo_full_re_honesto     = 6000
-            self.nome_robo = nome_do_robo
     
     def executa_correcao(self, angulo_correcao):
         '''
@@ -100,13 +100,7 @@ class Estrategia():
         elif estrategia_inicial_selecionada == 'maracutaia': #A ser feito
             self.maracutaia()
         else:
-            pass   
-
-
-    # Executa a estratégia de perseguição com base na leitura do sensores e do PID
-    def executa_estrategia_perseguicao(self, pid_convertido_pwm):
-        self.radar(pid_convertido_pwm)
-            
+            pass           
     
     # =================================== Estratégias Iniciais =========================================
     def arco(self, direcao):
@@ -116,11 +110,9 @@ class Estrategia():
         velocidade_angular = 45* -direcao
         giro_mesmo_sentido = 100 * -direcao # valor para rotacionar na direção oposto que fez o arco
         self.motores.arco(velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        print('iniciou o arco')
         wait(1700) # o tempo pode variar para cada robô
         self.motores.giro(giro_mesmo_sentido)
         wait(550)
-        print('girou no msm sentido')
 
     def bixo_piruleta(self):
         """"O Robô começa de costas, na linha do adversário. O robo gira no eixo de apenas uma das rodas"""
@@ -149,8 +141,7 @@ class Estrategia():
     # Arco de costas --> O robô posicionado de lado faz um arco para trás e depois um giro para o centro da arena
     def moonwalk(self, direcao):
         """Função que aciona o arco. Neste movimento, o robô deve ser posicionado de lado. Ao selecionar o lado,
-        o robô irá percorrer a borda da arena de costas"""  
-        print("Meu nome é Michael Jackson!")   
+        o robô irá percorrer a borda da arena de costas"""
         velocidade_linear = 200
         velocidade_angular = 150 * direcao
         giro_mesmo_sentido = 100 * -direcao # valor para girar o robô no mesmo sentido que a direção da estrategia 
@@ -167,8 +158,6 @@ class Estrategia():
         self.motores.reta(velocidade)
         wait(self.tempo_full_frente_honesto)
         
-    
-
     def full_re_honesto(self):
         '''Uma full ré honesta, nada mais nada menos. O robô apenas vai pra trás com tudo, cuidados devem ser tomados
             com essa manobra '''
@@ -201,10 +190,9 @@ class Estrategia():
 
     # Armadilha
     def de_ladinho(self, direcao):
-        """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""
-        print("di ladin q é mais gostoso")   
+        """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""   
         velocidade_linear = 100
-        velocidade_angular = 75 * direcao
+        velocidade_angular = 80 * -direcao
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         wait(1000) # Alterar Tempo
 
@@ -216,13 +204,8 @@ class Estrategia():
     
     # ============================ Estratégias de Perseguição ========================================== 
     # gira ao redor de si até encontrar algo
-    def radar(self, pwm):
-        # Gira no sentido anti-horário com potência determinada pelo PID
-        if pwm != 0:
-            self.motores.giro(pwm) # direcao_oponente = -1
-        # Full frente com potência máxima, desconsiderando PID
-        if pwm == 0:
-            self.motores.reta(100)
+    def radar(self):
+        pass
     # ==================================================================================================
 
     """ # vai andando em arcos ate encontrar algo
