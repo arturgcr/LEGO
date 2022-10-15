@@ -20,8 +20,8 @@ def main ():
     
     # -> Constantes para o cálculo do PID:
     kp = 0.6
-    ki = 0.0
-    kd = 0.2   
+    ki = 0
+    kd = 0.1  
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
     sensoresDeOponente = {"esquerdo": 1, "direito": 2}
 
@@ -88,7 +88,7 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _sensor_oponente.lerSensores(50) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
+        _sensor_oponente.lerSensores(70) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
@@ -101,7 +101,7 @@ def main ():
         # Caso contrário, faz a busca
         else:
             # Gira no mesmo sentido do sensor que viu o oponente por ultimo
-            _motores.locomover(0, 70 * _sensor_oponente.visto_por_ultimo)
+            _motores.locomover(0, 60 * _sensor_oponente.visto_por_ultimo)
 
             # Reseta os atributos do PID
             _pid.resetar_atributos()
