@@ -67,7 +67,7 @@ class Estrategia():
             self.tempo_arco                = 2200
             self.tempo_capitalismo         = 2000
             self.tempo_comunismo           = 1500
-            self.tempo_de_ladinho          = 500
+            self.tempo_de_ladinho          = 800
             self.tempo_full_frente_honesto = 1500
             self.tempo_full_re_honesto     = 1500
             self.tempo_moonwalk            = 2500
@@ -134,7 +134,7 @@ class Estrategia():
         o robô irá percorrer a borda da arena"""
         # Verifica se a Violeta está usando os motores mais potentes e se está no sentido anti-horário
         velocidade_linear = 100
-        velocidade_angular = 45 * -direcao
+        velocidade_angular = 35 * -direcao
         giro_mesmo_sentido = 100 * -direcao
 
         if self.nome_robo == "Violeta":
@@ -249,8 +249,20 @@ class Estrategia():
         """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""   
         velocidade_linear = 100
         velocidade_angular = 50 * -direcao
-        self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
-        wait(self.tempo_de_ladinho) # Alterar Tempo
+        tempo_arco = 1000
+        tempo_reta = 800
+
+        if self.nome_robo == "Violeta":
+            tempo_arco = 800
+
+        if self.nome_robo == "Picasso":
+            tempo_arco = 800
+            tempo_reta = 600
+
+        self.motores.arco(-velocidade_linear, velocidade_angular)
+        wait(tempo_arco)
+        self.motores.reta()
+        wait(tempo_reta)
 
     def maracutaia(self):
         """"Estratégia feita para robos com defeito. O robo faz curtos movimentos e verifica se o robo adversário se move ou não."""""
