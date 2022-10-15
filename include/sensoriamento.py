@@ -29,7 +29,7 @@ class Sensoriamento():
         medicoes_sensores_esquerda = []
         medicoes_sensores_direita = []
 
-        for sensor in self.sensores_direita:  # sensoresdireita e sensoresesquerda seriam as listas com os sensores de cada lado
+        for sensor in self.sensores_direita:  # sensoresd ireita e sensoresesquerda seriam as listas com os sensores de cada lado
             if sensor.enxergando(self.limiar):   # tem que indentificar o limiar
                 enxergando_inimigo += 1
                 nao_viu_nada = False

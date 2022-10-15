@@ -96,6 +96,8 @@ def main ():
             pid = _pid.calcular_pid(_sensor_oponente.erro)
             pid_constrained = ferramentas.constrainpy(_pid.calcular_pid(_sensor_oponente.erro), -100, 100)
             _motores.locomover(100, pid_constrained)
+            print("TO TE VENDO PORRA")
+            
         # Caso contrário, faz a busca
         else:
             # Gira no mesmo sentido do sensor que viu o oponente por ultimo

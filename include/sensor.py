@@ -79,6 +79,9 @@ class SensorDeOponente():
                 self.leituraDosSensores[sensor] = True
             else:
                 self.leituraDosSensores[sensor] = False
+                
+        print("dist:", self.sensores[sensor].distance())
+        
         # Atualiza o atributo que armazena se o oponente foi detectado ou não
         self.oponenteDetectado = True in self.leituraDosSensores.values()
 
