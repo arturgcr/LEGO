@@ -44,7 +44,7 @@ class Estrategia():
             self.tempo_arco                = 2000
             self.tempo_capitalismo         = 1700
             self.tempo_comunismo           = 1500
-            self.tempo_de_ladinho          = 1000
+            self.tempo_de_ladinho          = 600
             self.tempo_full_frente_honesto = 1800
             self.tempo_full_re_honesto     = 1800
             self.tempo_moonwalk            = 2300
@@ -56,7 +56,7 @@ class Estrategia():
             self.tempo_arco                = 1700
             self.tempo_capitalismo         = 1700
             self.tempo_comunismo           = 1200
-            self.tempo_de_ladinho          = 1000
+            self.tempo_de_ladinho          = 600
             self.tempo_full_frente_honesto = 1200
             self.tempo_full_re_honesto     = 1600
             self.tempo_moonwalk            = 2300
@@ -67,7 +67,7 @@ class Estrategia():
             self.tempo_arco                = 2200
             self.tempo_capitalismo         = 2000
             self.tempo_comunismo           = 1500
-            self.tempo_de_ladinho          = 1500
+            self.tempo_de_ladinho          = 1000
             self.tempo_full_frente_honesto = 1500
             self.tempo_full_re_honesto     = 1500
             self.tempo_moonwalk            = 2500
@@ -248,7 +248,7 @@ class Estrategia():
     def de_ladinho(self, direcao):
         """"Armadilha: O robo é posicionado de lado e realiza um curto movimento para trás e logo em seguida inicia o sensoriamento"""   
         velocidade_linear = 100
-        velocidade_angular = 80 * -direcao
+        velocidade_angular = 50 * -direcao
         self.motores.arco(-velocidade_linear, velocidade_angular) # Alterar Vlin e Vang correspondentes ao robo
         wait(self.tempo_de_ladinho) # Alterar Tempo
 
