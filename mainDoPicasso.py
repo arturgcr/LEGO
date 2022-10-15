@@ -21,9 +21,9 @@ def main ():
     # -> Constantes para o cálculo do PID:
     kp = 0.6
     ki = 0.0
-    kd = 0.2   
+    kd = 0.2
     # Define os sensores de oponente com suas respectivas portas \ define as portas dos sensores
-    sensoresDeOponente = {"esquerdo": 1, "direito": 2}
+    sensoresDeOponente = {"esquerdo": 1, "direito": 3}
 
     # Define o peso de cada sensor  \ define qual sensor ta vendo
     pesoDosSensoresDeOponente = {"esquerdo": -100, "direito": 100}
@@ -88,7 +88,7 @@ def main ():
     # Entra no loop de busca por adversário -----------------------------------------
     while True:
         # Lê os sensores de oponente
-        _sensor_oponente.lerSensores(50) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
+        _sensor_oponente.lerSensores(60) # valor em porcentagem  --> y[cm] = 0.75 * x[%] + 2
 
         # Verifica se o oponente foi detectado
         if _sensor_oponente.oponenteDetectado == True:
@@ -96,7 +96,6 @@ def main ():
             pid = _pid.calcular_pid(_sensor_oponente.erro)
             pid_constrained = ferramentas.constrainpy(_pid.calcular_pid(_sensor_oponente.erro), -100, 100)
             _motores.locomover(100, pid_constrained)
-            print("TO TE VENDO PORRA")
             
         # Caso contrário, faz a busca
         else:
